@@ -1,0 +1,30 @@
+.fields-input{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.otp-field{
+    border-radius: 5px;
+    font-size: 60px;
+    height: 60px;
+    width: 60px;
+    border: 3px solid #cacaca;
+    margin: 1%;
+    text-align: center;
+    font-weight: 600;
+    outline: none;
+}
+
+/* Hide spin buttons for number input */
+.otp-field::-webkit-inner-spin-button,
+.otp-field::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* Remove default appearance */
+    margin: 0;               
+}
+
+.otp-field:valid{
+    border-color:  #3035d8;
+    box-shadow: 0 10px 10px -5 rgba(0,0,0,0.25);
+}
+
