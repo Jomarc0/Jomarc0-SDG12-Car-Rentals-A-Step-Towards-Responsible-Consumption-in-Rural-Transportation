@@ -1,30 +1,27 @@
 <?php
 require_once __DIR__ . '/../dbcon/dbcon.php';
-session_start();
+session_start(); //para magstart yung session
 
 class Verification {
     private $conn;
 
     public function __construct() {
-        $database = new Database(); // Create a new Database instance
-        $this->conn = $database->getConn(); // Get the database connection
+        $database = new Database(); 
+        $this->conn = $database->getConn(); 
     }
 
     public function verifyAccount($verification_code) {
-        if (isset($_SESSION['verification_code']) && isset($_SESSION['email'])) {
-            // Compare the provided verification code with the session code
-            if ($verification_code == $_SESSION['verification_code']) {
-                $email = $_SESSION['email'];
+        if (isset($_SESSION['verification_code']) && isset($_SESSION['email'])) { //check if may laman yung verification code at email
+            if ($verification_code == $_SESSION['verification_code']) { //sessioon yung code
+                $email = $_SESSION['email']; //session the email to use in sql
                 $query = "UPDATE user SET verified = 1 WHERE email = :email";
-                $stmt = $this->conn->prepare($query);
-                $stmt->bindParam(':email', $email);
+                $sql = $this->conn->prepare($query);
+                $sql->bindParam(':email', $email); // to prevent SQL injection
 
-                // Execute the update query
-                if ($stmt->execute()) {
-                    unset($_SESSION['verification_code']);
+                if ($sql->execute()) { // execute the update query
+                    unset($_SESSION['verification_code']); //unset para mawala yung nasession
                     unset($_SESSION['email']);
-                    header("Location: signIn.php");
-                    exit; // Make sure to exit after redirection
+                    header("Location: signIn.php"); //redirect na poara magsign in
                 } else {
                     // Log the error for debugging
                     error_log("Failed to update verification status for email: $email");
@@ -39,8 +36,7 @@ class Verification {
     }
 
     public function __destruct() {
-        // Close the database connection
-        $this->conn = null; // Use null to close the connection properly
+        $this->conn = null; 
     }
 }
 ?>

@@ -1,5 +1,5 @@
 <?php 
-require_once 'dbSignUp.php';
+require_once 'dbSignUp.php'; //require the signup
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $first_name = $_POST["fName"];
@@ -10,14 +10,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $phoneNumber = $_POST["phone"];
     $password = $_POST["password"];
-    $confirmPassword = $_POST["confirmPassword"];
+    $confirmPassword = $_POST["confirmPassword"]; //ippost lang lahat ng laman na iinput 
 
-    $userRegistration = new UserRegistration();
-    $registrationMessage = $userRegistration->register($first_name, $last_name, $address, $gender, $dob, $email, $phoneNumber, $password, $confirmPassword);
+    $userRegistration = new UserRegistration(); //userregistration class
+    $registrationMessage = $userRegistration->register($first_name, $last_name, $address, $gender, $dob, $email, $phoneNumber, $password, $confirmPassword); //ilagay sa parameter yung mga napost na data
 
     if ($registrationMessage) {
         echo $registrationMessage;
-        if (strpos($registrationMessage, 'successful') !== false) {
+        if (strpos($registrationMessage, 'successful') !== false) { //check lanf din if tama yung registratin and redirect to the verify
             header("Location: verify.php");
             exit;
         }

@@ -10,5 +10,6 @@
 <body>
     <?php include('../header/header.php');?>
     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos voluptatem eaque facilis sit reiciendis repudiandae veniam, neque praesentium soluta ab voluptatum autem culpa corrupti animi doloribus aut corporis! Cum, neque.</p>
+     <!-- <?php require ('../chatbox/clientmessage.php'); //include the chat ?>   -->
 </body>
 </html>

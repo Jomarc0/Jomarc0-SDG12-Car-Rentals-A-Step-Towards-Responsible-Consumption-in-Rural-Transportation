@@ -1,0 +1,95 @@
+.container {
+    width: 600px; /* Set a maximum width for the container */
+    height: 80vh; /* Dynamic height based on viewport */
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    background-color: #ffffff; /* White background for the container */
+    border-radius: 12px; /* Rounded edges for the container */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* More prominent shadow for depth */
+    overflow: hidden; /* Avoid content overflow */
+}
+
+#messages {
+    flex: 1; /* Take up available space */
+    overflow-y: auto; /* Enable scrolling for overflow */
+    padding: 20px;
+    background-color: #f9f9f9; /* Slightly lighter gray for the message area */
+    display: flex; /* Flex layout */
+    flex-direction: column; /* Stack messages vertically */
+    gap: 10px; /* Spacing between messages */
+}
+
+.message {
+    padding: 10px 15px;
+    border-radius: 10px;
+    max-width: 70%; /* Limit message width */
+    font-size: 14px;
+    line-height: 1.5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for messages */
+    word-wrap: break-word; /* Prevent long words from breaking layout */
+}
+
+.client-message {
+    align-self: flex-start;
+    background-color: #e6f7ff;
+    color: #333333;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin: 0 10px 10px 0; /* Spacing around message */
+}
+
+.admin-message {
+    align-self: flex-end;
+    background-color: #0088cc;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin: 0 0 10px 10px;
+}
+
+.form-container {
+    display: flex; /* Enable flexbox layout */
+    justify-content: space-between; /* Ensure input and button align properly */
+    align-items: center; /* Align items vertically */
+    padding: 10px; /* Add some padding for aesthetics */
+    gap: 10px; /* Add space between input and button */
+    background-color: #f3f3f3; /* Optional: background color */
+    border-top: 1px solid #ccc; /* Optional: top border for separation */
+}
+
+
+.input {
+    flex: 1; /* Take up available space */
+    padding: 10px; /* Add padding for better usability */
+    border: 1px solid #ccc; /* Add border for clarity */
+    border-radius: 8px; /* Smooth corners */
+    font-size: 14px; /* Adjust font size */
+    outline: none; /* Remove default outline on focus */
+}
+
+
+.input:focus {
+    border-color: #0088cc; /* Highlight on focus */
+    box-shadow: 0 0 4px rgba(0, 136, 204, 0.5); /* Subtle focus effect */
+}
+
+.button {
+    flex-shrink: 0; /* Prevent the button from shrinking */
+    padding: 10px 15px; /* Adjust padding for better size */
+    background-color: #0088cc; /* Add color */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    border-radius: 8px; /* Smooth corners */
+    font-size: 14px; /* Match input text size */
+    cursor: pointer; /* Add pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Add hover effect */
+}
+
+.button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+
+.button:active {
+    background-color: #004b99; /* Even darker blue on click */
+}

@@ -18,7 +18,7 @@ class PaymentHandler {
     public function handlePayment($payment_id, $action) {
         try {
             // Fetch user's email
-            $stmt = $this->conn->prepare("SELECT u.email FROM payment p JOIN users u ON p.user_id = u.id WHERE p.payment_id = :payment_id");
+            $stmt = $this->conn->prepare("SELECT u.email FROM payment p JOIN user u ON p.user_id = u.user_id WHERE p.payment_id = :payment_id");
             $stmt->bindParam(':payment_id', $payment_id, PDO::PARAM_INT);
             $stmt->execute();
             $user = $stmt->fetch(PDO::FETCH_ASSOC);

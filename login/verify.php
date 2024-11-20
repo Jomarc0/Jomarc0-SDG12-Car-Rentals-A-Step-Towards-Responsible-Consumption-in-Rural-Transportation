@@ -1,17 +1,16 @@
 <?php
-// Usage example
-require_once 'dbverify.php';
-$message = "";
+require_once 'dbverify.php'; //require the verify 
+
+$message = ""; //put message as null 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Collect input from the 6 fields
-    $verification_code = $_POST["opt1"] . $_POST["opt2"] . $_POST["opt3"] . $_POST["opt4"] . $_POST["opt5"] . $_POST["opt6"];
-    // Validate verification code length
-    if (strlen($verification_code) !== 6) {
+    $verification_code = $_POST["opt1"] . $_POST["opt2"] . $_POST["opt3"] . $_POST["opt4"] . $_POST["opt5"] . $_POST["opt6"]; //ippost yung 6 na opt or input ng user
+    
+    if (strlen($verification_code) !== 6) { //check if the length is not equal to 6 but the same data type
         $message = "Verification code must be 6 digits.";
     } else {
-        // Create an instance of Verification
-        $verification = new Verification();
-        $message = $verification->verifyAccount($verification_code);
+        $verification = new Verification(); // verification class
+        $message = $verification->verifyAccount($verification_code); //input the verification code
     }
 }
 ?>

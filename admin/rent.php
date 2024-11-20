@@ -1,12 +1,15 @@
-<?php 
-require_once __DIR__ . '/../dbcon/dbcon.php';
+<?php
+session_start();
+require_once 'dbdashboard.php'; //include dbdashboard
 
-try {
-    $database = new Database();
-    $conn = $database->getConn(); // to get database connection
-} catch (Exception $exception) {
-    die("Database connection failed: " . $exception->getMessage());
+if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) { //check if admin login
+    header("Location: admin.php"); // redirect to login if not logged in
+    exit();
 }
+
+$adminDashboard = new AdminDashboard();//call the admindashboard class from dbdashboard.php
+$rentedCars = $adminDashboard->getRentedCars();
+
 ?>
 
 <!DOCTYPE html>
@@ -31,8 +34,8 @@ try {
         <table id="admin-datatable" class="display">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Ren ID</th>
+                    <th>User ID</th>
+                    <th>Renr ID</th>
                     <th>Booking Area</th>
                     <th>Destination</th>
                     <th>Trip Date & Time</th>
@@ -44,30 +47,25 @@ try {
             </thead>
             <tbody>
             <?php
-            // Fetch data from the database
-            $query = "SELECT user_id, rent_id, booking_area, destination, trip_date_time, return_date_time, vehicle_type, rent_status FROM rentedcar"; // Adjust the table name as needed
-            $result = $conn->query($query);
-
-            // Check if there are results and output them
-            if ($result && $result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
+            if (!empty($rentedCars)) {
+                foreach ($rentedCars as $rent) {
                     echo "<tr>";
-                    echo "<td>" . htmlspecialchars($row['user_id']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['rent_id']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['booking_area']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['destination']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['trip_date_time']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['return_date_time']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['vehicle_type']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['rent_status']) . "</td>";
+                    echo "<td>" . htmlspecialchars($rent['user_id']) . "</td>";
+                    echo "<td>" . htmlspecialchars($rent['rent_id']) . "</td>";
+                    echo "<td>" . htmlspecialchars($rent['booking_area']) . "</td>";
+                    echo "<td>" . htmlspecialchars($rent['destination']) . "</td>";
+                    echo "<td>" . htmlspecialchars($rent['trip_date_time']) . "</td>";
+                    echo "<td>" . htmlspecialchars($rent['return_date_time']) . "</td>";
+                    echo "<td>" . htmlspecialchars($rent['vehicle_type']) . "</td>";
+                    echo "<td>" . htmlspecialchars($rent['rent_status']) . "</td>";
                     echo "<td>
-                        <a href= 'dbupdate.php?id=" .$row['user_id' ] . "' class='edit-btn' >Edit</a>
-                        <a href='dbdelete.php?id=" . $row['user_id'] . "' class='delete-btn' onclick='return confirm(\"Are you sure you want to delete this entry?\")'>Delete</a>
+                        <a href='editrent.php?id=" . $rent['rent_id'] . "' class='edit-btn'>Edit</a>
+                        <a href='deleterent.php?id=" . $rent['rent_id'] . "' class='delete-btn' onclick='return confirm(\"Are you sure you want to delete this entry?\")'>Delete</a>
                     </td>";
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='15'>No data available</td></tr>";
+                echo "<tr><td colspan='9'>No data available</td></tr>";
             }
             ?>
             </tbody>

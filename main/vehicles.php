@@ -199,6 +199,7 @@
             </div>
           </form>
         </main>
+         <!-- <?php require ('../chatbox/clientmessage.php'); //include the chat ?>   -->
 <script src="../js/vehicle.js"></script>
 </body>
 </html>

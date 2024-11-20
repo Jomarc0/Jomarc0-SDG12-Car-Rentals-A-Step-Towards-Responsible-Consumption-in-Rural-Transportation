@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../dbcon/dbcon.php';
-require_once 'calculate_price.php'; // Ensure correct path
+require_once 'calculateprice.php'; // require the calculate price
 
 class Receipt {
     private $conn;
@@ -13,7 +13,7 @@ class Receipt {
         $receiptData = $this->fetchLatestReceiptData();
 
         if ($receiptData) {
-            $output = $this->displayReceipt($receiptData);
+            $output = $this->displayReceipt($receiptData); //output are don sa genrate
             $output .= $this->calculatePrice($receiptData['rent_id']);
         } else {
             $output = "No reservations found.";
@@ -23,17 +23,16 @@ class Receipt {
     }
 
     private function fetchLatestReceiptData() {
-        $sql = "SELECT booking_area, destination, trip_date_time, return_date_time, vehicle_type, rent_id FROM rentedcar ORDER BY rent_id DESC LIMIT 1";    
-        $stmt = $this->conn->prepare($sql); 
-        if (!$stmt) {
+        $stmt = $this->conn->prepare("SELECT booking_area, destination, trip_date_time, return_date_time, vehicle_type, rent_id FROM rentedcar ORDER BY rent_id DESC LIMIT 1"); //sql statement i used order by rent id and DESC LIMIT 1 to alway select the last input data 
+        
+        if (!$stmt) { //if statement is error
             throw new Exception("Error preparing query: " . implode(":", $this->conn->errorInfo()));
         }
-
-        if (!$stmt->execute()) {
+        if (!$stmt->execute()) { // if statment did not execute
             throw new Exception("Error executing query: " . implode(":", $stmt->errorInfo()));
         }
 
-        return $stmt->fetch(PDO::FETCH_ASSOC); // Return associative array of the latest receipt
+        return $stmt->fetch(PDO::FETCH_ASSOC); // fetsch and return as an associative array 
     }
 
     private function displayReceipt($receipt) {
@@ -42,25 +41,23 @@ class Receipt {
         $html .= "<p><strong>Trip Date and Time:</strong><span style='margin-left: 75px;'>" . htmlspecialchars($receipt['trip_date_time']) . "</span></p>";
         $html .= "<p><strong>Return Date and Time: </strong><span style='margin-left: 50px;'>" . htmlspecialchars($receipt['return_date_time']) . "</span></p>";
         $html .= "<p><strong>Vehicle Type: </strong><span style='margin-left: 120px;'>" . htmlspecialchars($receipt['vehicle_type']) . "</span></p>";
-        return $html; // Return the HTML string
+        return $html; // return to html string
     }
 
-    private function calculatePrice($bookingId) {
-        $rentalCalculator = new RentalCalculator($this->conn);
-        $rentalCalculator->setBookingId($bookingId); // Set the booking ID for the calculator
+    private function calculatePrice($rentId) {
+        $rentalCalculator = new RentalCalculator($this->conn); //rentelcalculator class from calulateprice.php
+        $rentalCalculator->setBookingId($rentId); // sett the rent ID for the calculator
         $totalPrice = $rentalCalculator->calculateRentalPrice();
 
         if (is_numeric($totalPrice)) {
             return "<p><strong>Total Rental Price:</strong> <span style='margin-left: 80px;'> ₱" . number_format($totalPrice, 2) . "</span></p>";
         } else {
-            return "<p>Error calculating price: " . htmlspecialchars($totalPrice) . "</p>";
+            return "<p>Error calculating price: " . htmlspecialchars($totalPrice) . "</p>"; //if error
         }
     }
 
     public function getRentId() {
-        $sql = "SELECT rent_id FROM rentedcar ORDER BY rent_id DESC LIMIT 1";
-        
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->prepare("SELECT rent_id FROM rentedcar ORDER BY rent_id DESC LIMIT 1"); 
 
         if (!$stmt) {
             throw new Exception("Error preparing query: " . implode(":", $this->conn->errorInfo()));
@@ -71,9 +68,9 @@ class Receipt {
         }
 
         if ($stmt->rowCount() > 0) {
-            return $stmt->fetchColumn(); // Return the latest rent_id
+            return $stmt->fetchColumn(); // return the latest rent id
         } else {
-            return null; // No reservations found
+            return null; //if no reservations found return null
         }
     }
 }

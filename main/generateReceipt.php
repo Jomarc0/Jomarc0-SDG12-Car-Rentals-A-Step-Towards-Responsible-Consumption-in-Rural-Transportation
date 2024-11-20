@@ -16,13 +16,13 @@ $receiptHTML = $receipt->generate(); // Capture the HTML output
 
 $rentId = $receipt->getRentId();
 
-    // Check if a rent_id was returned
+    // //debugging
     // if ($rentId !== null) {
     //     echo "The latest rent ID is: " . htmlspecialchars($rentId);
     // } else {
     //     echo "No rentals found.";
     // }
-// Close the database connection
+
 $database->closeConn();
 ?>
 
@@ -47,13 +47,13 @@ $database->closeConn();
         <div class="receipt-container">
             <h2>Your Receipt</h2>
             <div class="receipt-info">
-                <?php echo $receiptHTML; // Output the generated HTML ?>
+                <?php echo $receiptHTML; //output in html ?>
             </div>
-            <form action="../payment/payment.php" method="post"> <!-- Change 'payment.php' to your actual payment processing page -->
+            <form action="../payment/payment.php" method="post"> <!-- form to the payment-->
                 <input type="hidden" name="receipt_data" value="<?php echo htmlspecialchars($receiptHTML); ?>">
                 <button type="submit" class="payment-button" name="payment-btn">Proceed to Payment</button>
             </form>
-            <form action="cancel.php" method="post"> <!-- Change to the actual path of your cancel script -->
+            <form action="cancel.php" method="post"> <!-- form to cancel if the user dont want the price-->
                 <input type="hidden" name="rent_id" value="<?php echo htmlspecialchars($rentId); ?>">
                 <button type="submit" class="payment-button" name="cancel-btn">Cancel</button>
             </form>

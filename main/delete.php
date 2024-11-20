@@ -1,18 +1,13 @@
 <?php
-// Include the Database class and RentalCancellation class
-require_once __DIR__ . '/../dbcon/dbcon.php'; // Adjust the path as necessary
-require_once 'deleterent.php'; // Adjust the path as necessary
+require_once __DIR__ . '/../dbcon/dbcon.php';
+require_once 'deleterent.php'; 
 
-// Instantiate the RentalCancellation class
-$deleteRent = new DeleteRent();
+$deleteRent = new DeleteRent(); //class deleterent form deleterent.php
 
-// Check if the form was submitted
-if (isset($_POST['delete-btn'])) {
-    // Get the rent_id from the POST request
-    $rent_id = $_POST['rent_id'];
+if (isset($_POST['delete-btn'])) { //check if form is submitted
+    $rent_id = $_POST['rent_id']; //get the rent id from the hidden rent id
     
-    // Call the cancelRental method
-    $message = $deleteRent->deleteRental($rent_id);
-    echo $message; // Display the message
+    $message = $deleteRent->deleteRental($rent_id); //call the delete function
+    echo $message; 
 }
 ?>

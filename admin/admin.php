@@ -1,4 +1,6 @@
 <?php 
+require_once 'adminLogin.php';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
@@ -26,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="container" id="signIn">
             <h1 class="form-title">Admin</h1>
-            <form method="post" action="adminLogin.php">
+            <form method="post" action=" ">
             <div class="input-group">
                 <i class="fas fa-envelope"></i>
                 <input type="username" name="username" id="username" placeholder="Username" required>

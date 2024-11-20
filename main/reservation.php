@@ -1,32 +1,34 @@
 <?php
-// Start the session
 session_start();
 
-// Include the database connection and the ReservationHandler class
 require_once __DIR__ . '/../dbcon/dbcon.php';
-require_once __DIR__ . '/ReservationHandler.php';
+require_once __DIR__ . '/reservationhandler.php';
+require_once __DIR__ . '/dbreservation.php'; 
 
 try {
     $database = new Database();
-    $conn = $database->getConn(); // Get the database connection
+    $conn = $database->getConn(); 
 } catch (Exception $exception) {
     die("Database connection failed: " . $exception->getMessage());
 }
 
-// Create an instance of ReservationHandler
-$reservationHandler = new ReservationHandler($conn);
+$reservationHandler = new ReservationHandler($conn); // call reservationhandler class
 
-// Initialize selected booking area
-$selectedBookingArea = $_POST['bookingArea'] ?? ''; // Get the selected booking area from POST or default to empty string
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-btn'])) { // check if the form is submitted
+    $reservationHandler->handleReservationSubmission();
+}
 
-// Define the destinations based on booking area
+// initialize selected booking area
+$selectedBookingArea = $_POST['bookingArea'] ?? ''; //selected booking area from POST or default to empty string
+
+// destinations based on booking area
 $destinations = [
     'Metro Manila' => ['Makati', 'Taguig', 'Quezon City', 'Manila'],
     'Cebu' => ['Cebu City', 'Mactan', 'Lapu-Lapu'],
     'Davao' => ['Davao City', 'Tagum', 'Digos']
 ];
 
-// Get the destinations based on the selected booking area
+// get the destinations based on the selected booking area
 $destinationOptions = $selectedBookingArea && isset($destinations[$selectedBookingArea]) ? $destinations[$selectedBookingArea] : [];
 ?>
 
@@ -45,7 +47,11 @@ $destinationOptions = $selectedBookingArea && isset($destinations[$selectedBooki
         <section class="form-section">
             <h1>Reservation Form</h1>
 
-            <!-- Progress bar -->
+            <!-- Display session message if available -->
+            <?php if (isset($_SESSION['message'])): ?>
+                <div class="alert"><?php echo $_SESSION['message']; unset($_SESSION['message']); ?></div>
+            <?php endif; ?>
+
             <div class="form-progress">
                 <div class="step active">
                     <span>1</span>
@@ -65,7 +71,6 @@ $destinationOptions = $selectedBookingArea && isset($destinations[$selectedBooki
                 </div>
             </div>
 
-            <!-- Form -->
             <form method="post" action="">
                 <!-- Step 1: Select Location -->
                 <div class="form-step active">
@@ -80,15 +85,14 @@ $destinationOptions = $selectedBookingArea && isset($destinations[$selectedBooki
                     </div>
                 </div>
                 
-                <!-- Trip Details -->
+                <!-- Step 2: Trip Details -->
                 <div class="form-step">
                     <h2>Trip Details</h2>
                     <label for="destination">Destination </label>
                     <select id="destination" name="destination" required>
                         <option value="">Select Destination</option>
                         <?php
-                        // Show destinations based on the selected booking area
-                        if ($selectedBookingArea && !empty($destinationOptions)) {
+                        if ($selectedBookingArea && !empty($destinationOptions)) { // show destinations based on the selected booking area
                             foreach ($destinationOptions as $destination) {
                                 echo "<option value=\"$destination\">$destination</option>";
                             }
@@ -105,7 +109,7 @@ $destinationOptions = $selectedBookingArea && isset($destinations[$selectedBooki
                     </div>
                 </div>
                 
-                <!-- Service Options -->
+                <!-- Step 3: Service Options -->
                 <div class="form-step">
                     <h2>Service Options</h2>
                     <label for="vehicleType">Vehicle Type </label>

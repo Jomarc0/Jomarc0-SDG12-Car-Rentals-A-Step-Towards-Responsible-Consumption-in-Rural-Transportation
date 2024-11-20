@@ -14,6 +14,7 @@
                 <a href="paymentdashboard.php">Payments</a>
                 <a href="users.php">Users</a>
                 <a href="rent.php">Rents</a>
+                <a href="../chatbox/adminmessage.php">Messages</a>
             </div>
             <a href="logout.php" class="logout">Logout</a>
         </div>

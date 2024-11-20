@@ -1,38 +1,45 @@
 <?php
-// reset_password.php
+// resetPassword.php
 require_once __DIR__ . '/../dbcon/dbcon.php';
 
-try {
-    $database = new Database();
-    $conn = $database->getConnec(); //to get database connection
-} catch (Exception $exception) {
-    die("Database connection failed: " . $exception->getMessage());
-}
+class PasswordReset {
+    private $conn;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["changePass"])) {
-    $email = $_POST['email'];
-    $verification_code = $_POST['verification_code'];
-    $newPassword = $_POST['new_password'];
+    public function __construct() {
+        try {
+            $database = new Database();
+            $this->conn = $database->getConn();
+        } catch (Exception $exception) {
+            die("Database connection failed: " . $exception->getMessage());
+        }
+    }
 
-    // Validate the OTP
-    $stmt = $conn->prepare("SELECT * FROM user WHERE email = ? AND verification_code = ?");
-    $stmt->bind_param("si", $email, $verification_code);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        // Hash the new password
-        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-        $hashedConfirmPassword = password_hash($confirmPassword, PASSWORD_DEFAULT);
-
-        // Update the password and clear OTP
-        $stmt = $conn->prepare("UPDATE user SET password = ?, confirm_password = ?  WHERE email = ?");
-        $stmt->bind_param("sss", $hashedPassword ,$hashedConfirmPassword ,$email);
+    public function resetPassword($email, $verification_code, $newPassword, $newConfirmPassword) {
+        $stmt = $this->conn->prepare("SELECT * FROM user WHERE email = :email AND verification_code = :verification_code"); //select all from user table
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':verification_code', $verification_code);
         $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC); //fetch as assosiative array
 
-        echo "Your password has been reset successfully.";
-    } else {
-        echo "Invalid or expired OTP.";
+        if ($result) {
+            //hash the password 
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+            $hashedConfirmPassword = password_hash($newConfirmPassword, PASSWORD_DEFAULT);
+            //update the password and confirm
+            $stmt = $this->conn->prepare("UPDATE user SET password = :password, confirm_password = :confirmPassword WHERE email = :email");
+            $stmt->bindParam(':password', $hashedPassword);
+            $stmt->bindParam(':confirmPassword', $hashedConfirmPassword);
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+
+            return "Your password has been reset successfully.";
+        } else {
+            return "Invalid or expired OTP.";
+        }
+    }
+
+    public function __destruct() {
+        $this->conn = null; 
     }
 }
 ?>

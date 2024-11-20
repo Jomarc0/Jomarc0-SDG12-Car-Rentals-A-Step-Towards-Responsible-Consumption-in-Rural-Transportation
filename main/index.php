@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/header.css">
 </head>
 <body>
-    <?php include('../header/header.php');?>
+    <?php include('../header/header.php');// include the header nav?>
     <div class="home-container">
         <div class="home-content">
             <div class="tag popular">Toyota Cars</div>
@@ -51,5 +51,7 @@
             <li>Late returns may incur additional charges.</li>
         </ul>
     </div>
+    <!-- <?php require ('../chatbox/clientmessage.php'); //include the chat ?>   -->
+    
 </body>
 </html>

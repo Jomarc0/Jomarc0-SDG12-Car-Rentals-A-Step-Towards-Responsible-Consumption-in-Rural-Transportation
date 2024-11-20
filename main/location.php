@@ -54,5 +54,6 @@
         }
         ?>
     </div>
+     <!-- <?php require ('../chatbox/clientmessage.php'); //include the chat ?>   -->
 </body>
 </html>

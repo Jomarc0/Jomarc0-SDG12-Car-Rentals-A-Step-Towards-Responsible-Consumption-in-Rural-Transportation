@@ -1,14 +1,14 @@
 <?php
-require_once 'dbSignIn.php';
+require_once 'dbSignIn.php'; //require login databse
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    $user = new User();
+    $user = new UserLogin(); //userlogin class
     $loginMessage = $user->login($email, $password);
 
-    // if ($loginMessage) {
+    // if ($loginMessage) { // debugging
     //     echo $loginMessage;
     //     header("Location: signIn.php");
     //     exit;

@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../dbcon/dbcon.php';
-require_once 'PaymentHandler.php'; // Include the PaymentHandler class
+require_once 'paymentHandler.php'; // Include the PaymentHandler class
 
 try {
     $database = new Database();
@@ -19,10 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Fetch Pending Payments
-$result = $conn->query("SELECT p.*, u.email as user_email FROM payment as p JOIN user as u ON p.user_id = u.user_id WHERE p.payment_status = 'pending'");
+$stmt = $conn->prepare("SELECT p.*, u.email as user_email FROM payment as p JOIN user as u ON p.user_id = u.user_id WHERE p.payment_status = 'pending'");
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<!DOCTYPE html <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,7 +33,7 @@ $result = $conn->query("SELECT p.*, u.email as user_email FROM payment as p JOIN
     <!-- datatable css -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="../css/adminpayment.css">
-
+    <link rel="stylesheet" href="../css/adminheader.css">
 </head>
 <body>
     <?php include('adminHeader.php'); ?>
@@ -41,26 +44,27 @@ $result = $conn->query("SELECT p.*, u.email as user_email FROM payment as p JOIN
                 <tr>
                     <th>Payment ID</th>
                     <th>User Email</th>
+                    <th>Amount</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <?php while ($row = $result->fetch_assoc()): ?>
+                <?php foreach ($result as $row): ?>
                     <tr>
-                        <td><?php echo $row['payment_id']; ?></td>
-                        <td><?php echo $row['user_email']; ?></td>
-                        <td><?php echo $row['amount']; ?></td>
-                        <td><?php echo $row['payment_status']; ?></td>
+                        <td><?php echo htmlspecialchars($row['payment_id']); ?></td>
+                        <td><?php echo htmlspecialchars($row['user_email']); ?></td>
+                        <td><?php echo htmlspecialchars($row['amount']); ?></td>
+                        <td><?php echo htmlspecialchars($row['payment_status']); ?></td>
                         <td>
                             <form method="POST" action="">
-                                <input type="hidden" name="payment_id" value="<?php echo $row['payment_id']; ?>">
+                                <input type="hidden" name="payment_id" value="<?php echo htmlspecialchars($row['payment_id']); ?>">
                                 <button type="submit" name="action" value="approve">Approve</button>
                                 <button type="submit" name="action" value="reject">Reject</button>
                             </form>
                         </td>
                     </tr>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </div>
