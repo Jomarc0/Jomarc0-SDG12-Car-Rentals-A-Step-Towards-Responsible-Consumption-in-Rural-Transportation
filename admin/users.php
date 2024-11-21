@@ -7,7 +7,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     exit();
 }
 
-$userDashboard = new AdminDashboard();;//call the admindashboard class from dbdashboard.php
+$userDashboard = new AdminDashboard(); //call the admindashboard class from dbdashboard.php
 $verifiedUsers = $userDashboard->getVerifiedUsers(); // fetch all verified users 
 ?>
 
@@ -22,14 +22,15 @@ $verifiedUsers = $userDashboard->getVerifiedUsers(); // fetch all verified users
     <!-- DataTables CSS -->
     <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- admin css -->
-    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/admintable.css">
+    <link rel="stylesheet" href="../css/rentanduser.css">
 </head>
 
 <body>
-    <?php include('adminHeader.php'); ?>
+    <?php include('../sidebar/adminsidebar.php'); ?>
 
     <div class="container">
-        <h2>Admin Dashboard</h2>
+        <h2>Users</h2>
         <table id="admin-datatable" class="display">
             <thead>
                 <tr>
@@ -56,7 +57,7 @@ $verifiedUsers = $userDashboard->getVerifiedUsers(); // fetch all verified users
                         echo "<td>" . htmlspecialchars($row['last_name']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['address']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['gender']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['dob']) . "</td>";
+                        echo "<td>" . htmlspecialchars ($row['dob']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['email']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['phone_number']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['verification_code']) . "</td>";
@@ -69,7 +70,7 @@ $verifiedUsers = $userDashboard->getVerifiedUsers(); // fetch all verified users
                 } else {
                     echo "<tr><td colspan='10'>No data available</td></tr>";
                 }
-                ?>
+            ?>
             </tbody>
         </table>
     </div>

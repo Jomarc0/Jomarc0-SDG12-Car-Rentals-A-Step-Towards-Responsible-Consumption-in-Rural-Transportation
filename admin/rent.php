@@ -7,9 +7,8 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     exit();
 }
 
-$adminDashboard = new AdminDashboard();//call the admindashboard class from dbdashboard.php
+$adminDashboard = new AdminDashboard(); //call the admindashboard class from dbdashboard.php
 $rentedCars = $adminDashboard->getRentedCars();
-
 ?>
 
 <!DOCTYPE html>
@@ -23,19 +22,23 @@ $rentedCars = $adminDashboard->getRentedCars();
     <!-- DataTables CSS -->
     <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- admin css -->
-    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/admintable.css">
+    <link rel="stylesheet" href="../css/rentanduser.css">
+
 </head>
 
 <body>
-    <?php include('adminHeader.php'); ?>
+    <?php include('../sidebar/adminsidebar.php'); ?>
 
     <div class="container">
-        <h2>Admin Dashboard</h2>
+        <div class="header">
+        <h2>Rents</h2>
+        </div>
         <table id="admin-datatable" class="display">
             <thead>
                 <tr>
                     <th>User ID</th>
-                    <th>Renr ID</th>
+                    <th>Rent ID</th>
                     <th>Booking Area</th>
                     <th>Destination</th>
                     <th>Trip Date & Time</th>
