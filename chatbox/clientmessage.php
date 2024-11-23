@@ -5,7 +5,7 @@ require_once 'dbclient.php'; // Adjust the path as necessary
 $_SESSION['user'] = 'client'; // This line simulates that you are logged in as a client
 $user_id = $_SESSION['user_id']; // Assuming user_id is stored in the session
 
-$messageHandler = new UserMessage($admin_id); //call messagehandler class
+$messageHandler = new UserMessage($user_id); //call messagehandler class
 $messageHandler->messageSubmission(); 
 $messages = $messageHandler->getMessages();
 ?>
@@ -16,8 +16,6 @@ $messages = $messageHandler->getMessages();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Client Chat</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="../css/clientchat.css">
 </head>
 <body>

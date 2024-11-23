@@ -1,0 +1,59 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color:#F4FDFF;; 
+}
+
+.container {
+    width: 600px; 
+    margin: 0 auto; 
+    padding: 3rem; 
+}
+
+.container h1 {
+    text-align: center;
+    margin-bottom: 2rem; 
+    color: #40282A; 
+}
+
+.container p {
+    text-align: center; 
+    margin-bottom: 2rem; 
+    color: #40282A; 
+}
+
+.reservation-guide {
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    grid-gap: 1rem; 
+}
+
+.step {
+    background-color: #F4FDFF; 
+    padding: 2rem; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    text-align: center; 
+    transition: background-color 0.3s; 
+}
+
+.step:hover {
+    background-color: #F2D335; 
+}
+
+.step h3 {
+    color: #D98B48; 
+    margin-bottom: 1rem; 
+}
+
+.step p {
+    color: #40282A; 
+    line-height: 1.6; 
+}
+
+.step .icon {
+    font-size: 2rem; 
+    color: #40282A; 
+    margin-bottom: 1rem; 
+}

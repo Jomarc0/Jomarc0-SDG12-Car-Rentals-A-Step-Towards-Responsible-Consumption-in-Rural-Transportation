@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="container" id="signup">
         <h1 class="form-title">Register</h1>
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data"> <!--enctype="multipart/form-data" that line is used to store file basta pang store yan -->
             <div class="input-group">
                 <i class="fas fa-user"></i>
                 <input type="text" name="fName" id="fName" placeholder="First Name" required>
@@ -60,8 +60,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="input-group">
                 <i class="fas fa-venus-mars"></i>
-                <input type="text" name="gender" id="gender" placeholder="Gender (e.g., Male, Female)" required>
-                <label for="gender">Gender</label>
+                <label for="gender">Gender</label><br><br>
+                <input type="radio" name="gender" id="male" value="Male" required>
+                <label for="male">Male</label>
+                <input type="radio" name="gender" id="female" value="Female" required>
+                <label for="female">Female</label>
+
             </div>
             <div class="input-group">
                 <i class="fas fa-calendar-alt"></i>
@@ -83,6 +87,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password"  required>
                 <label for="confirmPassword">Confirm Password</label>
             </div>
+            <div class="input-group">
+                <i class="fas fa-image"></i>
+                <input type="file" name="profilePicture" id="profilePicture" accept="image/*" required>
+                <label for="profilePicture">Profile Picture</label>
+            </div>
+
             <input type="submit" class="btn" value="Sign Up" name="signUp">
             </form> 
         <p class="or">

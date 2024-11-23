@@ -55,5 +55,6 @@ $user = $userProfile->getUserData(); //call the function getter
             </div>
         </div>
     </div>
+    
 </body>
 </html>

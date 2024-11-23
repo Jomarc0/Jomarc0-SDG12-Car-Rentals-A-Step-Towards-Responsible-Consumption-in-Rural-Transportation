@@ -2,7 +2,7 @@
 // resetPassword.php
 require_once __DIR__ . '/../dbcon/dbcon.php';
 
-class PasswordReset {
+class ResetPassword {
     private $conn;
 
     public function __construct() {
@@ -14,7 +14,28 @@ class PasswordReset {
         }
     }
 
+    public function verifyOTP($email, $verification_code) {
+        $stmt = $this->conn->prepare("SELECT * FROM user WHERE email = :email AND verification_code = :verification_code");
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':verification_code', $verification_code);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            return true; // OTP is valid
+        } else {
+            return "Invalid or expired OTP."; // OTP is invalid
+        }
+    }
+
     public function resetPassword($email, $verification_code, $newPassword, $newConfirmPassword) {
+        if (strlen($newPassword) < 8) {
+            return "Password must be at least 8 characters long.";
+        }
+
+        if ($newPassword !== $newConfirmPassword) {
+            return "Passwords do not match.";
+        }
         $stmt = $this->conn->prepare("SELECT * FROM user WHERE email = :email AND verification_code = :verification_code"); //select all from user table
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':verification_code', $verification_code);

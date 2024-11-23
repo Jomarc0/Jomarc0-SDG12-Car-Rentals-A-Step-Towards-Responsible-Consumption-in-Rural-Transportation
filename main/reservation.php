@@ -131,6 +131,7 @@ $destinationOptions = $selectedBookingArea && isset($destinations[$selectedBooki
             </form>
         </section>
     </div>
+    <?php require ('../chatbox/clientmessage.php'); //include the chat ?> 
     <script src="../js/script.js"></script>
 </body>
 </html>

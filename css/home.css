@@ -1,47 +1,62 @@
-/*for reservations*/
 body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #F4FDFF; /* Light background for the body */
 }
+
 main {
     padding: 2rem;
 }
+
 .home-container {
+    margin-top: 25px;
     display: flex; /* Arrange content and image side-by-side */
     align-items: center; 
     min-height: 100vh; /* Ensure the page takes up full viewport height */
+    background: url('../pictures/bg.webp') no-repeat center center; /* Set the background image */
+    background-size: cover; /* Ensure the background covers the entire area */
+    position: relative; /* Positioning context for overlay */
 }
 
 .home-content {
-    flex: 1;  /* Equal width for content and image */
-    padding: 40px; 
+    flex: 0 0 50%;  /* Set width to 50% of the container */
+    padding: 80px; 
+    position: relative; /* Positioning context for z-index */
+    z-index: 1; /* Ensure content is above the background */
 }
 
-.home-content {
-    background-color: #F4FDFF; /* Light background for content */
+.home-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    z-index: -1; /* Position behind the text */
 }
-
 .home-content h1 {
     font-size: 3rem; /* Adjust font size as needed */
-    color: #040403;
+    color: white; /* Dark color for headings */
     margin-bottom: 20px;
 }
 
 .home-content p {
     line-height: 1.6;
-    color: #040403;
+    color: white; /* Dark color for paragraph text */
 }
 
 .highlight {
     font-weight: bold;
+    color: #D98B48; /* Highlight color */
 }
 
 /* Button Styling */
 .request-quote {
-    background-color: #5B7553; 
+    background-color: #F2D335; /* Bright button color */
     text-decoration: none;
-    color: white;
+    color: #40282A; /* Dark text color on button */
     border: none;
     padding: 15px 30px;
     font-size: 1.2em;
@@ -51,7 +66,7 @@ main {
 }
 
 .request-quote:hover {
-    background-color: #040403;
+    background-color: #D98B48; /* Darker shade on hover */
 }
 
 .tag {
@@ -60,19 +75,15 @@ main {
     font-size: 0.8em;
     text-transform: uppercase;
     margin-bottom: 10px;
+    background-color: #F2C335; /* Tag background color */
+    color: #40282A; /* Tag text color */
 }
 
 .popular {
-    background-color: #5B7553; 
-    color: white;
+    background-color: #F2D335; 
+    color: #40282A;
     text-align: center;
     font-size: 1em;
-}
-
-/* Car Model Styling */
-.car-model {
-    margin-left: 10px;
-    font-weight: bold;
 }
 
 /* Image Styling */
@@ -82,11 +93,10 @@ main {
 }
 
 .image img {
-    max-width: 100%; 
     height: auto; 
-    width: 100%; /* Make the image take full width */
-    max-height: 600px; /* Limit the height to avoid overflow */
-    border: 5px solid #5B7553; /* Add a solid border with a color */
+    width: 800px; /* Make the image take full width */
+    max-height: 700px; /* Limit the height to avoid overflow */
+    border: 5px solid #D98B48; /* Add a solid border with a color */
     border-radius: 8px; /* Optional: rounded corners for the border */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
     transition: transform 0.3s; /* Smooth transition for hover effect */
@@ -108,33 +118,71 @@ a {
     text-decoration: none; /* Remove underline from all links */
 }
 
+.info-section {
+    display: flex; /* Use Flexbox for alignment */
+    justify-content: center; /* Center items horizontally */
+    align-items: flex-start; /* Align items to the top */
+    margin: 20px; /* Margin around the section */
+    flex-wrap: wrap; /* Allow wrapping to the next line on smaller screens */
+}
+
+/* Info Container */
 .info-container {
     background-color: #F4FDFF; /* Light background for the container */
     padding: 20px; /* Padding around the content */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    margin: 15px auto; /* Center the container with margin */
-    max-width: 800px; /* Maximum width for the container */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    margin: 15px; /* Space around each container */
+    flex: 1 1 30%; /* Allow containers to grow and shrink, with a base width of 30% */
+    max-width: 30%; /* Set maximum width for each container */
+    transition: transform 0.3s; /* Smooth hover effect */
 }
 
+/* Hover Effect */
+.info-container:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+/* Heading styles */
 .info-container h2 {
-    font-size: 2rem; /* Font size for headings */
-    color: #040403; /* Dark color for headings */
-    margin-bottom: 10px; /* Space below headings */
+    font-size: 1.8rem; /* Font size for headings */
+    color: #40282A; /* Dark color for headings */
+    margin-bottom: 15px; /* Space below headings */
+    border-bottom: 2px solid #F2D335; /* Underline effect with accent color */
+    padding-bottom: 5px; /* Padding below the heading */
 }
 
+/* Paragraph styles */
 .info-container p {
     line-height: 1.6; /* Line height for better readability */
-    color: #040403; /* Dark color for paragraphs */
+    color: #555; /* Darker color for paragraphs */
     margin-bottom: 15px; /* Space below paragraphs */
 }
 
+/* List styles */
 .info-container ul {
     padding-left: 20px; /* Indent the list */
     margin-bottom: 20px; /* Space below lists */
 }
 
 .info-container li {
-    margin-bottom: 5px; /* Space between list items */
-    color: #040403; /* Dark color for list items */
+    margin-bottom: 10px; /* Space between list items */
+    color: #555; /* Darker color for list items */
+    position: relative; /* Position for pseudo-element */
+}
+
+/* List Item Bullet Style */
+.info-container li::before {
+    content: '✔'; /* Custom bullet point */
+    color: #F2D335; /* Accent color for bullet */
+    position: absolute; /* Positioning */
+    left: -20px; /* Position to the left of the text */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .info-container {
+        flex: 1 1 100%; /* Full width on smaller screens */
+        max-width: 100%; /* Remove max-width constraint */
+    }
 }
