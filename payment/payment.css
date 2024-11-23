@@ -1,0 +1,184 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header {
+    width: 100%;
+    background-color: #0066cc;
+    color: white;
+    top: 0;
+    padding: 90px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    position: absolute;
+    z-index: 1; /* Ensures header is below the container */
+    }
+
+.header img {
+    width: 80px;
+    height: 75px;
+    margin-right: 10px;
+    }
+
+.container {
+    width: 400px;
+    max-height: 600px; /* Use min-height instead of height */
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    z-index: 2; /* Ensures the container is above the header */
+    box-sizing: border-box;
+    display: flex; /* Use flexbox */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: space-between; /* Space out children */
+}
+
+.top-content{
+    padding: 20px;
+    background-color: #efefef;
+}
+
+.content {
+    padding: 20px;
+}
+
+.label {
+    font-size: 15px;
+    color: gray;
+}
+
+.merchant-name,
+.amount-due {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.amount-due {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.alert-text {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.input-label {
+    font-size: 17px;
+    font-weight: bold;
+    margin: 15px ;
+}
+
+.mobile-number{
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 35px;
+    color: #4e4e4e;
+    text-align: left; /* Aligns the label to the right */
+    display: block; /* Ensures it takes up the full width */
+}
+
+.input-field {
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 15px 20px;
+}
+
+.next {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 8px;
+    margin-top: 25px;
+    cursor: pointer;
+}
+
+.next:active {
+    background-color: #0056b3;
+}
+
+.close-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    background-color: gray;
+    border: none;
+    border-radius: 8px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.submit-btn{
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 8px;
+    margin-top: 25px;
+    cursor: pointer;
+}
+.hidden {
+    display: none; /* Hide elements with this class */
+}
+
+.error {
+    color: red;
+}
+.success {
+    color: green;
+}
+
+.open-app-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.bottom-note {
+    margin-top: 20px;
+    color: #ff5722;
+    font-weight: bold;
+    text-align: center;
+}
+.open-app-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
