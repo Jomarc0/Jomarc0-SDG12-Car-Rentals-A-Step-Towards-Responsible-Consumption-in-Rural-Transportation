@@ -9,6 +9,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 
 $userDashboard = new AdminDashboard(); //call the admindashboard class from dbdashboard.php
 $verifiedUsers = $userDashboard->getVerifiedUsers(); // fetch all verified users 
+$totalUsers = $userDashboard->getTotalUsers();
 ?>
 
 <!DOCTYPE html>
@@ -22,15 +23,25 @@ $verifiedUsers = $userDashboard->getVerifiedUsers(); // fetch all verified users
     <!-- DataTables CSS -->
     <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- admin css -->
-    <link rel="stylesheet" href="../css/admintable.css">
-    <link rel="stylesheet" href="../css/rentanduser.css">
+    <link rel="stylesheet" href="../css/admindashboard.css">
+    <link rel="stylesheet" href="../css/userandrent.css">
 </head>
 
 <body>
     <?php include('../sidebar/adminsidebar.php'); ?>
 
     <div class="container">
-        <h2>Users</h2>
+        <div class="cards">
+            <div class="card">
+                <div class="box">
+                    <h1>Total Users</h1>
+                    <h1><?php echo htmlspecialchars($totalUsers); ?></h1>
+                </div>
+                <div class="icon-case">
+                    <img src="users.png" alt="">
+                </div>
+            </div>
+        </div>
         <table id="admin-datatable" class="display">
             <thead>
                 <tr>

@@ -9,6 +9,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 
 $adminDashboard = new AdminDashboard(); //call the admindashboard class from dbdashboard.php
 $rentedCars = $adminDashboard->getRentedCars();
+$totalRentedCars = $adminDashboard->getTotalRentedCars();
 ?>
 
 <!DOCTYPE html>
@@ -22,8 +23,8 @@ $rentedCars = $adminDashboard->getRentedCars();
     <!-- DataTables CSS -->
     <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- admin css -->
-    <link rel="stylesheet" href="../css/admintable.css">
-    <link rel="stylesheet" href="../css/rentanduser.css">
+    <link rel="stylesheet" href="../css/admindashboard.css">
+    <link rel="stylesheet" href="../css/userandrent.css">
 
 </head>
 
@@ -32,7 +33,17 @@ $rentedCars = $adminDashboard->getRentedCars();
 
     <div class="container">
         <div class="header">
-        <h2>Rents</h2>
+            <div class="cards">
+                <div class="card">
+                        <div class="box">
+                            <h1>Total Rented Cars</h1>
+                            <h1><?php echo htmlspecialchars($totalRentedCars); ?></h1>
+                        </div>
+                        <div class="icon-case">
+                            <img src="rents.png" alt="">
+                        </div>
+                </div>
+            </div>
         </div>
         <table id="admin-datatable" class="display">
             <thead>

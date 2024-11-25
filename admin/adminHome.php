@@ -23,16 +23,14 @@ $recentActivity = $adminDashboard->getRecentActivity();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="../css/admintable.css">
+    <link rel="stylesheet" href="../css/admindashboard.css">
     <title>Admin Panel</title>
 </head>
 <body>
     <?php include('../sidebar/adminsidebar.php');?>
     <div class="container">
         <div class="header">
-        </div>
-        <div class="content">
-            <div class="cards">
+        <div class="cards">
                 <div class="card">
                     <div class="box">
                         <h1>Total Users</h1>
@@ -61,6 +59,8 @@ $recentActivity = $adminDashboard->getRecentActivity();
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="content">
             <div class="content-2">
                 <div class="recent-payments">
                     <div class="title">

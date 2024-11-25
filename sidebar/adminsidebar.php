@@ -15,7 +15,7 @@
         <div><a href="../admin/users.php" style="text-decoration: none; color: white;">Users</a></div>
         <div><a href="../admin/rent.php" style="text-decoration: none; color: white;">Rents</a></div>
         <div><a href="../chatbox/adminmessage.php" style="text-decoration: none; color: white;">Messages</a></div>
-        <div><a href="logout.php" class="logout" style="text-decoration: none; color: white;">Logout</a></div>
+        <div><a href="../main/logout.php" class="logout" style="text-decoration: none; color: white;">Logout</a></div>
     </div>
 </body>
 </html>

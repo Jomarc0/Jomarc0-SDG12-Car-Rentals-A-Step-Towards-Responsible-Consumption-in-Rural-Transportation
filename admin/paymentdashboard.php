@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../dbcon/dbcon.php';
 require_once 'paymentHandler.php'; // Include the PaymentHandler class
-
+require_once 'dbdashboard.php';
 try {
     $database = new Database();
     $conn = $database->getConn(); // to get database connection
@@ -22,6 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $stmt = $conn->prepare("SELECT p.*, u.email as user_email FROM payment as p JOIN user as u ON p.user_id = u.user_id WHERE p.payment_status = 'pending'");
 $stmt->execute();
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$paymentDashboard = new AdminDashboard();
+$pendingRequests = $paymentDashboard->getPendingRequests();
 ?>
 
 <!DOCTYPE html>
@@ -32,83 +35,25 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>Admin Payment Dashboard</title>
     <!-- datatable css -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="../css/admintable.css">
-    <style>
-        /* styles.css */
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-        }
-
-        .dashboard {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            margin-bottom: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        table th, table td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        table th {
-            background-color: #f2f2f2;
-        }
-
-        button {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-right: 5px;
-        }
-
-        button[name="action"][value="approve"] {
-            background-color: #27ae60;
-            color: white;
-        }
-
-        button[name="action"][value="reject"] {
-            background-color: #e74c3c;
-            color: white;
-        }
-
-        /* Responsive styles */
-        @media (max-width: 768px) {
-            .side-menu {
-                width: 200px;
-            }
-
-            .container {
-                margin-left: 200px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../css/admindashboard.css">
+    <link rel="stylesheet" href="../css/adminpayment.css">
+    
 </head>
 <body>
     <?php include('../sidebar/adminsidebar.php'); ?>
     <div class="container">
+        <div class="cards">
+            <div class="card">
+                <div class="box">
+                    <h1>Pending Requests</h1>
+                    <h1><?php echo htmlspecialchars($pendingRequests);?></h1>
+                </div>
+                <div class="icon-case">
+                        <img src="requests.png" alt="">
+                    </div>
+            </div>
+        </div>
         <div class="dashboard">
-            <h2>Pending Payments</h2>
             <table id="paymentsTable">
                 <thead>
                     <tr>
@@ -122,7 +67,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <tbody>
                     <?php foreach ($result as $row): ?>
                         <tr>
-                            < td><?php echo htmlspecialchars($row['payment_id']); ?></td>
+                            <td><?php echo htmlspecialchars($row['payment_id']); ?></td>
                             <td><?php echo htmlspecialchars($row['user_email']); ?></td>
                             <td><?php echo htmlspecialchars($row['amount']); ?></td>
                             <td><?php echo htmlspecialchars($row['payment_status']); ?></td>

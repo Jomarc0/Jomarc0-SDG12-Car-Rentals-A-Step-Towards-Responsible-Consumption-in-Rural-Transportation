@@ -33,6 +33,7 @@ $user = $userProfile->getUserData(); //call the function getter
             <div class="profile-header">
                 <div class="profile-icon">
                     <i class="fas fa-user-circle"></i>
+                    <div class="display-field profile"><?php echo htmlspecialchars($user['profile_picture']); ?></div>
                 </div>
                 <div class="profile-info">
                     <div class="name-section"> <!--display the name of the user using this htmlspecialchars -->

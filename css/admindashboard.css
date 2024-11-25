@@ -1,0 +1,200 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #D5DFF2; /* Updated background color */
+}
+
+/* Sidebar styles */
+.side-menu {
+    width: 250px;
+    height: 100vh;
+    background-color: #181b26; /* Updated sidebar color */
+    position: fixed;
+    padding: 20px;
+    color: #D5DFF2; /* Updated text color */
+}
+
+.brand-name {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.brand-name h1 {
+    font-size: 24px;
+    color: #D5DFF2; /* Updated brand name color */
+}
+
+.side-menu div {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.side-menu div:hover {
+    background-color: #4F5576; /* Updated hover color */
+}
+
+.side-menu div {
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+.logout {
+    position: absolute; 
+    bottom: 20px; 
+    left: 20px; 
+    padding: 15px; 
+    text-decoration: none; 
+    color: #D5DFF2; /* Updated logout text color */
+    background-color: #9FA7BF; /* Updated logout background color */
+    border-radius: 5px; 
+}
+
+.logout:hover {
+    background-color: #4F5576; /* Updated hover color */
+}
+
+/* Container styles */
+.container {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+/* Card styles */
+.cards {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 100px;
+}
+
+.card {
+    border-radius: 10px;
+    padding: 20px;
+    flex: 1;
+    margin: 0 10px;
+    display: flex;
+    flex-direction: column; /* Change to column to stack items */
+    align-items: center; /* Center items horizontally */
+    text-align: center; /* Center text */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Adding background colors to cards */
+.card:nth-child(1) {
+    background-color: #4F5576; /* First card color */
+    color: #D5DFF2; /* Text color for contrast */
+}
+
+.card:nth-child(2) {
+    background-color: #9FA7BF; /* Second card color */
+    color: #181b26; /* Text color for contrast */
+}
+
+.card:nth-child(3) {
+    background-color: #181b26; /* Third card color */
+    color: #D5DFF2; /* Text color for contrast */
+}
+
+.card .box h1 {
+    font-size: 24px;
+    margin: 0; /* Remove default margin */
+}
+
+.card .icon-case {
+    margin-top: auto; /* Push the icon to the bottom */
+}
+
+/* Content styles */
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.content-2 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.recent-payments, .new-students {
+    background-color: white; /* Keeping the content white for contrast */
+    border-radius: 10px;
+    padding: 20px;
+    flex: 1;
+    margin: 0 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title h2 {
+    margin-bottom: 10px;
+    color: #181b26; /* Updated title color */
+}
+
+.title .btn {
+    padding: 5px 10px;
+    background-color: #4F5576; /* Updated button background color */
+    color: #D5DFF2; /* Updated button text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 40px;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #d5dff2; /* Keeping this color for table header */
+}
+
+.img-case img {
+    width: 40px;
+    border-radius: 50%;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .side-menu {
+        width: 200px;
+    }
+
+    .container {
+        margin-left: 200px;
+    }
+
+    .cards {
+        flex-direction: column;
+    }
+
+    .card {
+        margin-bottom: 20px;
+    }
+
+    .content-2 {
+        flex-direction: column;
+    }
+
+    .content-2 .recent-payments, .content-2 .new-students {
+        margin-bottom: 20px;
+    }
+}

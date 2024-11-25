@@ -1,0 +1,179 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+    background-color: #D5DFF2; /* Updated background color */
+}
+
+/* Messenger container styles */
+.messenger-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    margin-left: 251px; /* Adjust for sidebar width */
+}
+
+.sidebar {
+    width: 25%;
+    background-color: #4F5576; /* Updated sidebar color */
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+    color: #181b26; /* Updated text color */
+}
+
+.search-bar {
+    padding: 10px;
+    width: 90%;
+    margin: 10px auto;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+}
+
+/* User list styles */
+.user-list {
+    list-style-type: none; /* Remove default list styling */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+    max-height: 400px; /* Set a maximum height for scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 1px solid #ddd; /* Add a border */
+    border-radius: 5px; /* Round the corners */
+    background-color: #4F5576; /* Updated background color */
+}
+
+/* Individual User Item Styles */
+.user-list li {
+    padding: 10px; /* Add padding */
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.user-list li:hover {
+    background-color: #9FA7BF; /* Change background on hover */
+}
+
+/* Profile Picture Styles */
+.profile-pic {
+    width: 40px; /* Set width */
+    height: 40px; /* Set height */
+    border-radius: 50%; /* Make it circular */
+    margin-right: 10px; /* Space between image and text */
+}
+
+/* User Name Styles */
+.user-name {
+    font-size: 16px; /* Font size for user name */
+    color: #D5DFF2; /* Updated text color */
+}
+
+/* No Users Found Message */
+.no-users {
+    padding: 10px; /* Add padding */
+    text-align: center; /* Center the text */
+    color: #999; /* Lighter text color */
+}
+
+.status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-left: auto;
+}
+
+.status.online {
+    background-color: green; /* Online status color */
+}
+
+.status.offline {
+    background-color: gray; /* Offline status color */
+}
+
+/* Chat window styles */
+.chat-window {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff; /* Keep chat window background white */
+    position: relative;
+}
+
+#chat-area {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    padding-bottom: 60px; /* Space for the fixed input form */
+    background-color: #D5DFF2; /* Updated chat area background */
+}
+
+.form-container {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    width: 62.5%;
+    padding: 10px;
+    margin-left: 321px;
+    border-top: 1px solid #ddd;
+    align-items: center;
+    background-color: #f9f9f9; /* Keep form background light */
+    box-sizing: border-box; /* Prevents padding from affecting width */
+}
+
+.input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-right: 10px;
+    font-size: 14px;
+    resize: none;
+    height: 40px;
+}
+
+.button {
+    background-color: #4F5576; /* Updated button color */
+    color: #D5DFF2; /* Button text color */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Message bubble styles */
+.message-bubble {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius : 10px;
+    max-width: 70%;
+}
+
+.admin-message {
+    background-color: #9FA7BF; /* Updated admin message background */
+    align-self: flex-end; /* Align admin messages to the right */
+    margin-left: auto; /* Push admin messages to the right */
+}
+
+.client-message {
+    background-color: #f5f5f5; /* Keep client messages light */
+    align-self: flex-start; /* Align client messages to the left */
+    margin-right: auto; /* Ensure client messages stay on the left */
+}
+
+.message-time {
+    font-size: 0.8rem;
+    color: #777;
+    display: block;
+    text-align: right;
+}
+
+.no-selection {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #666; /* Updated no selection text color */
+}
