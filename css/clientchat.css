@@ -1,13 +1,13 @@
 #sidebar {
     width: 330px; /* Fixed width for sidebar */
-    height: 450px; /* Set height to 50% */
+    height: 450px; /* Set height to 450px */
     background-color: #f5f5f5; /* Light background for sidebar */
     padding: 15px;
     transition: transform 0.3s ease;
     position: fixed;
     right: 0; /* Align to the right */
-    top: 65%; /* Start from the middle of the viewport */
-    transform: translateY(-50%) translateX(100%); /* Initially hide the sidebar */
+    bottom: 0; /* Align to the bottom */
+    transform: translateX(100%); /* Initially hide the sidebar */
     overflow-y: auto; /* Allow scrolling for long message lists */
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow for sidebar */
 }

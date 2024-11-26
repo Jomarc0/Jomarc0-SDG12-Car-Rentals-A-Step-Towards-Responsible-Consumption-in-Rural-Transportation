@@ -38,8 +38,178 @@ $destinationOptions = $selectedBookingArea && isset($destinations[$selectedBooki
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Car Rent</title>
-    <link rel="stylesheet" href="../css/service.css">
-    <link rel="stylesheet" href="../css/header.css">
+    <!-- <link rel="stylesheet" href="../css/service.css"> -->
+     <style>
+        /* for reservations */
+body {
+    font-family: 'Arial', sans-serif; /* Changed to a more modern font */
+    margin: 0;
+    padding: 0;
+    background-color: #F4FDFF; /* Light background for the body */
+}
+
+main {
+    padding: 2rem;
+}
+
+.container {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120vh;
+}
+
+.form-section {
+    background-color: #F4FDFF; /* Light background for form section */
+    padding: 60px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Deeper shadow for depth */
+    width: 800px;
+    text-align: center;
+    transition: transform 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.form-section:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+.form-section h1 {
+    font-size: 24px;
+    margin-bottom: 40px;
+    color: #181b26; /* Dark color for the heading */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow for text */
+}
+
+/* Progress bar */
+.form-progress {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.form-progress .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-progress .step span {
+    width: 50px; /* Increased size for better visibility */
+    height: 50px; /* Increased size for better visibility */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #4F5576; /* Updated background color for steps */
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.form-progress .step.active span {
+    background-color: #D5DFF2; /* Change active step color */
+}
+
+.form-progress .step p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #888; /* Keep this color for step description */
+}
+
+/* Form Steps */
+.form-step {
+    display: none;
+    flex-direction: column;
+}
+
+.form-step.active {
+    display: flex;
+}
+
+label {
+    font-size: 18px;
+    text-align: left;
+    margin-bottom: 10px;
+    color: #181b26; /* Dark color for labels */
+}
+
+select {
+    padding: 12px; /* Increased padding for better usability */
+    font-size: 16px;
+    margin-bottom: 20px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #4F5576; /* Lighter border color */
+    transition: border-color 0.3s; /* Smooth transition for focus */
+}
+
+select:focus {
+    border-color: #D5DFF2; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+}
+
+input {
+    font-size: 18px;
+    text-align: left;
+    margin-bottom: 20px; /* Increased margin for spacing */
+    border: 1px solid #4F5576; /* Lighter border color */
+    border-radius: 5px; /* Added border radius for input fields */
+    padding: 12px; /* Increased padding for better usability */
+    transition: border-color 0.3s; /* Smooth transition for focus */
+}
+
+input:focus {
+    border-color: #D5DFF2; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4F5576; /* Updated button background color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    width: 70%;
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+}
+
+button:hover {
+    background-color: #181b26; /* Darker color on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+button.prev-btn {
+    background-color: #4F5576; /* Updated previous button color */
+}
+
+button.prev-btn:hover {
+    background-color: #181b26; /* Darker color on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+button[type="submit"] {
+    background-color: #4F5576; /* Updated submit button color */
+}
+
+button[type="submit"]:hover {
+    background-color: #181b26; /* Darker color on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically (if needed) */
+    margin-top: 20px; /* Increased margin for better spacing */
+}
+
+.button-container button {
+    margin: 0 10px; /* Add spacing between buttons */
+}
+     </style>
 </head>
 <body>
     <?php include('../header/header.php'); ?>

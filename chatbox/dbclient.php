@@ -20,7 +20,7 @@ class UserMessage {
             $client_message = htmlspecialchars($_POST['client_message']);
             
             // Insert client's message with user_id
-            $stmt = $this->conn->prepare("INSERT INTO messages (sender, message, user_id) VALUES ('client', ?, ?)");
+            $stmt = $this->conn->prepare("INSERT INTO messages (sender, message, user_id,message_at) VALUES ('client', ?, ?,?)");
             $stmt->execute([$client_message, $this->user_id]);
             
             // Check if this is the first message from the client
@@ -40,7 +40,7 @@ class UserMessage {
     }
 
     public function getMessages() {
-        $stmt = $this->conn->query("SELECT sender, message FROM messages ORDER BY id ASC");
+        $stmt = $this->conn->query("SELECT sender, message, message_at  FROM messages ORDER BY id ASC");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

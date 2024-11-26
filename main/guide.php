@@ -4,7 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Car Rental Reservation Guide</title>
-    <link rel="stylesheet" href="../css/guides.css">
+    <!-- <link rel="stylesheet" href="../css/guides.css"> -->
+     <style>
+        body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F4FDFF; /* Light background */
+}
+
+.container {
+    width: 700px; 
+    margin: 0 auto; 
+    padding: 3rem; 
+}
+
+.container h1 {
+    text-align: center;
+    margin-bottom: 2rem; 
+    color: #181b26; /* Dark color for the title */
+    font-size: 40px;
+}
+
+.container p {
+    text-align: center; 
+    margin-bottom: 2rem; 
+    color: #4F5576; /* Lighter color for the paragraph */
+    font-size: 18px;
+}
+
+.reservation-guide {
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    grid-gap: 1rem; 
+}
+
+.step {
+    background-color: #ffffff; /* White background for steps */
+    padding: 2rem; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    text-align: center; 
+    transition: background-color 0.3s; 
+}
+
+.step:hover {
+    background-color: #D5DFF2; /* Change background color on hover */
+}
+
+.step h3 {
+    color: #9FA7BF; /* Color for step titles */
+    margin-bottom: 1rem; 
+}
+
+.step p {
+    color: #40282A; /* Keep original color for step descriptions */
+    line-height: 1.6; 
+}
+
+.step .icon {
+    font-size: 2rem; 
+    color: #4F5576; /* Use #4F5576 for icons */
+    margin-bottom: 1rem; 
+}
+     </style>
 </head>
 <body>
     <?php include('../header/header.php'); ?>

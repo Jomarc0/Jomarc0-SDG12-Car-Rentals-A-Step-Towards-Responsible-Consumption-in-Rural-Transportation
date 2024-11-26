@@ -1,6 +1,6 @@
 header {
-  background-color: #40282A; /* Changed to #40282A */
-  color: #F2D335; /* Changed text color to #F2D335 for contrast */
+  background-color: #181b26; /* Changed to #181b26 */
+  color: #D5DFF2; /* Changed text color to #D5DFF2 for contrast */
   padding: 5px;
   text-align: center;
 }
@@ -10,11 +10,11 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 5px;
-  background-color: #F4FDFF;
+  background-color: #4F5576; /* Changed to #4F5576 */
 }
 
 .nav-button {
-  background-color: #F2C335; /* Changed to #F2C335 */
+  background-color: #9FA7BF; /* Changed to #9FA7BF */
   color: #333;
   padding: 15px 15px;
   border: none;
@@ -25,12 +25,12 @@ nav {
 }
 
 .nav-button:hover {
-  background-color: #D98B48; /* Changed to #D98B48 */
+  background-color: #D5DFF2; /* Changed to #D5DFF2 */
 }
 
 .login-button {
-  background-color: #40282A; /* Changed to #40282A */
-  color: #F2D335; /* Changed text color to #F2D335 for contrast */
+  background-color: #181b26; /* Changed to #181b26 */
+  color: #D5DFF2; /* Changed text color to #D5DFF2 for contrast */
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -41,7 +41,7 @@ nav {
 }
 
 .login-button:hover {
-  background-color: #D98B48; /* Changed to #D98B48 */
+  background-color: #9FA7BF; /* Changed to #9FA7BF */
 }
 
 .logout-button {

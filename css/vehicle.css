@@ -93,37 +93,4 @@ main {
 }
 
 
-/*for location*/
-
-.main-section {
-display: flex;
-flex-direction: column;
-align-items: center;
-padding: 20px;
-}
-
-.location-categories {
-margin-bottom: 20px;
-}
-
-.city-buttons {
-display: flex;
-flex-wrap: wrap;
-justify-content: center;
-}
-
-.city-button {
-background-color: #505458;
-color: #ffffff;
-border: none;
-padding: 10px 20px;
-margin: 10px;
-border-radius: 5px;
-cursor: pointer;
-}
-
-.city-button:hover {
-background-color: #595c60;
-}
-
 
