@@ -11,4 +11,6 @@ if (isset($_POST['cancel-btn'])) { //if form is submitted
     $message = $rentalCancellation->cancelRental($rent_id);
     echo $message; 
 }
+
+
 ?>

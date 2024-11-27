@@ -40,6 +40,7 @@ class DeleteRent {
 
             // if successfuly deleted
             $this->conn->commit();
+            header('Location:' .'reservation.php');
             return "Rental has been deleted successfully and moved to history.";
         } catch (Exception $e) {
             $this->conn->rollBack(); // rollback the transaction in case of error

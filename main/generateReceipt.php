@@ -33,7 +33,6 @@ $database->closeConn();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Car Rent - Receipt</title>
     <link rel="stylesheet" href="../css/service.css">
-    <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/receipt.css">
 
 </head>
@@ -53,9 +52,9 @@ $database->closeConn();
                 <input type="hidden" name="receipt_data" value="<?php echo htmlspecialchars($receiptHTML); ?>">
                 <button type="submit" class="payment-button" name="payment-btn">Proceed to Payment</button>
             </form>
-            <form action="cancel.php" method="post"> <!-- form to cancel if the user dont want the price-->
+            <form action="delete.php" method="post"> <!-- form to cancel if the user dont want the price-->
                 <input type="hidden" name="rent_id" value="<?php echo htmlspecialchars($rentId); ?>">
-                <button type="submit" class="payment-button" name="cancel-btn">Cancel</button>
+                <button type="submit" class="payment-button" name="delete-btn">Cancel</button>
             </form>
         </div>
     </section>

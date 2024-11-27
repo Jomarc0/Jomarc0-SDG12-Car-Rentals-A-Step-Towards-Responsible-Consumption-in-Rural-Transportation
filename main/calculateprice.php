@@ -16,7 +16,7 @@ class RentalCalculator {
         $this->rentId = $rentId;
     }
 
-    public function calculateRentalPrice(): float { //make this class as float kasi calculation of the price
+    public function calculateRentalPrice() {
         // Fetch trip details from the database
         $sql = "SELECT trip_date_time, return_date_time, vehicle_type FROM rentedcar WHERE rent_id = :rent_id"; //retrive all the data in rented car
         $stmt = $this->conn->prepare($sql);

@@ -11,9 +11,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phoneNumber = $_POST["phone"];
     $password = $_POST["password"];
     $confirmPassword = $_POST["confirmPassword"]; //ippost lang lahat ng laman na iinput 
+    $profilePicture = $_FILES["profilePicture"]; // Handle profile picture upload
+    $driversLicense = $_FILES["driversLicense"]; // Handle driver's license upload
 
-    $userRegistration = new UserRegistration(); //userregistration class
-    $registrationMessage = $userRegistration->register($first_name, $last_name, $address, $gender, $dob, $email, $phoneNumber, $password, $confirmPassword); //ilagay sa parameter yung mga napost na data
+    $userRegistration = new UserRegistration(); 
+    $registrationMessage = $userRegistration->register($first_name, $last_name, $address, $gender, $dob, $email, $phoneNumber, $password, $confirmPassword, $profilePicture, $driversLicense);  //ilagay sa parameter yung mga napost na data
 
     if ($registrationMessage) {
         echo $registrationMessage;
@@ -35,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-        <div class="container" id="signup">
+    <div class="container" id="signup">
         <h1 class="form-title">Register</h1>
         <form action="" method="post" enctype="multipart/form-data"> <!--enctype="multipart/form-data" that line is used to store file basta pang store yan -->
             <div class="input-group">
@@ -60,12 +62,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="input-group">
                 <i class="fas fa-venus-mars"></i>
-                <label for="gender">Gender</label><br><br>
-                <input type="radio" name="gender" id="male" value="Male" required>
-                <label for="male">Male</label>
-                <input type="radio" name="gender" id="female" value="Female" required>
-                <label for="female">Female</label>
-
+                <label for="gender">Gender</label>
+                <select name="gender" id="gender" required>
+                    <option value="" disabled selected>Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
             </div>
             <div class="input-group">
                 <i class="fas fa-calendar-alt"></i>
@@ -84,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="input-group">
                 <i class="fas fa-lock"></i>
-                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password"  required>
+                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required>
                 <label for="confirmPassword">Confirm Password</label>
             </div>
             <div class="input-group">
@@ -92,9 +94,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="file" name="profilePicture" id="profilePicture" accept="image/*" required>
                 <label for="profilePicture">Profile Picture</label>
             </div>
+            <div class="input-group">
+                <i class="fas fa-id-card"></i>
+                <input type="file" name="driversLicense" id="driversLicense" accept="image/*" required>
+                <label for="driversLicense">Upload Driver's License</label>
+            </div>
 
             <input type="submit" class="btn" value="Sign Up" name="signUp">
-            </form> 
+        </form> 
         <p class="or">
             ----------or--------
         </p>
@@ -102,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p>Already Have Account?</p>
             <button id="signInButton"><a href="signIn.php">Sign In</a></button>
         </div>
-        </div >
-        <script src="script.js"></script>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>

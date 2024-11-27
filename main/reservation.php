@@ -286,7 +286,7 @@ button[type="submit"]:hover {
                     <select id="vehicleType" name="vehicleType" required>
                         <option value="">Select Vehicle Type</option>
                         <option value="Sedan">Sedan</option>
-                        <option value="SUV">Fullsize SUV</option>
+                        <option value="Fullsize SUV">Fullsize SUV</option>
                         <option value="Midsize SUV">Midsize SUV</option>
                         <option value="Pick Up">Pick Up</option>
                         <option value="Subcompact Sedan">Subcompact Sedan</option>

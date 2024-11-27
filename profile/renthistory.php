@@ -18,9 +18,9 @@ $cars = $carRental->getCars(); //call the functoin getter
     <link rel="stylesheet" href="../css/rent.css">
 </head>
 <body>
-    <header class="header">
+    <div class="header">
         <?php include('../header/header.php'); ?>  <!--include the header -->
-    </header>
+    </div>
     <?php include('sidebar.php'); ?> <!--include the side bar -->
     <div class="container">
         <div class="main-content" id="main-content">

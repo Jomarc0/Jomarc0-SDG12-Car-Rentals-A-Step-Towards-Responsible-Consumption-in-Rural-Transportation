@@ -18,9 +18,9 @@ $cars = $rentedCars->getCars(); //use the function getter
     <link rel="stylesheet" href="../css/rent.css">
 </head>
 <body>
-    <header class="header">
+    <div class="header">
         <?php include('../header/header.php'); ?>  
-    </header>
+    </div>
     <?php include('sidebar.php'); ?>
     <div class="container">
         <div class="main-content" id="main-content">

@@ -1,9 +1,10 @@
 <?php
-require_once __DIR__ . '/../main/calculate_price.php';
+require_once '../main/calculateprice.php';
 
 class PaymentProcessor {
     private $conn;
     private $rentId;
+    private $userId;
     private $error;
     private $successMessage;
     private $totalPrice = 0.00; // store as a float value
@@ -12,11 +13,11 @@ class PaymentProcessor {
         $this->conn = $dbConnection;
         session_start();
         $this->rentId = $_SESSION['rent_id'] ?? null;  //session the rent
-        $userId = $_SESSION['user_id'] ?? null;  //session the user
-        if ($userId === null) {
+        $this->userId = $_SESSION['user_id'] ?? null;  //session the user
+        if ($this->userId === null) {
             die("User  ID is not set in the session.");
         }
-        $this->rentId = $this->fetchRentId($userId); //calling the fetchrentid function
+        $this->rentId = $this->fetchRentId($this->userId); //calling the fetchrentid function
         if ($this->rentId === null) {
             die("No booking found for the specified user.");
         }
@@ -50,17 +51,17 @@ class PaymentProcessor {
     }
 
     public function processPayment() {
-        $checkRentIdStmt = $this->conn->prepare("SELECT COUNT(*) FROM rentedcar WHERE rent_id = :rent_id"); //check if the rent id exist
+        $checkRentIdStmt = $this->conn->prepare("SELECT COUNT(*) FROM rentedcar WHERE rent_id = :rent_id"); // Check if the rent id exists
         $checkRentIdStmt->execute([':rent_id' => $this->rentId]);
         $count = $checkRentIdStmt->fetchColumn();
-
-        if ($count == 0) { //if no rent id fetch
+    
+        if ($count == 0) { // If no rent id found
             $this->error = "The specified rent ID does not exist.";
             return;
         }
-
-        //PayMongo API
-        $amountInCents = $this->totalPrice * 100; // convert to cents because in api 
+    
+        // PayMongo API
+        $amountInCents = $this->totalPrice * 100; // Convert to cents because the API requires it
         $data = [
             'data' => [
                 'attributes' => [
@@ -74,54 +75,55 @@ class PaymentProcessor {
                 ]
             ]
         ];
-
+    
         // Call PayMongo API
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => "https://api.paymongo.com/v1/links", //paymongo api
+            CURLOPT_URL => "https://api.paymongo.com/v1/links", // PayMongo API
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => json_encode($data), // the data array
+            CURLOPT_POSTFIELDS => json_encode($data), // The data array
             CURLOPT_HTTPHEADER => [
                 "accept: application/json",
-                "authorization: Basic " . base64_encode("sk_test_Nn5hZUay5rVNvqPwchzhzV5d:"), // secret key form paymongo
+                "authorization: Basic " . base64_encode("sk_test_Nn5hZUay5rVNvqPwchzhzV5d:"), // Secret key from PayMongo
                 "content-type: application/json"
             ],
         ]);
-
+    
         $response = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
-
+    
         if ($err) {
             $this->error = "cURL Error: " . $err;
         } else {
             $responseData = json_decode($response, true);
-            if (isset($responseData['data']['attributes']['checkout_url'])) { // check if array has a data
-                $checkoutUrl = $responseData['data']['attributes']['checkout_url']; //store the responseData to checkourURL
+            if (isset($responseData['data']['attributes']['checkout_url'])) { // Check if array has a data
+                $checkoutUrl = $responseData['data']['attributes']['checkout_url']; // Store the responseData to checkoutURL
                 
-                $paymentStatus = 'pending'; // insert payment record into the database
-                $stmt = $this->conn->prepare("INSERT INTO payment (amount, payment_status, rent_id, payment_link) VALUES (:amount, :payment_status, :rent_id, :payment_link)");
-                if ($stmt->execute([':amount' => $this->totalPrice, ':payment_status' => $paymentStatus, ':rent_id' => $this->rentId, ':payment_link' => $checkoutUrl])) {
+                $paymentStatus = 'pending'; // Insert payment record into the database
+                
+                
+                $stmt = $this->conn->prepare("INSERT INTO payment (amount, payment_status, rent_id, payment_link, user_id) VALUES (:amount, :payment_status, :rent_id, :payment_link, :user_id)");
+                if ($stmt->execute([':amount' => $this->totalPrice, ':payment_status' => $paymentStatus, ':rent_id' => $this->rentId, ':payment_link' => $checkoutUrl, ':user_id' => $this->userId])) {
                     $this->successMessage = "Payment of " . htmlspecialchars($this->totalPrice) . " is pending!";
                     $this->updateRentStatus();
                 } else {
                     $this->error = "Error processing payment: " . implode(", ", $stmt->errorInfo());
                 }
-
-                // redirect to the paymongo link
+    
+                // Redirect to the PayMongo link
                 header("Location: " . $checkoutUrl);
                 exit();
-            } else {// if no url detected
+            } else { // If no URL detected
                 $this->error = "Failed to create a payment link: " . json_encode($responseData);
             }
         }
     }
-
     public function getError() {
         return $this->error;
     }

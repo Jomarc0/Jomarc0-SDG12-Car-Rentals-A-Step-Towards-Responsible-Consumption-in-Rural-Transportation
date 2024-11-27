@@ -1,4 +1,7 @@
 <?php
+// Suppress warnings and notices
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -13,11 +16,12 @@ if (session_status() == PHP_SESSION_NONE) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
     <!-- <link rel="stylesheet" href="../css/header.css"> -->
      <style>
-    header {
+header {
   background-color: #4F5576; /* Changed to #181b26 */
   color: white; /* Changed text color to #D5DFF2 for contrast */
   padding: 5px;
   text-align: center;
+  z-index: 1000;
 }
 
 nav {
@@ -30,7 +34,7 @@ nav {
 .nav-button {
   color: #333;
   padding: 15px 15px;
-  border: none;
+  border: #4F5576;
   border-radius: 10px;
   cursor: pointer;
   text-decoration: none;
