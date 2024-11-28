@@ -19,7 +19,7 @@ class UserRegistration {
         }
     }
 
-    public function register($first_name, $last_name, $address, $gender, $dob, $email, $phoneNumber, $password, $confirmPassword) {
+    public function register($first_name, $last_name, $address, $gender, $dob, $email, $phoneNumber, $password, $confirmPassword, $profilePicture, $driversLicense) {
         if ($password !== $confirmPassword) { //check if password match
             return "Passwords do not match";
         }
@@ -31,7 +31,7 @@ class UserRegistration {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $hashedConfirmPassword = password_hash($confirmPassword, PASSWORD_DEFAULT);
     
-        //if email already exists
+        // Check if email already exists
         $query = "SELECT * FROM user WHERE email = :email";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':email', $email);  // to prevent SQL injection
@@ -41,40 +41,74 @@ class UserRegistration {
         if ($result) {
             return 'Email already exists';
         }
-        
-    if (isset($_FILES['profilePicture'])) { //handle file upload
-        $file = $_FILES['profilePicture'];
-        
-        if ($file['error'] !== UPLOAD_ERR_OK) { //check if file upload error
-            return "Error uploading file.";
+
+        // Handle profile picture upload
+        if (isset($_FILES[$profilePicture])) {
+            $file = $_FILES[$profilePicture];
+
+            if ($file['error'] !== UPLOAD_ERR_OK) {
+                return "Error uploading profile picture.";
+            }
+
+            $fileType = mime_content_type($file['tmp_name']);
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (!in_array($fileType, $allowedTypes)) {
+                return "Invalid file type for profile picture. Allowed types: " . implode(", ", $allowedTypes);
+            }
+
+            if ($file['size'] > 2 * 1024 * 1024) { // 2MB limit
+                return "File size exceeds the maximum limit of 2MB for profile picture.";
+            }
+
+            $uploadDir = __DIR__ . '/../uploads/'; // Ensure this directory exists and is writable
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true); // Create the directory if it does not exist
+            }
+
+            $profilePictureName = uniqid() . '-' . basename($file['name']);
+            $profilePicturePath = $uploadDir . $profilePictureName;
+
+            if (!move_uploaded_file($file['tmp_name'], $profilePicturePath)) {
+                return "Error moving uploaded profile picture.";
+            }
+        } else {
+            return "No profile picture uploaded.";
         }
 
-        //mime_content_type it detect MIME type of file format for a file
-        $fileType = mime_content_type($file['tmp_name']); //tmp is the tempporay file name of the server
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif']; //allow picture types
-        if (!in_array($fileType, $allowedTypes)) { //check if yung send na picture is allowed
-            return "Invalid file type. Only JPG, PNG, and GIF files are allowed.";
+        // Handle driver's license upload
+        if (isset($_FILES['driversLicense'])) {
+            $file = $_FILES['driversLicense'];
+
+            if ($file['error'] !== UPLOAD_ERR_OK) {
+                return "Error uploading driver's license.";
+            }
+
+            $fileType = mime_content_type($file['tmp_name']);
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
+            if (!in_array($fileType, $allowedTypes)) {
+                return "Invalid file type for driver's license. Allowed types: " . implode(", ", $allowedTypes);
+            }
+
+            if ($file['size'] > 2 * 1024 * 1024) { // 2MB limit
+                return "File size exceeds the maximum limit of 2MB for driver's license.";
+            }
+
+            $driverLicenseName = uniqid() . '-' . basename($file['name']);
+            $driverLicensePath = $uploadDir . $driverLicenseName;
+
+            if (!move_uploaded_file($file['tmp_name'], $driverLicensePath)) {
+                return "Error moving uploaded driver's license.";
+            }
+        } else {
+            return "No driver's license uploaded.";
         }
 
-        if ($file['size'] > 2 * 1024 * 1024) { // file file size (
-            return "File size exceeds the maximum limit of 2MB.";
-        }
-
-        $uploadDir = __DIR__ . '/../pictures/'; // ensure this directory exists and is writable
-        $fileName = uniqid() . '-' . basename($file['name']); // uniqid function generate uniqie identifiersbese on current time
-        $filePath = $uploadDir . $fileName; //concat 
-
-        if (!move_uploaded_file($file['tmp_name'], $filePath)) { //if walang laman
-            return "Error moving uploaded file.";
-        }
-    } else {
-        return "No file uploaded.";
-    }
-        //generate as random verification code
+        // Generate a random verification code
         $verification_code = rand(100000, 999999);
-        //input value to the xampp
-        $query = "INSERT INTO user (first_name, last_name, address, gender, dob, email, phone_number, password, confirm_password, verification_code, profile_picture) 
-                    VALUES (:first_name, :last_name, :address, :gender, :dob, :email, :phone_number, :password, :confirmPassword, :verification_code, :profile_picture)";
+        
+        // Insert values into the database
+        $query = "INSERT INTO user (first_name, last_name, address, gender, dob, email, phone_number, password, confirm_password, verification_code, profile_picture, drivers_license) 
+                    VALUES (:first_name, :last_name, :address, :gender, :dob, :email, :phone_number, :password, :confirmPassword, :verification_code, :profile_picture, :drivers_license)";
         
         $sql = $this->conn->prepare($query);
 
@@ -90,13 +124,14 @@ class UserRegistration {
             ':password' => $hashedPassword,
             ':confirmPassword' => $hashedConfirmPassword,
             ':verification_code' => $verification_code,
-            ':profile_picture' => $filePath 
+            ':profile_picture' => $profilePicturePath,
+            ':drivers_license' => $driverLicensePath
         ])) {
-                // verification code in session
+            // Store verification code in session
             $_SESSION['verification_code'] = $verification_code;
             $_SESSION['email'] = $email;
 
-                // send verification code to email using PHPMailer with the name of the user
+            // Send verification code to email using PHPMailer
             return $this->sendVerificationEmail($email, $first_name, $last_name, $verification_code);
         } else {
             return "Registration failed: " . implode(", ", $stmt->errorInfo());
@@ -111,8 +146,8 @@ class UserRegistration {
             $mail->isSMTP();
             $mail->SMTPAuth   = true;
             $mail->Host       = 'smtp.gmail.com';
-            $mail->Username   = 'jaycarrent@gmail.com'; //gmail 
-            $mail->Password   = 'ygic eqgh ucoi bdio'; // secret pass from my gmail
+            $mail->Username   = 'jaycarrent@gmail.com'; // Gmail
+            $mail->Password   = 'ygic eqgh ucoi bdio'; // Secret pass from my Gmail
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = 587;
 
@@ -120,17 +155,16 @@ class UserRegistration {
             $mail->setFrom('jaycarrent@gmail.com', 'Mailer');
             $mail->addAddress($email, $first_name . ' ' . $last_name);
 
-            // content
+            // Content
             $mail->isHTML(true);
-            $mail->Subject =    'Verification Code';
-            $mail->Body    =    '<h3>Verification code to access</h3>
-                                <h3>Name: ' . $first_name . ' ' . $last_name . '</h3>
-                                <h3>Email: ' . $email . '</h3>
-                                <h3>Verification Code: ' . $verification_code . '</h3>';
+            $mail->Subject = 'Verification Code';
+            $mail->Body    = '<h3>Verification code to access</h3>
+                              <h3>Name: ' . $first_name . ' ' . $last_name . '</h3>
+                              <h3>Email: ' . $email . '</h3>
+                              <h3>Verification Code: ' . $verification_code . '</h3>';
 
-            if ($mail->send()) { //if successful magreredirect sa verify to input the code
+            if ($mail->send()) {
                 return "Registration successful. Verification code sent to your email.";
-                header('Location:' .'verify.php'); 
             } else {
                 return "Registration successful. Unable to send verification code. Mailer Error: " . $mail->ErrorInfo;
             }
@@ -143,5 +177,4 @@ class UserRegistration {
         $this->conn = null; 
     }
 }
-
 ?>

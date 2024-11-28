@@ -195,7 +195,7 @@ a {
         max-width: 100%; /* Remove max-width constraint */
     }
 }
-     </style>
+</style>
 </head>
 <body>
     <?php include('../header/header.php');// include the header nav?>

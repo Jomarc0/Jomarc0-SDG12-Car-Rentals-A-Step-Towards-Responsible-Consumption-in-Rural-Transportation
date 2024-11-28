@@ -17,7 +17,7 @@ body {
     top: 140px;
     left: 0;
     padding: 10px 15px;
-    background-color: #4F5576; /* Dark blue-green color */
+    background-color: #4F5576; 
     color: #D5DFF2; /* Light text color */
     border: none;
     border-radius: 5px;
@@ -26,7 +26,7 @@ body {
 }
 
 .toggle-sidebar:hover {
-    background-color: #3e8e41; /* Darker blue-green color on hover */
+    background-color: #D5DFF2;
 }
 
 .sidebar-container {
@@ -74,7 +74,7 @@ body {
 </style>
 </head>
 <body>
-    <button class="toggle-sidebar" id="toggleButton" onclick="toggleSidebar()">Show Sidebar</button>
+    <button class="toggle-sidebar" id="toggleButton" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
 
     <div class="sidebar-container" id="sidebar-container">
         <div class="sidebar" id="sidebar">
@@ -95,10 +95,10 @@ body {
     // Toggle the sidebar visibility
     if (sidebarContainer.classList.contains('show-sidebar')) {
         sidebarContainer.classList.remove('show-sidebar'); // Hide the sidebar
-        toggleButton.textContent = 'Show Sidebar'; // Change button text
+        toggleButton.innerHTML = '<i class="fa-solid fa-bars"></i>'; // Change button text
     } else {
         sidebarContainer.classList.add('show-sidebar'); // Show the sidebar
-        toggleButton.textContent = 'Hide Sidebar'; // Change button text
+        toggleButton.innerHTML = '<i class="fa-solid fa-bars"></i>'; // Change button text
     }
 }
 
@@ -116,7 +116,7 @@ window.addEventListener('click', function(event) {
     // Check if the click is outside the sidebar and the toggle button
     if (!sidebarContainer.contains(event.target) && !toggleButton.contains(event.target)) {
         sidebarContainer.classList.remove('show-sidebar'); // Hide the sidebar
-        toggleButton.textContent = 'Show Sidebar'; // Reset button text
+        toggleButton.innerHTML = '<i class="fa-solid fa-bars"></i>'; // Change button text
     }
 });
     </script>

@@ -60,10 +60,13 @@ $user = $userProfile->getUserData(); //call the function getter
     width: 100%; /* Ensure it takes full width */
 }
 
-.profile-icon i {
-    font-size: 200px; 
-    margin-bottom: 20px; 
-    color: #4F5576; /* Icon color */
+.profile-icon img {
+    width: 200px; 
+    height: 200px; 
+    border-radius: 50%; 
+    margin-bottom: 50px;
+    border: 4px solid #4F5576;
+    border-color: #4F5576; /* Icon color */
 }
 
 .profile-info {
@@ -120,10 +123,19 @@ $user = $userProfile->getUserData(); //call the function getter
     <div class="container">
         <div class="main-content" id="main-content">
         <div class="profile-header">
-            <div class="profile-icon">
-                <i class="fas fa-user-circle"></i>
-                <div class="display-field profile"><?php echo htmlspecialchars($user['profile_picture'] ?? 'No profile picture available'); ?></div>
-            </div>
+        <div class="profile-icon">
+            
+                <?php
+                // Check if the profile picture exists and is a valid URL
+                $profilePicture = htmlspecialchars($user['profile_picture'] ?? '');
+                if ($profilePicture) {
+                    echo "<img src='$profilePicture' alt='Profile Picture' style=''>";
+                } else {
+                    echo "No profile picture available";
+                }
+                ?>
+            
+        </div>
             <div class="profile-info">
                 <div class="name-section">
                     <div class="display-field last-name"><h4>Last Name</h4><?php echo htmlspecialchars($user['last_name'] ?? ''); ?></div>
