@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../dbcon/dbcon.php'; 
+// require_once 'paymentHandler.php';
+require_once 'requesthandler.php';
 class AdminDashboard {
     private $conn;
 
@@ -25,11 +27,6 @@ class AdminDashboard {
         return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
     }
 
-    public function getPendingRequests() {
-        $query = "SELECT COUNT(*) as total FROM payment WHERE payment_status = 'pending'"; // Replace 'payment' with your actual payment table name
-        $stmt = $this->conn->query($query);
-        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-    }
     public function getRentedCars() {
         $query = "SELECT user_id, rent_id, booking_area, destination, trip_date_time, return_date_time, vehicle_type, rent_status FROM rentedcar"; // Adjust the table name as needed
         $stmt = $this->conn->query($query);
@@ -49,6 +46,38 @@ class AdminDashboard {
                     JOIN rentedcar AS r ON u.user_id = r.user_id"; // Adjust the table name as needed
         $stmt = $this->conn->query($query);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function getPendingRequests() {
+        $query = "SELECT COUNT(*) as total FROM payment WHERE payment_status = 'pending'"; 
+        $stmt = $this->conn->query($query);
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+    }
+    public function fetchPendingPayments() {
+        $stmt = $this->conn->prepare("SELECT p.*, u.email as user_email FROM payment as p JOIN user as u ON p.user_id = u.user_id WHERE p.payment_status = 'pending'");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function handlePayment($payment_id, $action) {
+        $paymentHandler = new PaymentHandler($this->conn);
+        $paymentHandler->handlePayment($payment_id, $action);
+    }
+
+    public function getPendingID() {
+        $query = "SELECT user_id, CONCAT(first_name, ' ',last_name) AS name, address, gender, dob, drivers_license,verified_id FROM user WHERE verified_id = 'pending'"; // Adjust the table name as needed
+        $stmt = $this->conn->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getverified($user_id, $action) {
+        $paymentHandler = new UserHandler($this->conn);
+        $paymentHandler->updateUserVerification($user_id, $action);
+    }
+    public function getTotalID() {
+        $query = "SELECT COUNT(*) as total FROM user WHERE verified_id = 'pending'"; 
+        $stmt = $this->conn->query($query);
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
     }
 }
 ?>

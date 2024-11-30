@@ -18,101 +18,57 @@ class UserRegistration {
             die("Database connection failed: " . $exception->getMessage());
         }
     }
-
     public function register($first_name, $last_name, $address, $gender, $dob, $email, $phoneNumber, $password, $confirmPassword, $profilePicture, $driversLicense) {
-        if ($password !== $confirmPassword) { //check if password match
-            return "Passwords do not match";
-        }
-        
-        if (strlen($password) < 8) {    // Check if password is at least 8 characters long
-            return "Password must be at least 8 characters long";
-        }
-        // Hash the password
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $hashedConfirmPassword = password_hash($confirmPassword, PASSWORD_DEFAULT);
+        $errors = [];
     
-        // Check if email already exists
+        // Validate passwords
+        if ($password !== $confirmPassword) {
+            $errors[] = "Passwords do not match.";
+        }
+    
+        if (strlen($password) < 8) {
+            $errors[] = "Password must be at least 8 characters long.";
+        }
+    
+        // Validate email existence
         $query = "SELECT * FROM user WHERE email = :email";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':email', $email);  // to prevent SQL injection
+        $stmt->bindParam(':email', $email);
         $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC); // fetch as an associative array
     
-        if ($result) {
-            return 'Email already exists';
+        if ($stmt->fetch(PDO::FETCH_ASSOC)) {
+            $errors[] = "Email already exists.";
         }
-
+    
+        // If there are validation errors, return them as a string
+        if (!empty($errors)) {
+            return implode(" ", $errors); // Combine errors into a single string
+        }
+    
+        // Hash the password
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    
         // Handle profile picture upload
-        if (isset($_FILES[$profilePicture])) {
-            $file = $_FILES[$profilePicture];
-
-            if ($file['error'] !== UPLOAD_ERR_OK) {
-                return "Error uploading profile picture.";
-            }
-
-            $fileType = mime_content_type($file['tmp_name']);
-            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            if (!in_array($fileType, $allowedTypes)) {
-                return "Invalid file type for profile picture. Allowed types: " . implode(", ", $allowedTypes);
-            }
-
-            if ($file['size'] > 2 * 1024 * 1024) { // 2MB limit
-                return "File size exceeds the maximum limit of 2MB for profile picture.";
-            }
-
-            $uploadDir = __DIR__ . '/../uploads/'; // Ensure this directory exists and is writable
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0755, true); // Create the directory if it does not exist
-            }
-
-            $profilePictureName = uniqid() . '-' . basename($file['name']);
-            $profilePicturePath = $uploadDir . $profilePictureName;
-
-            if (!move_uploaded_file($file['tmp_name'], $profilePicturePath)) {
-                return "Error moving uploaded profile picture.";
-            }
-        } else {
-            return "No profile picture uploaded.";
+        $profilePicturePath = $this->UploadFile($profilePicture, "../uploads/profile_pictures/");
+        if (!is_string($profilePicturePath)) { // If an error occurred, it will return an error message
+            return $profilePicturePath;
         }
 
         // Handle driver's license upload
-        if (isset($_FILES['driversLicense'])) {
-            $file = $_FILES['driversLicense'];
-
-            if ($file['error'] !== UPLOAD_ERR_OK) {
-                return "Error uploading driver's license.";
-            }
-
-            $fileType = mime_content_type($file['tmp_name']);
-            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
-            if (!in_array($fileType, $allowedTypes)) {
-                return "Invalid file type for driver's license. Allowed types: " . implode(", ", $allowedTypes);
-            }
-
-            if ($file['size'] > 2 * 1024 * 1024) { // 2MB limit
-                return "File size exceeds the maximum limit of 2MB for driver's license.";
-            }
-
-            $driverLicenseName = uniqid() . '-' . basename($file['name']);
-            $driverLicensePath = $uploadDir . $driverLicenseName;
-
-            if (!move_uploaded_file($file['tmp_name'], $driverLicensePath)) {
-                return "Error moving uploaded driver's license.";
-            }
-        } else {
-            return "No driver's license uploaded.";
+        $driversLicensePath = $this->UploadFile($driversLicense, "../uploads/drivers_licenses/");
+        if (!is_string($driversLicensePath)) { // If an error occurred, it will return an error message
+            return $driversLicensePath;
         }
 
+    
         // Generate a random verification code
         $verification_code = rand(100000, 999999);
-        
+    
         // Insert values into the database
-        $query = "INSERT INTO user (first_name, last_name, address, gender, dob, email, phone_number, password, confirm_password, verification_code, profile_picture, drivers_license) 
-                    VALUES (:first_name, :last_name, :address, :gender, :dob, :email, :phone_number, :password, :confirmPassword, :verification_code, :profile_picture, :drivers_license)";
-        
+        $query = "INSERT INTO user (first_name, last_name, address, gender, dob, email, phone_number, password, verification_code, profile_picture, drivers_license) 
+                VALUES (:first_name, :last_name, :address, :gender, :dob, :email, :phone_number, :password, :verification_code, :profile_picture, :drivers_license)";
         $sql = $this->conn->prepare($query);
-
-        // Execute the statement with an array of values
+    
         if ($sql->execute([
             ':first_name' => $first_name,
             ':last_name' => $last_name,
@@ -122,22 +78,40 @@ class UserRegistration {
             ':email' => $email,
             ':phone_number' => $phoneNumber,
             ':password' => $hashedPassword,
-            ':confirmPassword' => $hashedConfirmPassword,
             ':verification_code' => $verification_code,
             ':profile_picture' => $profilePicturePath,
-            ':drivers_license' => $driverLicensePath
+            ':drivers_license' => $driversLicensePath
         ])) {
-            // Store verification code in session
+            session_start();
             $_SESSION['verification_code'] = $verification_code;
             $_SESSION['email'] = $email;
-
-            // Send verification code to email using PHPMailer
+    
             return $this->sendVerificationEmail($email, $first_name, $last_name, $verification_code);
         } else {
-            return "Registration failed: " . implode(", ", $stmt->errorInfo());
+            return "Registration failed: " . implode(", ", $sql->errorInfo());
         }
     }
 
+    private function UploadFile($file, $uploadDir) {
+        // Check if the directory exists, if not, create it
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true); // Create directory with full permissions
+        }
+    
+        // Validate and move the uploaded file
+        if (isset($file['name']) && $file['error'] === UPLOAD_ERR_OK) {
+            $uniqueFileName = uniqid() . "_" . basename($file['name']);
+            $filePath = $uploadDir . $uniqueFileName;
+            if (move_uploaded_file($file['tmp_name'], $filePath)) {
+                return $filePath; // Return the file path if successful
+            } else {
+                return "Error moving file.";
+            }
+        } else {
+            return "Invalid file upload.";
+        }
+    }    
+    
     private function sendVerificationEmail($email, $first_name, $last_name, $verification_code) {
         $mail = new PHPMailer(true);
 
