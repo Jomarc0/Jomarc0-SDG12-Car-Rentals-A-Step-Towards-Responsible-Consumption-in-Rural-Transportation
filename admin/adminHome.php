@@ -28,6 +28,7 @@ $recentActivity = $adminDashboard->getRecentActivity();
 </head>
 <body>
     <?php include('../sidebar/adminsidebar.php');?>
+    
     <div class="container">
         <div class="header">
         <div class="cards">
