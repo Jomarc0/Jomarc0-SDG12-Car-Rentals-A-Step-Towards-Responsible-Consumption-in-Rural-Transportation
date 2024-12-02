@@ -23,9 +23,11 @@ $selectedBookingArea = $_POST['bookingArea'] ?? ''; //selected booking area from
 
 // destinations based on booking area
 $destinations = [
-    'Metro Manila' => ['Makati', 'Taguig', 'Quezon City', 'Manila'],
-    'Cebu' => ['Cebu City', 'Mactan', 'Lapu-Lapu'],
-    'Davao' => ['Davao City', 'Tagum', 'Digos']
+    'Cavite' => ['Tagaytay City', 'Corregidor Island', 'Aguinaldo Shrine', 'Mt. Pico De Loro', 'Kaybiang Tunnel', 'Balite Falls (Amadeo)'],
+    'Laguna' => ['Pagsanjan Fall', 'Enchanted Kingdom', 'Rizal Shrine in Calamba','Los Baños Hot Springs','Seven Lakes of San Pablo', 'Hidden Valley Springs (Calauan)', 'Hulugan Falls'],
+    'Batangas' => ['Taal Volcano', 'Anilao', 'Laiya Beach','Taal Heritage Town', 'Masasa Beach', 'Calatagan Sandbar', 'Fortune Island', 'Cape Santiago Lighthouse'],
+    'Rizal' => ['Antipolo Cathedral', 'Hinulugang Taktak Falls', 'Art Sector Gallery','Mount Daraitan and Tinipak River (Tanay)', 'Masungi Georeserve', 'Daranak Falls (Tanay)', 'Pililla Wind Farm'],
+    'Quezon' => ['Borawan Island (Padre Burgos)', 'Alibijaban Island (San Andres)', 'Kwebang Lampas and Puting Buhangin (Pagbilao)','Balesin Island (Polillo Group)', 'Jomalig Island', 'Lucban', 'Mt. Banahaw', 'Cagbalete Island']
 ];
 
 // get the destinations based on the selected booking area
@@ -39,7 +41,7 @@ $destinationOptions = $selectedBookingArea && isset($destinations[$selectedBooki
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Car Rent</title>
     <!-- <link rel="stylesheet" href="../css/service.css"> -->
-     <style>
+    <style>
         /* for reservations */
 body {
     font-family: 'Arial', sans-serif; /* Changed to a more modern font */
