@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limousine VIP Transfers</title>
+    <style>
+        /* styles.css */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            background-color: #121212;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            background: linear-gradient(to bottom, #3b2d2d, #000);
+            padding: 2rem;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .header .highlight {
+            color: #f7b531;
+        }
+
+        .nav {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .container {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          text-align: center;
+          font-size: 36px;
+          padding: 1rem;
+          width: 91%;
+          height: 700px;
+          background: url('../pictures/pick up.png') no-repeat center center; 
+          background-size: cover;
+          background-color: #665a5a;
+          margin-top: 20px;
+          border-radius: 8px;
+        }
+
+        
+        .container {
+          position: relative; /* Establish a positioning context */
+          padding: 20px; /* Optional padding */
+      }
+      
+      .right-corner {
+        margin-left: 1000px;
+        position: absolute; /* Position the div absolutely */
+        right: 90px; /* Align to the right */
+        top: 110  px; /* Align to the top */
+        text-align: left; /* Align text to the right */
+        font-size: 24px;
+      }
+
+
+        .btn-primary {
+            background-color: #f7b531;
+            color: #000;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+       
+
+        .services, .story, .fleet, .cta {
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .service-cards, .fleet-cards {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background-color: #222;
+            border-radius: 8px;
+            padding: 1.5rem;
+            max-width: 300px;
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .card h3 {
+            margin-top: 1rem;
+            color: #f7b531;
+        }
+
+        .story-images img {
+            width: 45%;
+            margin: 0.5rem;
+        }
+
+
+        .cta {
+            background: linear-gradient(to top, #3b2d2d, #000);
+            padding: 2rem;
+        }
+
+        .footer {
+            padding: 1rem;
+            background: #000;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+        .vehicle-container {
+            padding: 2rem 0.5rem; /* Add padding for spacing */
+            background-color: #352e2e; /* Dark gray background for the vehicle container */
+            color: #ffffff; /* White text color */
+            text-align: center; /* Center the text */
+            border-radius: 10px; /* Rounded corners */
+            height: 700px;
+            margin-top: 20px ; /* Margin for spacing from other sections */
+            position: relative; /* Establish a positioning context for absolute positioning */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+        }
+        
+        .btn-bottom-right {
+            position: absolute; /* Position the button absolutely */
+            bottom: 20px; /* Distance from the bottom */
+            right: 20px; /* Distance from the right */
+            background-color: #f7b531; /* Bright yellow background for the button */
+            color: #000; /* Black text color */
+            padding: 0.75rem 1.5rem; /* Button padding */
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded corners */
+            text-decoration: none; /* No underline */
+            font-size: 1rem; /* Font size */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+        }
+        
+        .btn-bottom-right:hover {
+            background-color: #e6a829; /* Slightly darker yellow on hover */
+            transform: scale(1.05); /* Slightly enlarge the button on hover */
+        }
+        
+        /* Additional styles for car cards to maintain consistency */
+        .car-card {
+            background-color: #2c2c2c; /* Darker background for car cards */
+            border-radius: 10px; /* Rounded corners */
+            border: 1px solid #555; /* Subtle border */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Shadow for cards */
+            transition: transform 0.3s ease; /* Smooth transition for hover effect */
+        }
+        
+        .car-card:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+        }
+        
+        /* Price styling for better visibility */
+        .price {
+            font-size: 1.2rem; /* Larger font size for price */
+            color: #f7b531; /* Highlight color for price */
+        }
+        
+          /* Car Container */
+          .car-container {
+            max-width: 1500px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding-top: 7rem;
+            gap: 2rem; 
+          }
+          
+          /* Car Card */
+          .car-card {
+            position: relative; 
+            background-color: #080808; /* White background for cards */
+            border-radius: 12px; 
+            border: 1px solid #4F5576; /* Use #4F5576 for the border */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+            padding: 1.5rem; 
+            width: 400px; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; 
+            text-decoration: none;
+            color: inherit;
+          }
+          
+          .car-card:hover {
+            background-color: #D5DFF2; /* Change background color on hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); 
+            transform: translateY(-2px); 
+          }
+          
+          /* Car Image */
+          .car-image {
+            width: 100%; 
+            height: 180px; 
+            object-fit: cover; 
+            border-radius: 12px; 
+            margin-bottom: 1rem; 
+          }
+          
+          /* Price */
+          .price {
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            color: #ffffff; 
+            background-color: rgba(24, 27, 38, 0.4); /* Dark semi-transparent background */
+            opacity: 0; /* Initially hidden */
+            transform: scale(0.8); /* Start smaller */
+            transition: opacity 0.3s ease, transform 0.3s ease; 
+          }
+          
+          .car-card:hover .price {
+            opacity: 1; 
+            transform: scale(1); 
+          }
+          
+          .car-info {
+            margin-top: 1rem;
+          }
+          
+          .car-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff; /* Dark color for title */
+          }
+          
+          .car-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.9rem; 
+            color: #ffffff; /* Lighter color for details */
+          }
+          
+          .car-details span {
+            display: flex;
+            align-items: center;
+          }
+          
+          .info-popup {
+            display: none; 
+            position: absolute;
+            left: 50%; 
+            top: -80%; 
+            transform: translateX(-50%); 
+            background-color: #000000; /* White background for popup */
+            border: 1px solid #4F5576; /* Use #4F5576 for the border */
+            padding: 20px;
+            width: 350px; 
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+            z-index: 10; 
+          }
+          /* Show Info Popup on Hover */
+.car-card:hover .info-popup {
+    display: block; 
+  }
+
+    </style>
+</head>
+<body>
+    <header class="header">
+  
+    </header>
+
+    <div class="container">
+      <h1><span class="highlight">Quick Wheels</span></h1>
+      <div class="right-corner">
+          <p>Experience exceptional value-for-money car rental services in Rural Areas and across all provinces in the Philippines. <br>With a proven track record of service excellence, we cater to all your car rental needs in Manila and beyond.</p>
+          <a href="reservation.php" class="btn-primary">Request Quote</a>
+      </div>
+  </div>
+
+    <section class="vehicle-container">
+      <h2>Our Fleet</h2>
+      <div class="fleet-cards">
+        <div class="car-container">
+            <a href="vehicles.php" class="car-card">
+              <img class="car-image" src="../pictures/sedan.jpg" alt="Economy Sedan">
+              <div class="car-info">
+                <h2 class="car-title">Sedan</h2>
+                <span>Toyota Vios</span>
+                <i class="fa-solid fa-circle-info info-icon"></i>
+                <div class="info-popup">
+                  <img class="car-image" src="../pictures/sedan.jpg" alt="Economy Sedan">
+                  <p>Toyota Vios is a compact sedan that offers a comfortable ride and excellent fuel efficiency.</p>
+                  <p>It features a 1.5L engine, automatic transmission, and a range of safety features.</p>
+                </div>
+                <div class="car-details">
+                  <span>
+                    <i class="fas fa-user"></i> 5
+                  </span>
+                  <span>
+                    <i class="fas fa-car"></i> AT
+                  </span>
+                  <span>
+                    <i class="fas fa-duotone fa-solid fa-gas-pump"></i> GASOLINE
+                  </span>
+                </div>
+                <div class="price">Price: $50/day</div> <!-- Price included -->
+              </div>
+            </a>
+
+            <a href="vehicles.php" class="car-card">
+                <img class="car-image" src="../pictures/VAN.jpg" alt="Van">
+                <div class="car-info">
+                  <h2 class="car-title">Van</h2>
+                  <span>Toyota Hiace</span>
+                  <i class="fa-solid fa-circle-info info-icon"></i>
+                  <div class="info-popup">
+                    <img class="car-image" src="../pictures/VAN.jpg" alt="Van">
+                    <p>Toyota Hiace is a spacious van perfect for family trips and group travel.</p>
+                    <p>It features a comfortable interior, ample storage, and advanced safety features.</p>
+                  </div>
+                  <div class="car-details">
+                    <span>
+                      <i class="fas fa-user"></i> 15
+                    </span>
+                    <span>
+                      <i class="fas fa-car"></i> AT
+                    </span>
+                    <span>
+                      <i class="fas fa-gas-pump"></i> GASOLINE
+                    </span>
+                  </div>
+                  <div class="price">Price: $90/day</div> <!-- Price included -->
+                </div>
+              </a>
+
+          <a href="vehicles.php" class="car-card">
+            <img class="car-image" src="../pictures/Full size suv.jpg" alt="Fullsize SUV">
+            <div class="car-info">
+              <h2 class="car-title">Fullsize SUV</h2>
+              <span>Toyota Fortuner</span>
+              <i class="fa-solid fa-circle-info info-icon"></i>
+              <div class="info-popup">
+                <img class="car-image" src="../pictures/Full size suv.jpg" alt="Fullsize SUV">
+                <p>Toyota Fortuner is a robust SUV that combines luxury and performance.</p>
+                <p>It features a powerful engine, spacious interior, and advanced safety features.</p>
+              </div>
+              <div class="car-details">
+                <span>
+                  <i class="fas fa-user"></i> 7
+                </span>
+                <span>
+                  <i class="fas fa-car"></i> AT
+                </span>
+                <span>
+                  <i class="fas fa-gas-pump"></i> GASOLINE
+                </span>
+              </div>
+              <div class="price">Price: $70/day</div> <!-- Price included -->
+            </div>
+          </a>
+      </div>
+      <a href="vehicles.php" class="btn-primary btn-bottom-right">View More</a> <!-- Button added here -->
+  </section>
+
+    <section class="services">
+        <h2>Our Services</h2>
+        <div class="service-cards">
+            <div class="card">
+                <img src="service1.jpg" alt="Service 1">
+                <h3>Business Travel</h3>
+            </div>
+            <div class="card">
+                <img src="service2.jpg" alt="Service 2">
+                <h3>Event Transfers</h3>
+            </div>
+            <div class="card">
+                <img src="service3.jpg" alt="Service 3">
+                <h3>Airport Transfers</h3>
+            </div>
+        </div>
+    </section>
+
+    <section class="story">
+        <h2>Our Story</h2>
+        <p>Over 80,000 satisfied customers trust us for their travel needs, offering luxury, comfort, and professionalism.</p>
+        <div class="story-images">
+            <img src="story1.jpg" alt="Our Story 1">
+            <img src="story2.jpg" alt="Our Story 2">
+        </div>
+    </section>
+
+    
+
+    <section class="cta">
+        <h2>Your Next Travel With Us?</h2>
+        <a href="reservation.php" class="btn-primary">Get Started</a>
+    </section>
+
+    <footer class="footer">
+        <p>© 2024 Limousine VIP Transfers. All rights reserved.</p>
+    </footer>
+</body>
+</html>
