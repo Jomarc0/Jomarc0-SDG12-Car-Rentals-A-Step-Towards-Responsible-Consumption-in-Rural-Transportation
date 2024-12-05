@@ -23,11 +23,11 @@ $selectedBookingArea = $_POST['bookingArea'] ?? ''; //selected booking area from
 
 // destinations based on booking area
 $destinations = [
-    'Cavite' => ['Tagaytay City', 'Corregidor Island', 'Aguinaldo Shrine', 'Mt. Pico De Loro', 'Kaybiang Tunnel', 'Balite Falls (Amadeo)'],
-    'Laguna' => ['Pagsanjan Fall', 'Enchanted Kingdom', 'Rizal Shrine in Calamba','Los Baños Hot Springs','Seven Lakes of San Pablo', 'Hidden Valley Springs (Calauan)', 'Hulugan Falls'],
-    'Batangas' => ['Taal Volcano', 'Anilao', 'Laiya Beach','Taal Heritage Town', 'Masasa Beach', 'Calatagan Sandbar', 'Fortune Island', 'Cape Santiago Lighthouse'],
-    'Rizal' => ['Antipolo Cathedral', 'Hinulugang Taktak Falls', 'Art Sector Gallery','Mount Daraitan and Tinipak River (Tanay)', 'Masungi Georeserve', 'Daranak Falls (Tanay)', 'Pililla Wind Farm'],
-    'Quezon' => ['Borawan Island (Padre Burgos)', 'Alibijaban Island (San Andres)', 'Kwebang Lampas and Puting Buhangin (Pagbilao)','Balesin Island (Polillo Group)', 'Jomalig Island', 'Lucban', 'Mt. Banahaw', 'Cagbalete Island']
+    'Cavite' => ['Tagaytay City', 'Corregidor Island', 'Aguinaldo Shrine', 'Mt. Pico De Loro', 'Kaybiang Tunnel', 'Balite Falls (Amadeo)', 'Other'],
+    'Laguna' => ['Pagsanjan Fall', 'Enchanted Kingdom', 'Rizal Shrine in Calamba','Los Baños Hot Springs','Seven Lakes of San Pablo', 'Hidden Valley Springs (Calauan)', 'Hulugan Falls', 'Other'],
+    'Batangas' => ['Taal Volcano', 'Anilao', 'Laiya Beach','Taal Heritage Town', 'Masasa Beach', 'Calatagan Sandbar', 'Fortune Island', 'Cape Santiago Lighthouse', 'Other'],
+    'Rizal' => ['Antipolo Cathedral', 'Hinulugang Taktak Falls', 'Art Sector Gallery','Mount Daraitan and Tinipak River (Tanay)', 'Masungi Georeserve', 'Daranak Falls (Tanay)', 'Pililla Wind Farm' , 'Other'],
+    'Quezon' => ['Borawan Island (Padre Burgos)', 'Alibijaban Island (San Andres)', 'Kwebang Lampas and Puting Buhangin (Pagbilao)','Balesin Island (Polillo Group)', 'Jomalig Island', 'Lucban', 'Mt. Banahaw', 'Cagbalete Island', 'Other']
 ];
 
 // get the destinations based on the selected booking area
@@ -40,33 +40,28 @@ $destinationOptions = $selectedBookingArea && isset($destinations[$selectedBooki
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Car Rent</title>
-    <!-- <link rel="stylesheet" href="../css/service.css"> -->
     <style>
-        /* for reservations */
-body {
-    font-family: 'Arial', sans-serif; /* Changed to a more modern font */
+     body {
+    font-family: 'Arial', sans-serif; /* Modern font */
     margin: 0;
     padding: 0;
-    background-color: #F4FDFF; /* Light background for the body */
-}
-
-main {
-    padding: 2rem;
+    background-color: #121212; /* Dark background for the body */
+    color: #ffffff; /* White text for better contrast */
 }
 
 .container {
-    background-color: white;
+    background-color: #1c1c1c; /* Dark background for the container */
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 120vh;
+    height: 100vh; /* Full viewport height */
 }
 
 .form-section {
-    background-color: #F4FDFF; /* Light background for form section */
+    background-color: #2c2c2c; /* Darker background for form section */
     padding: 60px;
     border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Deeper shadow for depth */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Deeper shadow for depth */
     width: 800px;
     text-align: center;
     transition: transform 0.3s ease; /* Smooth transition for hover effect */
@@ -79,8 +74,8 @@ main {
 .form-section h1 {
     font-size: 24px;
     margin-bottom: 40px;
-    color: #181b26; /* Dark color for the heading */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow for text */
+    color: #f7b531; /* Highlight color for the heading */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Subtle shadow for text */
 }
 
 /* Progress bar */
@@ -103,20 +98,20 @@ main {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    background-color: #4F5576; /* Updated background color for steps */
+    background-color: #4F5576; /* Background color for steps */
     color: white;
     font-weight: bold;
     transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
 .form-progress .step.active span {
-    background-color: #D5DFF2; /* Change active step color */
+    background-color: #f7b531; /* Change active step color */
 }
 
 .form-progress .step p {
     margin-top: 10px;
     font-size: 14px;
-    color: #888; /* Keep this color for step description */
+    color: #888; /* Color for step description */
 }
 
 /* Form Steps */
@@ -133,7 +128,7 @@ label {
     font-size: 18px;
     text-align: left;
     margin-bottom: 10px;
-    color: #181b26; /* Dark color for labels */
+    color: #f7b531; /* Highlight color for labels */
 }
 
 select {
@@ -144,10 +139,12 @@ select {
     border-radius: 5px;
     border: 1px solid #4F5576; /* Lighter border color */
     transition: border-color 0.3s; /* Smooth transition for focus */
+    background-color: #2c2c2c; /* Dark background for select */
+    color: #ffffff; /* White text for select */
 }
 
 select:focus {
-    border-color: #D5DFF2; /* Change border color on focus */
+    border-color: #f7b531; /* Change border color on focus */
     outline: none; /* Remove default outline */
 }
 
@@ -159,10 +156,12 @@ input {
     border-radius: 5px; /* Added border radius for input fields */
     padding: 12px; /* Increased padding for better usability */
     transition: border-color 0.3s; /* Smooth transition for focus */
+    background-color: #2c2c2c; /* Dark background for input */
+    color: #ffffff; /* White text for input */
 }
 
 input:focus {
-    border-color: #D5DFF2; /* Change border color on focus */
+    border-color: #f7b531; /* Change border color on focus */
     outline: none; /* Remove default outline */
 }
 
@@ -170,8 +169,8 @@ button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-    background-color: #4F5576; /* Updated button background color */
-    color: white;
+    background-color: #f7b531; /* Updated button background color */
+    color: #181b26; /* Dark text color*/
     border: none;
     border-radius: 5px;
     width: 70%;
@@ -179,7 +178,7 @@ button {
 }
 
 button:hover {
-    background-color: #181b26; /* Darker color on hover */
+    background-color: #9FA7BF; /* Lighter color on hover */
     transform: translateY(-2px); /* Lift effect on hover */
 }
 
@@ -188,16 +187,16 @@ button.prev-btn {
 }
 
 button.prev-btn:hover {
-    background-color: #181b26; /* Darker color on hover */
+    background-color: #9FA7BF; /* Lighter color on hover */
     transform: translateY(-2px); /* Lift effect on hover */
 }
 
 button[type="submit"] {
-    background-color: #4F5576; /* Updated submit button color */
+    background-color: #f7b531; /* Updated submit button color */
 }
 
 button[type="submit"]:hover {
-    background-color: #181b26; /* Darker color on hover */
+    background-color: #9FA7BF; /* Lighter color on hover */
     transform: translateY(-2px); /* Lift effect on hover */
 }
 
@@ -211,6 +210,7 @@ button[type="submit"]:hover {
 .button-container button {
     margin: 0 10px; /* Add spacing between buttons */
 }
+
      </style>
 </head>
 <body>
@@ -248,9 +248,11 @@ button[type="submit"]:hover {
                 <div class="form-step active">
                     <select id="bookingArea" name="bookingArea" required onchange="this.form.submit()">
                         <option value="">Select Area</option>
-                        <option value="Metro Manila" <?php if ($selectedBookingArea === 'Metro Manila') echo 'selected'; ?>>Metro Manila</option>
-                        <option value="Cebu" <?php if ($selectedBookingArea === 'Cebu') echo 'selected'; ?>>Cebu</option>
-                        <option value="Davao" <?php if ($selectedBookingArea === 'Davao') echo 'selected'; ?>>Davao</option>
+                        <option value="Cavite" <?php if ($selectedBookingArea === 'Cavite') echo 'selected'; ?>>Cavite</option>
+                        <option value="Laguna" <?php if ($selectedBookingArea === 'Laguna') echo 'selected'; ?>>Laguna</option>
+                        <option value="Batangas" <?php if ($selectedBookingArea === 'Batangas') echo 'selected'; ?>>Batangas</option>
+                        <option value="Rizal" <?php if ($selectedBookingArea === 'Rizal') echo 'selected'; ?>>Rizal</option>
+                        <option value="Quezon" <?php if ($selectedBookingArea === 'Quezon') echo 'selected'; ?>>Quezon</option>
                     </select>
                     <div class="button-container">
                         <button type="button" class="next-btn">Next</button>

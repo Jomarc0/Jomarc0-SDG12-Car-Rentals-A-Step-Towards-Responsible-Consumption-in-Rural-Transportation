@@ -17,12 +17,6 @@ $messages = $messageHandler->getMessages();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Client Chat</title>
     <style>
-        body {
-            font-family: Arial, sans-serif; /* Use a clean font */
-            margin: 0;
-            padding: 0;
-            background-color: #e9ecef; /* Light background for the whole page */
-        }
 
         #sidebar {
             width: 330px; /* Fixed width for sidebar */

@@ -1,68 +1,245 @@
-    <?php 
-    require_once 'dbSignUp.php'; //require the signup
+<?php
+require_once 'dbSignUp.php'; // Include your database connection file
+require_once 'gmailAPI.php'; // Include the GoogleLogin class
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $first_name = $_POST["fName"];
-        $last_name = $_POST["lName"];
-        $address = $_POST["address"];
-        $gender = $_POST["gender"];
-        $dob = $_POST["dob"];
-        $email = $_POST["email"];
-        $phoneNumber = $_POST["phone"];
-        $password = $_POST["password"];
-        $confirmPassword = $_POST["confirmPassword"]; //ippost lang lahat ng laman na iinput 
-        $profilePicture = $_FILES["profilePicture"]; // Handle profile picture upload
-        $driversLicense = $_FILES["driversLicense"]; // Handle driver's license upload
+// Create instances of the classes
+$googleLogin = new GoogleLogin(); 
+$userRegistration = new UserRegistration(); 
 
-        $userRegistration = new UserRegistration(); 
-        $registrationMessage = $userRegistration->register($first_name, $last_name, $address, $gender, $dob, $email, $phoneNumber, $password, $confirmPassword, $profilePicture, $driversLicense);  //ilagay sa parameter yung mga napost na data
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'google') {
+    header("Location: " . $googleLogin->getAuthUrl());
+    exit();
+}
 
-        if ($registrationMessage) {
-            echo $registrationMessage;
-            if (strpos($registrationMessage, 'successful') !== false) { //check lanf din if tama yung registratin and redirect to the verify
-                header("Location: verify.php");
-                exit;
-            }
+// Check if the form was submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $first_name = $_POST["fName"];
+    $last_name = $_POST["lName"];
+    $address = $_POST["address"];
+    $gender = $_POST["gender"];
+    $dob = $_POST["dob"];
+    $email = $_POST["email"];
+    $phoneNumber = $_POST["phone"];
+    $password = $_POST["password"];
+    $confirmPassword = $_POST["confirmPassword"]; // Get all the input data
+
+    $registrationMessage = $userRegistration->register($first_name, $last_name, $address, $gender, $dob, $email, $phoneNumber, $password, $confirmPassword); // Register the user
+
+    if ($registrationMessage) {
+        $isError = true;
+        if (strpos($registrationMessage, 'successful') !== false) { // Check if registration was successful
+            header("Location: verify.php"); // Redirect to verification page
+            exit;
         }
-    }?>
+    }
+}
+?>
 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Register & Login</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-        <link rel="stylesheet" href="../css/login.css">
-    </head>
-    <body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        <div class="container" id="signup">
-            <h1 class="form-title">Register</h1>
-            <form action="" method="post" enctype="multipart/form-data"> <!--enctype="multipart/form-data" that line is used to store file basta pang store yan -->
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #1a1a1a; /* Background color */
+    color: #fff; /* White text color */
+    line-height: 1.4; /* Reduced line height */
+}
+
+/* Container Styles */
+.container {
+    display: flex;
+    width: 800px; /* Width of the container */
+    /* Removed fixed height to allow content to dictate height */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Left Panel */
+.left-panel {
+    background: linear-gradient(to bottom, #4b4e69, #28293e);
+    width: 40%;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.left-panel .branding h1 {
+    font-size: 1.5rem; /* Reduced font size */
+    margin-bottom: 15px; /* Reduced margin */
+    color: gold; /* Changed to gold */
+}
+
+.left-panel .back-btn {
+    background: none;
+    color: #fff; /* White text color */
+    border: none;
+    font-size: 0.9rem; /* Reduced font size */
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.left-panel .back-btn:hover {
+    color: gold; /* Changed hover color to gold */
+}
+
+.left-panel .image-text h2 {
+    margin-top: 60px; /* Reduced margin */
+    font-size: 1.2rem; /* Reduced font size */
+    line-height: 1.5;
+}
+
+/* Right Panel */
+.right-panel {
+    background-color: #2a2a2a; /* Background color for right panel */
+    width: 60%;
+    padding: 30px; /* Reduced padding */
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+}
+
+.right-panel h2 {
+    font-size: 1.5rem; /* Reduced font size */
+    margin-bottom: 15px; /* Reduced margin */
+}
+
+.right-panel p {
+    font-size: 0.8rem; /* Reduced font size */
+    margin-bottom: 15px; /* Reduced margin */
+}
+
+.right-panel a {
+    color: gold; /* Changed link color to gold */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.right-panel a:hover {
+    color: #d0b8ff; /* Changed hover color */
+}
+
+/* Input Fields */
+.input-group {
+    display: flex;
+    flex-direction: column; /* Stack label and input vertically */
+    margin-bottom: 8px; /* Reduced space between input groups */
+}
+
+.input-group input,
+.input-group select {
+    background-color: #3e3e3e; /* Darker background for input fields */
+    border: 1px solid #4b4e69;
+    border-radius: 5px;
+    padding: 5px; /* Reduced padding */
+    color: #ffffff; /* White text color */
+    width: 100%; /* Full width */
+    margin-top: 5px; /* Space between label and input */
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    font-size: 0.8rem; /* Smaller font size for inputs */
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: gold; /* Focus border color */
+    box-shadow: 0 0 5px gold; /* Focus shadow color */
+    outline: none;
+}
+
+/* Buttons */
+button {
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.create-account {
+    background-color: gold; /* Changed button color to gold */
+    color: #000; /* Black text color */
+    border-radius: 5px;
+    padding: 8px; /* Reduced padding */
+    width: 100%; /* Full width */
+    font-size: 0.9rem; /* Smaller font size */
+}
+
+.create-account:hover {
+    background-color: #d0b8ff; /* Changed hover color */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+label {
+    display: flex;
+    align-items: center;
+    font-size: 0.7rem;
+}
+
+/* Social Buttons */
+.social-buttons 
+{
+    display: flex;
+    justify-content: space-between; /* Space between buttons */
+    margin-top: 15px; /* Reduced space above social buttons */
+}
+
+.social-buttons button {
+    background-color: #3e3e3e; /* Dark background for social buttons */
+    color: #fff; /* White text color */
+    padding: 8px; /* Reduced padding */
+    border-radius: 5px;
+    flex: 1; /* Equal width for buttons */
+    margin: 0 5px; /* Space between buttons */
+    font-size: 0.9rem; /* Smaller font size for social buttons */
+}
+
+.social-buttons button:hover {
+    background-color: gold; /* Hover color for social buttons */
+}
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="branding">
+                <h1>QuickWheels</h1>
+            </div>
+            <button class="back-btn" onclick="window.location.href='../main/index.php'">Back to website →</button>
+            <div class="image-text"></div>
+        </div>
+        <div class="right-panel">
+            <h2>Create an account</h2>
+            <?php if (isset($registrationMessage)): ?>
+                <h2 style="color: <?php echo $isError ? 'red' : 'green'; ?>;">
+                    <?php echo htmlspecialchars($registrationMessage) .'<br>'; ?>
+                </h2>
+            <?php endif; ?>
+            <form action="" method="post" enctype="multipart/form-data">
                 <div class="input-group">
-                    <i class="fas fa-user"></i>
                     <input type="text" name="fName" id="fName" placeholder="First Name" required>
-                    <label for="fName">First Name</label>
                 </div>
                 <div class="input-group">
-                    <i class="fas fa-user"></i>
                     <input type="text" name="lName" id="lName" placeholder="Last Name" required>
-                    <label for="lName">Last Name</label>
                 </div>
                 <div class="input-group">
-                    <i class="fa-solid fa-phone"></i>
                     <input type="phone" name="phone" id="phone" placeholder="Phone Number" required pattern="\d{11}" maxlength="11" minlength="11">
-                    <label for="phone">Phone Number</label>
                 </div>
                 <div class="input-group">
-                    <i class="fas fa-home"></i>
                     <input type="text" name="address" id="address" placeholder="House No/Street/Brgy/City" required>
-                    <label for="address">House No/Street/Brgy/City</label>
                 </div>
                 <div class="input-group">
-                    <i class="fas fa-venus-mars"></i>
-                    <label for="gender">Gender</label>
                     <select name="gender" id="gender" required>
                         <option value="" disabled selected>Select Gender</option>
                         <option value="Male">Male</option>
@@ -70,46 +247,27 @@
                     </select>
                 </div>
                 <div class="input-group">
-                    <i class="fas fa-calendar-alt"></i>
-                    <input type="date" name="dob" id="dob" required>
-                    <label for="dob">Date of Birth</label>
+                    <input type="date" name="dob" id="dob" placeholder="Date of Birth" required>
                 </div>
                 <div class="input-group">
-                    <i class="fas fa-envelope"></i>
                     <input type="email" name="email" id="email" placeholder="Email" required>
-                    <label for="email">Email</label>
                 </div>
                 <div class="input-group">
-                    <i class="fas fa-lock"></i>
                     <input type="password" name="password" id="password" placeholder="Password" required>
-                    <label for="password">Password</label>
                 </div>
                 <div class="input-group">
-                    <i class="fas fa-lock"></i>
                     <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required>
-                    <label for="confirmPassword">Confirm Password</label>
                 </div>
-                <div class="input-group">
-                    <i class="fas fa-image"></i>
-                    <input type="file" name="profilePicture" id="profilePicture" accept="image/*" required>
-                    <label for="profilePicture">Profile Picture</label>
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-id-card"></i>
-                    <input type="file" name="driversLicense" id="driversLicense" accept="image/*" required>
-                    <label for="driversLicense">Upload Driver's License</label>
-                </div>
-
-                <input type="submit" class="btn" value="Sign Up" name="signUp">
-            </form> 
-            <p class="or">
-                ----------or--------
-            </p>
-            <div class="links">
-                <p>Already Have Account?</p>
-                <button id="signInButton"><a href="signIn.php">Sign In</a></button>
+                <button type="submit">Sign Up</button>
+            </form>
+            <div class="google-signin">
+                <form id="google-signin-form" action="" method="post">
+                    <input type="hidden" name="action" value="google">
+                    <input type="hidden" name="code" id="google-code" value="">
+                    <button type="submit" class="google-btn" >Sign in with Google</button>
+                </form>
             </div>
         </div>
-        <script src="script.js"></script>
-    </body>
-    </html>
+    </div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <?php
-require_once 'dbverify.php'; //require the verify 
+require_once 'dbverify.php'; // Require the verify 
 
 $message = ""; //put message as null 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

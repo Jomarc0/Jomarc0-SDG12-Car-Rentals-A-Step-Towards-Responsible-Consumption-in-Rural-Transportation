@@ -1,188 +1,450 @@
 body {
-    font-family: sans-serif;
     margin: 0;
-    padding: 0;
-    background-color: #F4FDFF; /* Light background for the body */
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+    background-color: #121212;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 1s ease; /* Fade in animation for the body */
 }
 
-main {
-    padding: 2rem;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
-.home-container {
-    margin-top: 25px;
-    display: flex; /* Arrange content and image side-by-side */
-    align-items: center; 
-    min-height: 100vh; /* Ensure the page takes up full viewport height */
-    background: url('../pictures/bg.webp') no-repeat center center; /* Set the background image */
-    background-size: cover; /* Ensure the background covers the entire area */
-    position: relative; /* Positioning context for overlay */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: center;
+    font-size: 36px;
+    padding: 1rem;
+    width: 91%;
+    height: 650px; 
+    background: url('../pictures/pick up.png') no-repeat center center; 
+    background-size: cover;
+    background-color: #665a5a;
+    margin-top: 20px; /* Space below the header */
+    border-radius: 8px;
+    animation: slideIn 0.5s ease; /* Slide in animation for the container */
 }
 
-.home-content {
-    flex: 0 0 50%;  /* Set width to 50% of the container */
-    padding: 80px; 
-    position: relative; /* Positioning context for z-index */
-    z-index: 1; /* Ensure content is above the background */
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
-.home-content::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5); /* Dark overlay */
-    z-index: -1; /* Position behind the text */
+.right-corner {
+    margin-left: 1000px;
+    position: absolute; /* Position the div absolutely */
+    right: 90px; /* Align to the right */
+    top: 150px; /* Align to the top */
+    text-align: left; /* Align text to the right */
+    font-size: 24px;
 }
-.home-content h1 {
-    font-size: 3rem; /* Adjust font size as needed */
-    color: white; /* Dark color for headings */
+
+.btn-primary {
+    background-color: #f7b531;
+    color: #000;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Transition for button */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Button shadow */
+}
+
+.btn-primary:hover {
+    background-color: #e6a829; /* Slightly darker yellow on hover */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.services {
+    background: linear-gradient(135deg, #2c2c2c, #1c1c1c); /* Gradient background for services */
+    color: #fff;
+    padding: 60px;
+    margin-top: 20px;
+    text-align: center;
+    width: 86%;
+    border-radius: 10px;
+    animation: fadeIn 1s ease; /* Fade in animation for services */
+}
+
+.services h2 {
+    font-size: 3em; /* Larger heading */
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Shadow for text */
+}
+
+.services p {
+    font-size: 1.5em; /* Larger paragraph text */
+    margin-bottom: 40px;
+}
+
+.service-cards {
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* Increased spacing between cards */
+    margin-bottom: 50px;
+}
+
+.card {
+    background-color: #1c1c1c;
+    border-radius: 12px; /* Slightly larger corners */
+    overflow: hidden;
+    text-align: left;
+    width: 250px; /* Wider card */
+    opacity: 0; /* Start hidden */
+    transform: translateY(20px); /* Start slightly below */
+    animation: fadeInUp 0.5s forwards; /* Fade in up animation */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effect */
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card img {
+    width: 100%;
+    height: 200px; /* Larger image */
+    object-fit: cover;
+    transition: transform 0.3s ease; /* Transition for image scaling */
+}
+
+.card img:hover {
+    transform: scale(1.05); /* Scale image on hover */
+}
+
+.card h3 {
+    font-size: 1.5em; /* Larger heading for cards */
+    padding: 15px;
+    text-align: center; /* Center align card titles */
+}
+
+.features {
+    display: flex;
+    justify-content: space-around;
+    gap: 30px; /* Increased spacing between features */
+}
+
+.feature {
+    text-align: center;
+    width: 250px; /* Wider feature cards */
+    opacity: 0; /* Start hidden */
+    transform: translateY(20px); /* Start slightly below */
+    animation: fadeInUp 0.5s forwards; /* Fade in up animation */
+}
+
+.feature img {
+    width: 70px; /* Larger icons */
+    margin-bottom: 15px;
+    transition: transform 0.3s ease; /* Transition for icon scaling */
+}
+
+.feature img:hover {
+    transform: scale(1.1); /* Scale icon on hover */
+}
+
+.feature h4 {
+    font-size: 1.5em; /* Larger feature title */
+    margin-bottom: 15px;
+}
+
+.feature p {
+    font-size: 1.1em; /* Larger text */
+    line-height: 1.6em; /* Improved readability */
+}
+
+/* Story Section */
+.story {
+    background-color: #1c1c1c; /* Dark gray to match the site's aesthetic */
+    color: #ffffff; /* White text for readability */
+    margin-top: 20px;
+    padding: 50px 20px; /* Padding around the section */
+    text-align: center;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    animation: fadeIn 1s ease; /* Fade in animation for story */
+}
+
+.story h2 {
+    font-size: 2.5em; /* Larger heading */
+    color: #f7b531; /* Highlight color for the heading */
+    margin-bottom: 20px; /* Space below heading */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Shadow for text */
+}
+
+.story p {
+    font-size: 1.2em; /* Readable font size for text */
+    line-height: 1.6em; /* Increase line height for better readability */
+    margin-bottom: 20px; /* Space below each paragraph */
+    max-width: 1000px; /* Increased max width for paragraph */
+    margin-left: auto; /* Center align the paragraphs */
+    margin-right: auto;
+    color: #d4d4d4; /* Softer white for text */
+}
+
+/* Story Images Section */
+.story-images {
+    display: flex; /* Align images in a row */
+    justify-content: center; /* Center the images */
+    gap: 20px; /* Space between images */
+    margin-top: 30px; /* Space above the images */
+}
+
+.story-images img {
+    width: 400px; /* Increased width of images */
+    height: 250px; /* Increased height of images */
+    object-fit: cover; /* Ensure images are cropped properly */
+    border-radius: 10px; /* Add rounded corners to images */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Enhanced shadow effect */
+    transition: transform 0.3s ease; /* Add a smooth hover effect */
+}
+
+.story-images img:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+/* CTA Section */
+.cta {
+    background-color: #121212; /* Dark background color */
+ padding: 40px 20px;
+    text-align: center;
+    margin-top: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease; /* Fade in animation for CTA */
+}
+
+.cta h2 {
+    font-size: 2.5em; /* Large heading */
+    color: #ecf0f1; /* Light text color for better contrast */
+    margin-bottom: 15px;
+}
+
+.cta .location-info {
+    font-size: 1.2em; /* Slightly larger font size for the location info */
+    color: #bdc3c7; /* Lighter color for description */
     margin-bottom: 20px;
 }
 
-.home-content p {
-    line-height: 1.6;
-    color: white; /* Dark color for paragraph text */
+.cta-map {
+    margin: 20px 0;
 }
 
-.highlight {
-    font-weight: bold;
-    color: #D98B48; /* Highlight color */
+.cta-image {
+    width: 100%; /* Make image responsive */
+    max-width: 600px; /* Limit image size */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
+    margin-bottom: 20px;
 }
 
-/* Button Styling */
-.request-quote {
-    background-color: #F2D335; /* Bright button color */
-    text-decoration: none;
-    color: #40282A; /* Dark text color on button */
-    border: none;
+/* Button Style */
+.btn-primary {
     padding: 15px 30px;
+    background-color: #e67e22; /* Updated button color */
+    color: #fff;
+    text-decoration: none;
     font-size: 1.2em;
-    cursor: pointer;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Button shadow */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
 }
 
-.request-quote:hover {
-    background-color: #D98B48; /* Darker shade on hover */
+.btn-primary:hover {
+    background-color: #d35400; /* Darker button color on hover */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
 
-.tag {
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.8em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    background-color: #F2C335; /* Tag background color */
-    color: #40282A; /* Tag text color */
-}
-
-.popular {
-    background-color: #F2D335; 
-    color: #40282A;
+.footer {
+    padding: 1rem;
+    background: #000;
     text-align: center;
-    font-size: 1em;
+    font-size: 0.875rem;
 }
 
-/* Image Styling */
-.image {
-    text-align: center;
-    flex: 1.5; /* Give more space to the image */
-}
-
-.image img {
-    height: auto; 
-    width: 800px; /* Make the image take full width */
-    max-height: 700px; /* Limit the height to avoid overflow */
-    border: 5px solid #D98B48; /* Add a solid border with a color */
-    border-radius: 8px; /* Optional: rounded corners for the border */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
-    transition: transform 0.3s; /* Smooth transition for hover effect */
-}
-
-.image img:hover {
-    transform: scale(1.05); /* Slightly enlarge the image on hover */
-}
-
-/* Remove bullets from unordered list */
-ul li {
-    list-style-type: none; /* Removes the bullets */
-    padding: 0; /* Removes default padding */
-    margin: 0; /* Removes default margin */
-}
-
-/* Remove underline from all links */
-a {
-    text-decoration: none; /* Remove underline from all links */
-}
-
-.info-section {
-    display: flex; /* Use Flexbox for alignment */
-    justify-content: center; /* Center items horizontally */
-    align-items: flex-start; /* Align items to the top */
-    margin: 20px; /* Margin around the section */
-    flex-wrap: wrap; /* Allow wrapping to the next line on smaller screens */
-}
-
-/* Info Container */
-.info-container {
-    background-color: #F4FDFF; /* Light background for the container */
-    padding: 20px; /* Padding around the content */
+/* Vehicle Container */
+.vehicle-container {
+    padding: 2rem 0.5rem; /* Add padding for spacing */
+    background-color: #352e2e; /* Dark gray background for the vehicle container */
+    color: #ffffff; /* White text color */
+    text-align: center; /* Center the text */
     border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    margin: 15px; /* Space around each container */
-    flex: 1 1 30%; /* Allow containers to grow and shrink, with a base width of 30% */
-    max-width: 30%; /* Set maximum width for each container */
-    transition: transform 0.3s; /* Smooth hover effect */
+    height: 650px;
+    margin-top: 20px; /* Margin for spacing from other sections */
+    position: relative; /* Establish a positioning context for absolute positioning */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+    animation: fadeIn 1s ease; /* Fade in animation for vehicle container */
 }
 
-/* Hover Effect */
-.info-container:hover {
+.btn-bottom-right {
+    position: absolute; /* Position the button absolutely */
+    bottom: 20px; /* Distance from the bottom */
+    right: 20px; /* Distance from the right */
+    background-color: #f7b531; /* Bright yellow background for the button */
+    color: #000; /* Black text color */
+    padding: 0.75rem 1.5rem; /* Button padding */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none; /* No underline */
+    font-size: 1rem; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+}
+
+.btn-bottom-right:hover {
+    background-color: #e6a829; /* Slightly darker yellow on hover */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+/* Additional styles for car cards to maintain consistency */
+.car-card {
+    background-color: #2c2c2c; /* Darker background for car cards */
+    border-radius: 10px; /* Rounded corners */
+    border: 1px solid #555; /* Subtle border */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Shadow for cards */
+    transition: transform 0.3s ease; /* Smooth transition for hover effect */
+    opacity: 0; /* Start hidden */
+    transform: translateY(20px); /* Start slightly below */
+    animation: fadeInUp 0.5s forwards; /* Fade in up animation */
+}
+
+.car-card:hover {
     transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Darker shadow on hover */
 }
 
-/* Heading styles */
-.info-container h2 {
-    font-size: 1.8rem; /* Font size for headings */
-    color: #40282A; /* Dark color for headings */
-    margin-bottom: 15px; /* Space below headings */
-    border-bottom: 2px solid #F2D335; /* Underline effect with accent color */
-    padding-bottom: 5px; /* Padding below the heading */
+/* Price styling for better visibility */
+.price {
+    font-size: 1.2rem; /* Larger font size for price */
+    color: #f7b531; /* Highlight color for price */
 }
 
-/* Paragraph styles */
-.info-container p {
-    line-height: 1.6; /* Line height for better readability */
-    color: #555; /* Darker color for paragraphs */
-    margin-bottom: 15px; /* Space below paragraphs */
+/* Car Container */
+.car-container {
+    max-width: 1500px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-top: 7rem;
+    gap: 2rem; 
 }
 
-/* List styles */
-.info-container ul {
-    padding-left: 20px; /* Indent the list */
-    margin-bottom: 20px; /* Space below lists */
+/* Car Card */
+.car-card {
+    position: relative; 
+    background-color: #080808; /* White background for cards */
+    border-radius: 12px; 
+    border: 1px solid #4F5576; /* Use #4F5576 for the border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    padding: 1.5rem; 
+    width: 400px; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; 
+    text-decoration: none;
+    color: inherit;
+    opacity: 0; /* Start hidden */
+    transform: translateY(20px); /* Start slightly below */
+    animation: fadeInUp 0.5s forwards; /* Fade in up animation */
 }
 
-.info-container li {
-    margin-bottom: 10px; /* Space between list items */
-    color: #555; /* Darker color for list items */
-    position: relative; /* Position for pseudo-element */
+.car-card:hover {
+    background-color: #D5DFF2; /* Change background color on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); 
+    transform: translateY(-2px); 
 }
 
-/* List Item Bullet Style */
-.info-container li::before {
-    content: '✔'; /* Custom bullet point */
-    color: #F2D335; /* Accent color for bullet */
-    position: absolute; /* Positioning */
-    left: -20px; /* Position to the left of the text */
+/* Car Image */
+.car-image {
+    width: 100%; 
+    height: 180px; 
+    object-fit: cover; 
+    border-radius: 12px; 
+    margin-bottom: 1rem; 
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .info-container {
-        flex: 1 1 100%; /* Full width on smaller screens */
-        max-width: 100%; /* Remove max-width constraint */
-    }
+/* Price */
+.price {
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    font-size: 1.5rem; 
+    font-weight: bold; 
+    color: #ffffff; 
+    background-color: rgba(24, 27, 38, 0.4); /* Dark semi-transparent background */
+    opacity: 0; /* Initially hidden */
+    transform: scale(0.8); /* Start smaller */
+    transition: opacity 0.3s ease, transform 0.3s ease; 
+}
+
+.car-card:hover .price {
+    opacity: 1; 
+    transform: scale(1); 
+}
+
+.car-info {
+    margin-top: 1rem;
+}
+
+.car-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff; /* Dark color for title */
+}
+
+.car-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    font-size: 0.9rem; 
+    color: #ffffff; /* Lighter color for details */
+}
+
+.car-details span {
+    display: flex;
+    align-items: center;
+}
+
+.info-popup {
+    display: none; 
+    position: absolute;
+    left: 50%; 
+    top: -80%; 
+    transform: translateX(-50%); 
+    background-color: #000000; /* White background for popup */
+    border: 1px solid #4F5576; /* Use #4F5576 for the border */
+    padding: 20px;
+    width: 350px; 
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    z-index: 10; 
+}
+
+/* Show Info Popup on Hover */
+.car-card:hover .info-popup {
+    display: block; 
 }

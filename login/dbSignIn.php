@@ -23,7 +23,7 @@ class UserLogin{
             // password_verify use pag naka hash 
             if (password_verify($password, $result['password'])) {
                 $this->startSession($result); //if login successful
-                header("Location: /sampleRent/main/index.php");
+                header("Location: ../main/index.php");
                 exit;
             } else {
                 // Incorrect password

@@ -14,7 +14,7 @@ body {
 
 .toggle-sidebar {
     position: absolute;
-    top: 140px;
+    top: 160px;
     left: 0;
     padding: 10px 15px;
     background-color: #4F5576; 
@@ -83,7 +83,6 @@ body {
                 <li><a href="rent.php" class="menu-item">Rent</a></li>
                 <li><a href="renthistory.php" class="menu-item">Rent History</a></li>
                 <li><a href="../ResetPassword/forgetpassword.php" class="menu-item">Change Password</a></li>
-                <li><a href="delete_account.html" class="menu-item">Delete Account</a></li>
             </ul>
         </div>
     </div>
