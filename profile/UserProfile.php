@@ -1,20 +1,86 @@
 <?php
-session_start(); // Start the session
-require_once __DIR__ . '/../dbcon/dbcon.php'; // Database connection
+session_start();
+require_once __DIR__ . '/../dbcon/dbcon.php';
 
-class IdentityVerification {
+class DatabaseConnection {
     private $conn;
 
     public function __construct() {
         try {
             $database = new Database();
-            $this->conn = $database->getConn(); 
+            $this->conn = $database->getConn();
         } catch (Exception $exception) {
             die("Database connection failed: " . $exception->getMessage());
         }
     }
 
-    public function verifyIdentity($user_id, $country, $id_number, $id_photo, $first_name, $last_name, $dob, $address) {
+    public function getConnection() {
+        return $this->conn;
+    }
+
+    public function __destruct() {
+        $this->conn = null;
+    }
+}
+
+class UserProfile {
+    private $conn;
+    private $userId;
+
+    public function __construct($conn, $userId) {
+        $this->conn = $conn;
+        $this->userId = $userId;
+    }
+
+    public function getUserData() {
+        $stmt = $this->conn->prepare("SELECT * FROM user WHERE user_id = ?"); 
+        $stmt->execute([$this->userId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null; 
+    }
+    
+    public function uploadProfilePicture($file) {
+        if (isset($file) && $file['error'] === UPLOAD_ERR_OK) {
+            $fileTmpPath = $file['tmp_name'];
+            $fileName = $file['name'];
+            $fileNameCmps = explode(".", $fileName);
+            $fileExtension = strtolower(end($fileNameCmps));
+
+            $allowedfileExtensions = ['jpg', 'gif', 'png', 'jpeg'];
+
+            if (in_array($fileExtension, $allowedfileExtensions)) {
+                $uploadFileDir = '../uploads/profile_pictures/';
+                $dest_path = $uploadFileDir . $this->userId . '.' . $fileExtension;
+
+                if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                    $query = "UPDATE user SET profile_picture = :profile_picture WHERE user_id = :user_id";
+                    $stmt = $this->conn->prepare($query);
+                    $stmt->execute([
+                        ':profile_picture' => $dest_path,
+                        ':user_id' => $this->userId
+                    ]);
+                    return "Profile picture updated successfully.";
+                } else {
+                    return "Error moving the uploaded file.";
+                }
+            } else {
+                return "Upload failed. Allowed file types: " . implode(", ", $allowedfileExtensions);
+            }
+        } else {
+            return "No file uploaded or there was an upload error.";
+        }
+    }
+}
+
+class IdentityVerification {
+    private $conn;
+    private $userId;
+
+    public function __construct($conn, $userId) {
+        $this->conn = $conn;
+        $this->userId = $userId;
+    }
+
+    public function verify($user_id, $country, $id_number, $id_photo, $first_name, $last_name, $dob, $address) {
         $errors = [];
 
         // Validate input
@@ -114,6 +180,15 @@ class IdentityVerification {
         $stmt->execute([':user_id' => $user_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC); // Return the user details or false if not found
     }
+    public function isVerified(): bool {
+        $query = "SELECT verify_status = 'verified  ' FROM identityverification WHERE user_id = :user_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute([':user_id' => $this->userId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Check if valid_id is not empty
+        return !empty($result['valid_id']);
+    }
 
     private function getExistingRecord($user_id, $id_number) {
         $query = "SELECT * FROM identityverification WHERE user_id = :user_id AND id_number = :id_number";
@@ -156,7 +231,56 @@ class IdentityVerification {
         }
     }
 }
+
+class UserAccount {
+    private $dbConnection;
+    private $userId;
+    private $userProfile;
+    private $verify;
+
+    public function __construct() {
+        $this->dbConnection = new DatabaseConnection();
+        $this->userId = $this->getUserId();
+
+        if ($this->userId) {
+            $this->userProfile = new UserProfile($this->dbConnection->getConnection(), $this->userId);
+            // Pass the database connection and user ID to the IdentityVerification constructor
+            $this->verify = new IdentityVerification($this->dbConnection->getConnection(), $this->userId);
+        } else {
+            header("Location: ../login/signIn.php");
+            exit;
+        }
+    }
+
+    private function getUserId() {
+        return isset($_SESSION['email']) ? $this->getUserIdByEmail($_SESSION['email']) : null;
+    }
+
+    private function getUserIdByEmail($email) {
+        $stmt = $this->dbConnection->getConnection()->prepare("SELECT user_id FROM user WHERE email = ?");
+        $stmt->execute([$email]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['user_id'] ?? null;
+    }
+
+    public function getUserData() {
+        return $this->userProfile->getUserData();
+    }
+
+    public function uploadProfilePicture($file) {
+        return $this->userProfile->uploadProfilePicture($file);
+    }
+
+    public function verify($user_id, $country, $id_number, $id_photo, $first_name, $last_name, $dob, $address) {
+        return $this->verify->verify($user_id, $country, $id_number, $id_photo, $first_name, $last_name, $dob, $address);
+    }
+
+    public function isVerified() {
+        return $this->verify->isVerified(); 
+    }
+
+    public function __destruct() {
+        $this->dbConnection = null;
+    }
+}
 ?>
-
-
-

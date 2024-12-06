@@ -1,13 +1,15 @@
 <?php
-require_once 'dbclient.php'; // Adjust the path as necessary
+require_once 'Message.php'; 
+session_start(); 
 
-// Ensure that the session variable for the user is set to 'client'
-$_SESSION['user'] = 'client'; // This line simulates that you are logged in as a client
-$user_id = $_SESSION['user_id']; // Assuming user_id is stored in the session
+$_SESSION['user'] = 'client'; // Sset client to log
+$user_id = $_SESSION['user_id']; //session user-id
 
-$messageHandler = new UserMessage($user_id); //call messagehandler class
-$messageHandler->messageSubmission(); 
-$messages = $messageHandler->getMessages();
+$messageHandler = new Message(null, $user_id); // admin ass null
+
+$messageHandler->userMessage(); //this insert the message of the user
+
+$messages = $messageHandler->getMessages($user_id); //get all the message 
 ?>
 
 <!DOCTYPE html>
@@ -19,41 +21,41 @@ $messages = $messageHandler->getMessages();
     <style>
 
         #sidebar {
-            width: 330px; /* Fixed width for sidebar */
-            height: 400px; /* Set height to 400px */
-            background-color: #f5f5f5; /* Light background for sidebar */
+            width: 330px; 
+            height: 400px; 
+            background-color: #f5f5f5; 
             padding: 15px;
             transition: transform 0.3s ease;
             border-radius: 15px;
             position: fixed;
-            right: 0; /* Align to the right */
-            bottom: 0; /* Align to the bottom */
-            transform: translateX(100%); /* Initially hide the sidebar */
-            overflow-y: auto; /* Allow scrolling for long message lists */
-            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow for sidebar */
+            right: 0; 
+            bottom: 0; 
+            transform: translateX(100%); 
+            overflow-y: auto; 
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); 
         }
 
         #sidebar.active {
-            transform: translateX(0); /* Show the sidebar */
+            transform: translateX(0); 
         }
 
         #toggle-sidebar {
-            position: fixed; /* Fixed position to stay in the viewport */
-            bottom: 20px; /* Distance from the bottom */
-            right: 20px; /* Distance from the right */
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
             cursor: pointer;
-            z-index: 2; /* Above the sidebar */
-            background-color: #D5DFF2; /* Button color */
-            color: white; /* Button text color */
-            border: none; /* No border */
-            border-radius: 50%; /* Circular button */
-            width: 50px; /* Button width */
-            height: 50px; /* Button height */
-            display: flex; /* Flexbox for centering */
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-            font-size: 24px; /* Icon size */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            z-index: 2; 
+            background-color: #D5DFF2;
+            color: white;
+            border: none;
+            border-radius: 50%; 
+            width: 50px; 
+            height: 50px; 
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            font-size: 24px; 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
         }
 
         #toggle-sidebar:hover {
@@ -159,7 +161,7 @@ $messages = $messageHandler->getMessages();
         <div id="messages">
         <?php
         // Display messages
-            foreach ($messages as $msg) {
+            foreach ($messages as $msg) { //loop the message of the user and client
                 $isAdmin = isset($_SESSION['user']) && $_SESSION['user'] === 'admin';
                 $class = ($msg['sender'] === 'admin' && !$isAdmin) || ($msg['sender'] === 'client' && $isAdmin) ? 'other-message' : ($msg['sender'] === 'admin' ? 'admin-message' : 'client-message');
                 echo "<div class='message $class'>{$msg['sender']}: {$msg['message']}</div>";
@@ -168,7 +170,7 @@ $messages = $messageHandler->getMessages();
         </div>
         <form method="post">
             <div class="form-container">
-                <div class="control is-expanded">
+                <div class="control is-expanded"> //this is the input box
                     <input class="input" type="text" name="client_message" placeholder="Type your message..." required>
                 </div>
                 <div class="control">
@@ -178,7 +180,7 @@ $messages = $messageHandler->getMessages();
         </form>
     </div>
 
-    <div id="toggle-sidebar"><i class="fa-solid fa-message"></i></div>
+    <div id="toggle-sidebar"><i class="fa-solid fa-message"></i></div> <!-- to make this in the main page -->
 
     <script>
         document.getElementById('toggle-sidebar').addEventListener('click', function() {

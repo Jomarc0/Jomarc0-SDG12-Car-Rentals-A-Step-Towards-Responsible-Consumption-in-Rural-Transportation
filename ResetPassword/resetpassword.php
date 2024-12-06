@@ -14,7 +14,7 @@ class ResetPassword {
         }
     }
 
-    public function verifyOTP($email, $verification_code) {
+    public function verify($email, $verification_code) {
         $stmt = $this->conn->prepare("SELECT * FROM user WHERE email = :email AND verification_code = :verification_code");
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':verification_code', $verification_code);
@@ -45,15 +45,12 @@ class ResetPassword {
         if ($result) {
             //hash the password 
             $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-            $hashedConfirmPassword = password_hash($newConfirmPassword, PASSWORD_DEFAULT);
-            //update the password and confirm
-            $stmt = $this->conn->prepare("UPDATE user SET password = :password, confirm_password = :confirmPassword WHERE email = :email");
+            $stmt = $this->conn->prepare("UPDATE user SET password = :password WHERE email = :email"); //update the password and confirm
             $stmt->bindParam(':password', $hashedPassword);
-            $stmt->bindParam(':confirmPassword', $hashedConfirmPassword);
             $stmt->bindParam(':email', $email);
             $stmt->execute();
-
             return "Your password has been reset successfully.";
+            header('Location:' .'../login/signIn.php');
         } else {
             return "Invalid or expired OTP.";
         }

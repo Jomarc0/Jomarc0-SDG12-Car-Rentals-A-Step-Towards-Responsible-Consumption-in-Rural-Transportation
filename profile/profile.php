@@ -1,16 +1,17 @@
 <?php
-require_once __DIR__ . '/dbprofile.php'; // Include the UserProfile class
+require_once 'UserProfile.php'; 
 
-$userProfile = new UserProfile(); // Call the UserProfile class
-$user = $userProfile->getUserData(); // Fetch user data
-$isVerified = $userProfile->isVerified(); // Check if the user is verified
+$userAccount = new UserAccount(); 
 
-// Handle file upload if the form is submitted
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
-    $uploadMessage = $userProfile->uploadProfilePicture($_FILES['profile_picture']);
-        header("Location: profile.php?success=" . urlencode($uploadMessage));
-        exit();
-    }
+
+$user = $userAccount->getUserData(); // get all user data base on id
+$isVerified = $userAccount->isVerified(); // if the user is verified
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) { //form in uloatinf profile pic
+    $uploadMessage = $userAccount->uploadProfilePicture($_FILES['profile_picture']);
+    header("Location: profile.php?success=" . urlencode($uploadMessage));
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -184,10 +185,9 @@ body {
     <div class="header">
         <?php include('../header/header.php'); ?>  <!-- Including header -->
     </div>
-    <?php include('sidebar.php');?>  <!-- Including sidebar -->
+    <?php include('../sidebar/sidebar.php');?>  <!-- Including sidebar -->
 
     <div class="container">
-        <!-- Profile Header -->
         <div class="profile-header">
             <div class="profile-icon">
                 <form action="" method="POST" enctype="multipart/form-data">
@@ -200,20 +200,19 @@ body {
                             echo "<i class='fas fa-user-circle fa-7x'></i>";
                         }
                         ?>
-                        <!-- Upload icon overlay -->
-                        <div class="upload-icon">
+                        <div class="upload-icon">  <!-- cam icon overlay -->
                             <i class="fas fa-camera"></i>
                         </div>
                     </label>
-                    <!-- Hidden file input for uploading profile picture -->
-                    <input type="file" id="profile-picture-upload" name="profile_picture" style="display: none;" />
+                    <!-- hidden file input for uploading profile picture -->
+                    <input type="file" id="profile-picture-upload" name="profile_picture" style="display: none;" onchange="this.form.submit();" />
                     <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['user_id']); ?>" />
                 </form>
             </div>
             <h2><?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?></h2>
 
-            <!-- Verification link -->
-            <?php
+            
+            <?php //verification 
             if ($isVerified) {
                 echo "<a href='idverification.php' class='verification-button verified'><i class='fas fa-check-circle'></i> Verified</a>";
             } else {
@@ -222,7 +221,6 @@ body {
             ?>
         </div>
 
-        <!-- Profile Details -->
         <div class="profile-info">
             <h3>Personal Information</h3>
             <div class="info-item">

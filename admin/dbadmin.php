@@ -78,20 +78,11 @@ class AdminRentedCar {
     }
 
     public function updateUser($data) {
-        $updateQuery = "UPDATE user SET 
-                            first_name = :first_name, 
-                            last_name = :last_name, 
-                            address = :address, 
-                            gender = :gender, 
-                            dob = :dob, 
-                            email = :email, 
-                            phone_number = :phone_number, 
-                            verification_code = :verification_code 
-                        WHERE user_id = :user_id";
+        $updateQuery = "UPDATE user SET first_name = :first_name, last_name = :last_name, address = :address, gender = :gender, 
+                            dob = :dob, email = :email, phone_number = :phone_number, verification_code = :verification_code 
+                            WHERE user_id = :user_id";
         
         $stmt = $this->conn->prepare($updateQuery);
-        
-        // Bind parameters
         $stmt->bindParam(':first_name', $data['first_name'], PDO::PARAM_STR);
         $stmt->bindParam(':last_name', $data['last_name'], PDO::PARAM_STR);
         $stmt->bindParam(':address', $data['address'], PDO::PARAM_STR);
@@ -170,7 +161,7 @@ class AdminRentedCar {
             }
     
             // Step 2: Move the rented car records to the recently deleted table
-            $insertDeletedRentedCarQuery = "INSERT INTO recentlydeletedrent (rent_id, booking_area, destination, trip_date_time, return_date_time, vehicle_type, rent_status, deleted_at)
+            $insertDeletedRentedCarQuery = "INSERT INTO recentlydeleted (rent_id, booking_area, destination, trip_date_time, return_date_time, vehicle_type, rent_status, deleted_at)
                                             VALUES (:rent_id, :booking_area, :destination, :trip_date_time, :return_date_time, :vehicle_type, :rent_status, NOW())";
             
             $insertStmt = $this->conn->prepare($insertDeletedRentedCarQuery);

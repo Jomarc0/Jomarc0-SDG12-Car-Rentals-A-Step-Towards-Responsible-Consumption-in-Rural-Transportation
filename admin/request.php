@@ -28,8 +28,7 @@ $pendingID = $adminDashboard->getTotalID();
     <!-- datatable css -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="../css/admindashboard.css">
-    <link rel="stylesheet" href="../css/adminuser.css">
-    
+    <link rel="stylesheet" href="../css/adminpayment.css">
 </head>
 <body>
     <?php include('../sidebar/adminsidebar.php'); ?>
@@ -53,9 +52,11 @@ $pendingID = $adminDashboard->getTotalID();
                         <th>User ID</th>
                         <th>Name</th>
                         <th>Address</th>
+                        <th>Country</th>
                         <th>Date of Birth</th>
                         <th>Driver's License</th>
-                        <th>ID Stayus</th>
+                        <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -63,12 +64,13 @@ $pendingID = $adminDashboard->getTotalID();
                     <tr>
                         <td><?php echo htmlspecialchars($row['user_id']); ?></td>
                         <td><?php echo htmlspecialchars($row['name']); ?></td>
+                        <td><?php echo htmlspecialchars($row['country']); ?></td>
                         <td><?php echo htmlspecialchars($row['address']); ?></td>
                         <td><?php echo htmlspecialchars($row['dob']); ?></td>
                         <td>
                             <?php
                             // Check if the driver's license exists and is a valid URL
-                            $driversLicense = htmlspecialchars($row['drivers_license'] ?? '');
+                            $driversLicense = htmlspecialchars($row['valid_id'] ?? '');
                             if ($driversLicense) {
                                 echo "<img src='$driversLicense' alt='Driver's License' style='width: 100px; 
                                         height: 100px;  
@@ -80,7 +82,7 @@ $pendingID = $adminDashboard->getTotalID();
                             }
                             ?>
                         </td>
-                        <td><?php echo htmlspecialchars($row['verified_id']); ?></td>
+                        <td><?php echo htmlspecialchars($row['verify_status']); ?></td>
                         <td>
                             <form method="POST" action="">
                                 <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($row['user_id']); ?>">

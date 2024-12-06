@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-require_once 'dbrent.php'; 
+require_once '../Rents/Rent.php'; 
 
-$rentedCars = new RentedCars(); //call the rented car class 
-$cars = $rentedCars->getCars(); //use the function getter
+$rentedCars = new Rental(); //call the rented car class 
+$cars = $rentedCars->getRentedCars(); //use the function getter
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +21,7 @@ $cars = $rentedCars->getCars(); //use the function getter
     <div class="header">
         <?php include('../header/header.php'); ?>  
     </div>
-    <?php include('sidebar.php'); ?>
+    <?php include('../sidebar/sidebar.php'); ?>
     <div class="container">
         <div class="main-content" id="main-content">
             <div class="car-container">
@@ -32,12 +32,12 @@ $cars = $rentedCars->getCars(); //use the function getter
                             <button type="submit" class="cancel-button" name="cancel-btn">X</button>
                         </form>
                         <?php
-                        // display the car image
-                        $imagePath = $rentedCars->getVehicleImage($car['vehicle_type']);
-                        // calculate the remaining time 
-                        $returnDateTime = new DateTime($car['return_date_time']);
-                        $currentDateTime = new DateTime();
-                        $interval = $currentDateTime->diff($returnDateTime);
+                            // display the car image
+                            $imagePath = $rentedCars->getVehicleImage($car['vehicle_type']);
+                            // calculate the remaining time 
+                            $returnDateTime = new DateTime($car['return_date_time']);
+                            $currentDateTime = new DateTime();
+                            $interval = $currentDateTime->diff($returnDateTime);
                         ?>
                         <!--diplay the image -->
                         <img class="car-image" src="<?php echo $imagePath; ?>" alt="<?php echo htmlspecialchars($car['vehicle_type']); ?>">

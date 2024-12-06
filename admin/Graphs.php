@@ -1,6 +1,19 @@
 <?php
-// Include your database connection file
-require_once __DIR__ . '/../dbcon/dbcon.php';
+session_start();
+require_once 'dbdashboard.php'; // Include dbdashboard
+require_once __DIR__ . '/../dbcon/dbcon.php'; // Include database connection
+
+if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) { // Check if admin is logged in
+    header("Location: admin.php"); // Redirect to login if not logged in
+    exit();
+}
+
+$adminDashboard = new AdminDashboard(); // Call the AdminDashboard class
+// Get the data in functions
+$totalUsers = $adminDashboard->getTotalUsers();
+$totalRentedCars = $adminDashboard->getTotalRentedCars();
+$pendingRequests = $adminDashboard->getPendingRequests();
+$recentActivity = $adminDashboard->getRecentActivity();
 
 try {
     // 1. Monthly Payments Data
@@ -61,7 +74,7 @@ try {
         }
     }
 
-    // 3. Booking Areas Data
+
     $sql = "SELECT booking_area, COUNT(*) as car_count 
             FROM rentedcar 
             GROUP BY booking_area 
@@ -76,12 +89,10 @@ try {
         $booking_areas[] = $row['booking_area'];
         $car_counts[] = $row['car_count'];
     }
-
     $additional_areas = [
-        "Pangasinan", "Ilocos Norte", "Ilocos Sur", "Cagayan", "Isabela",
-        "Nueva Vizcaya", "Quirino", "Aurora", "Zambales", "Batangas",
-        "Laguna", "Rizal"
+        "Cavite", "Batangas","Laguna", "Rizal", "Quezon"
     ];
+    
     $booking_areas = array_unique(array_merge($booking_areas, $additional_areas));
 
     // 4. Registered Users Data
@@ -89,13 +100,39 @@ try {
     $stmt = $connection->prepare($sql);
     $stmt->execute();
     $total_users = $stmt->fetchColumn();
-
     // Close the connection if necessary
     // $connection = null; // Uncomment if your dbcon.php does not handle connection closure
 } catch (Exception $e) {
     echo $e->getMessage();
     exit;
 }
+
+// 4. Registered Users Data
+$sql = "SELECT DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as total_users
+        FROM user
+        GROUP BY month
+        ORDER BY month";
+$stmt = $connection->prepare($sql);
+$stmt->execute();
+$user_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$user_months = [];
+$total_users_per_month = array_fill(0, 12, 0); // Initialize to zero for the last 12 months
+
+// Populate the user data for the last 12 months
+foreach ($user_data as $user) {
+    $user_months[] = $user['month'];
+    $month_index = array_search($user['month'], array_map(function($m) {
+        return date("Y-m", strtotime($m));
+    }, $all_months));
+    
+    if ($month_index !== false) {
+        $total_users_per_month[$month_index] = $user['total_users'];
+    }
+}
+
+// Reverse the user data to match the order of months from the current month backward
+$total_users_per_month = array_reverse($total_users_per_month);
 ?>
 
 <!DOCTYPE html>
@@ -103,18 +140,19 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../css/admindashboard.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-   
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             display: flex;
             background-color: #f9f9f9;
         }
-
         .sidebar {
             width: 20%;
             background: #222;
@@ -122,12 +160,10 @@ try {
             padding: 20px;
             min-height: 100vh;
         }
-
         .sidebar h2 {
             font-size: 24px;
             margin-bottom: 20px;
         }
-
         .sidebar nav a {
             display: block;
             color: #aaa;
@@ -135,29 +171,24 @@ try {
             padding: 10px 0;
             margin: 5px 0;
         }
-
         .sidebar nav a.active,
         .sidebar nav a:hover {
             color: #fff;
         }
-
         .content {
             width: 80%;
             padding: 20px;
         }
-
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
         .stats {
             display: flex;
             justify-content: space-around;
             margin: 20px 0;
         }
-
         .card {
             background: #fff;
             padding: 20px;
@@ -166,86 +197,48 @@ try {
             width: 30%;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
-        .trend {
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .trend.up {
-            color: green;
-        }
-
-        .trend.down {
-            color: red;
-        }
-
-        .charts {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-        }
-
-        .chart {
-            width: 45%;
-        }
-
-        .pie {
-            width: 30%;
-        }
-
         canvas {
-            display: block;
-            max-width: 100%; /* Make charts responsive */
-            height: auto; /* Maintain aspect ratio */
+            width: 300px; /* Set the desired width */
+            height: 200px; /* Set the desired height */
+            margin: 20px auto; 
         }
-
-        /* Table Styles */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
         }
-
+        .charts {
+        display: flex;
+        justify-content: space-between; /* Space between the charts */
+        margin: 20px 0; /* Add some margin */
+    }
+    .chart {
+        width: 48%; /* Adjust width as needed */
+        margin: 0 1%; /* Add margin for spacing */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for aesthetics */
+        border-radius: 10px; /* Rounded corners */
+        background: #fff; /* White background for contrast */
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative; /* Ensure it can use z-index */
+        z-index: 1; /* Higher z-index */
+    }
         table th, table td {
             border: 1px solid #ddd;
             padding: 10px;
             text-align: left;
         }
-
         table th {
             background-color: #f2f2f2;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 600px) {
-            .charts {
-                flex-direction: column; /* Stack charts vertically on small screens */
-            }
-            .chart {
-                width: 100%; /* Full width for charts on small screens */
-            }
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <h2>Nosura</h2>
-        <nav>
-            <a href="#" class="active">Dashboard</a>
-            <a href="#">Statistics</a>
-            <a href="#">Payment</a>
-            <a href="#">Transactions</a>
-            <a href="#">Products</a>
-            <a href="#">Customer</a>
-            <a href="#">Messages</a>
-            <a href="#">Settings</a>
-            <a href="#">Logout</a>
-        </nav>
-    </aside>
 
     <!-- Main Content -->
     <main class="content">
@@ -258,88 +251,37 @@ try {
         <!-- Stats Cards -->
         <section class="stats">
             <div class="card">
-                <h3>$46,345.00</h3>
-                <p>Total Balance</p>
-                <span class="trend up">+13%</span>
+                <h3>Total Users</h3>
+                <h1><?php echo htmlspecialchars($totalUsers); ?></h1>
             </div>
             <div class="card">
-                <h3>$23,723.00</h3>
-                <p>Total Sales</p>
-                <span class="trend up">+42%</span>
+                <h3>Total Rented Cars</h3>
+                <h1><?php echo htmlspecialchars($totalRentedCars); ?></h1>
             </div>
             <div class="card">
-                <h3>$25,627.00</h3>
-                <p>Total Expenses</p>
-                <span class="trend down">-34%</span>
+                <h3>Pending Requests</h3>
+                <h1><?php echo htmlspecialchars($pendingRequests); ?></h1>
             </div>
         </section>
 
         <!-- Graph Section -->
         <section class="charts">
-            <div class="chart">
-                <canvas id="paymentChart"></canvas>
-            </div>
-            <div class="chart pie">
-                <canvas id="totalCarsUsedChart"></canvas>
-            </div>
-        </section>
+        <div class="chart" style="width: 48%; float: left;">
+            <canvas id="paymentChart"></canvas>
+        </div>
+        <div class="chart" style="width: 48%; float: right;">
+            <canvas id="totalCarsUsedChart"></canvas>
+        </div>
+    </section>
 
-        < section class="charts">
-            <div class="chart">
-                <canvas id="bookingAreaChart"></canvas>
-            </div>
-        </section>
-
-        <!-- Registered Users Table -->
-        <section class="orders">
-            <h2>Latest Orders</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Billing Name</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Invoice</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>10 Mar 2020</td>
-                        <td>Mahuya Kanika</td>
-                        <td>$12,345.00</td>
-                        <td>Chargeback</td>
-                        <td>▼</td>
-                    </tr>
-                    <tr>
-                        <td>09 Mar 2020</td>
-                        <td>Sukla Manusa</td>
-                        <td>$23,845.00</td>
-                        <td>Paid</td>
-                        <td>▼</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <!-- Registered Users Count -->
-        <section class="orders">
-            <h2>Registered Users</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Total Registered Users</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><?php echo $total_users; ?></td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-    </main>
-
+    <section class="charts clearfix">
+    <div class="chart" style="width: 48%; float: left;">
+        <canvas id="bookingAreaChart"></canvas>
+    </div>
+    <div class="chart" style="width: 48%; float: right;">
+        <canvas id="userChart"></canvas>
+    </div>
+</section>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Monthly Payment Chart
@@ -418,20 +360,46 @@ try {
                         borderColor: 'rgba(255, 255, 255, 1)',
                         borderWidth: 1
                     }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Number of Cars'
-                            }
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Cars'
                         }
                     }
                 }
-            });
+            }
         });
+    });
+ // User Chart
+const ctx4 = document.getElementById('userChart').getContext('2d');
+new Chart(ctx4, {
+    type: 'bar',
+    data: {
+        labels: <?php echo json_encode($all_months); ?>, // Monthly labels
+        datasets: [{
+            label: 'Registered Users',
+            data: <?php echo json_encode($total_users_per_month); ?>, // Monthly user data
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Number of Users'
+                }
+            }
+        }
+    }
+});
     </script>
 </body>
 </html>

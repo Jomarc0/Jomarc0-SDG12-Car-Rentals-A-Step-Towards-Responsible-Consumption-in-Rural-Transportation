@@ -59,7 +59,8 @@ body {
 
 /* Left Panel */
 .left-panel {
-  background: linear-gradient(to bottom, #4b4e69, #28293e); /* Retained original gradient */
+  background: url('../pictures/bg.webp') no-repeat center center; 
+  background-size: cover;
   width: 40%;
   padding: 20px;
   text-align: center;
@@ -220,6 +221,9 @@ label input {
 .right-panel a:hover {
   text-decoration: underline;
 }
+.recover{
+  margin-top: 10px;
+}
     </style>
 </head>
 <body>
@@ -245,7 +249,7 @@ label input {
             <p>Don't have an account? <a href="../login/signUp.php">Sign up</a></p>
             <p>Or log in with</p>
             <div class="social-buttons">
-                <a href="<?= $googleUrl ?>" class="google-btn">Google</a>
+                <a href="<?= $googleUrl ?>" class="google-btn"><i class="fab fa-google"></i></a>
             </div>
             <p class="recover"><a href="../ResetPassword/forgetpassword.php">Recover Password</a></p>
         </div>

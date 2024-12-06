@@ -1,15 +1,14 @@
 <?php
-require_once 'OTPmailer.php'; 
+require_once '../Mailer/UserMailer.php'; 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email']; 
 
-    $otpService = new OTPService(); 
+    $otpService = new SendEmail(); 
 
     if ($otpService->sendOTP($email)) { 
-        // Redirect to the OTP verification page with the email as a query parameter
-        header("Location: verifyOTP.php?email=" . urlencode($email));
-        exit; // Make sure to exit after redirecting
+        header("Location: verifyOTP.php?email=" . urlencode($email));        // got to OTP verification page with get email in http
+        exit; 
     } else {
         echo "Failed to send OTP. Please try again.";
     }
@@ -106,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <p>Enter your email address </p><br><br>
         <form action="" method="post">
             <div class="input-group">
-                <i class="fas fa-envelope"></i>
+                <i class="fas fa-envelope"></i> <!-- input email where the verification will send-->
                 <input type="email" name="email" id="email" placeholder="Email" required>
                 
             </div>

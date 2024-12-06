@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-require_once 'dbrenthistory.php'; 
+require_once '../Rents/Rent.php'; 
 
-$carRental = new RentalHistory(); //call the rental history class 
-$cars = $carRental->getCars(); //call the functoin getter 
+$carRental = new Rental(); //call the rental class 
+$cars = $carRental->getRentalHistory(); //call the functoin getter 
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +21,7 @@ $cars = $carRental->getCars(); //call the functoin getter
     <div class="header">
         <?php include('../header/header.php'); ?>  <!--include the header -->
     </div>
-    <?php include('sidebar.php'); ?> <!--include the side bar -->
+    <?php include('../sidebar/sidebar.php'); ?> <!--include the side bar -->
     <div class="container">
         <div class="main-content" id="main-content">
             <div class="car-container">

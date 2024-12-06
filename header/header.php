@@ -18,7 +18,7 @@ if (session_status() == PHP_SESSION_NONE) {
         
 
         header {
-            background: linear-gradient(to right, #3b2d2d, #000);
+            background-color: #121212;
             padding: .2rem; /* Reduced padding */
             width: 100%;
             display: flex;
@@ -33,7 +33,7 @@ if (session_status() == PHP_SESSION_NONE) {
         }
 
         .nav{
-            background: linear-gradient(to right, #3b2d2d, #000);
+            background-color: #121212;
             padding: .3rem; /* Reduced padding */
             width: 100%;
             display: flex;
@@ -118,16 +118,10 @@ if (session_status() == PHP_SESSION_NONE) {
         </div>
         <div class="right-nav">
             <?php if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true): ?>
-                <a href="../login/signIn.php" class="login-button">
-                    <i class="fas fa-user profile-icon"></i> Sign In
-                </a>
+                <a href="../login/signIn.php" class="login-button">Sign In</a>
             <?php else: ?>
-                <a href="../profile/profile.php" class="login-button">
-                    <i class="fas fa-user profile-icon"></i> Profile
-                </a>
-                <a href="../logout/logout.php" class="logout-button">
-                    <i class="fas fa-user profile-icon"></i> Log Out
-                </a> 
+                <a href="../profile/profile.php" class="login-button"><i class="fas fa-user profile-icon"></i></a>
+                <a href="../logout/logout.php" class="logout-button">Log Out</a> 
             <?php endif; ?>
         </div>
     </nav>

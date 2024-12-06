@@ -72,7 +72,8 @@ body {
 
 /* Left Panel */
 .left-panel {
-    background: linear-gradient(to bottom, #4b4e69, #28293e);
+    background: url('../pictures/bg.webp') no-repeat center center; 
+    background-size: cover;
     width: 40%;
     padding: 20px;
     text-align: center;
@@ -161,19 +162,17 @@ body {
 }
 
 /* Buttons */
-button {
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
 
-.create-account {
+.create-account button {
     background-color: gold; /* Changed button color to gold */
     color: #000; /* Black text color */
     border-radius: 5px;
     padding: 8px; /* Reduced padding */
     width: 100%; /* Full width */
     font-size: 0.9rem; /* Smaller font size */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .create-account:hover {
@@ -186,26 +185,23 @@ label {
     font-size: 0.7rem;
 }
 
-/* Social Buttons */
-.social-buttons 
-{
-    display: flex;
-    justify-content: space-between; /* Space between buttons */
-    margin-top: 15px; /* Reduced space above social buttons */
+.google-btn {
+  flex: 1;
+  background-color: #3e3e3e; /* Darker background for social buttons */
+  border-radius: 5px;
+  padding: 10px;
+  color: #ffffff; /* White text color */
+  font-size: 0.9rem;
+   margin: 5px;
+  transition: background-color 0.3s ease;
 }
 
-.social-buttons button {
-    background-color: #3e3e3e; /* Dark background for social buttons */
-    color: #fff; /* White text color */
-    padding: 8px; /* Reduced padding */
-    border-radius: 5px;
-    flex: 1; /* Equal width for buttons */
-    margin: 0 5px; /* Space between buttons */
-    font-size: 0.9rem; /* Smaller font size for social buttons */
+.google-btn:hover {
+  background-color: #db4437; /* Retained original hover color */
 }
 
-.social-buttons button:hover {
-    background-color: gold; /* Hover color for social buttons */
+.apple-btn:hover {
+  background-color: #000000; /* Retained original hover color */
 }
 </style>
 
@@ -258,13 +254,16 @@ label {
                 <div class="input-group">
                     <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required>
                 </div>
-                <button type="submit">Sign Up</button>
+                <div class="create-account">
+                    <button type="submit">Sign Up</button>
+                </div>
             </form>
-            <div class="google-signin">
+            <p>Already have an account? <a href="../login/signIn.php">Log in</a></p>
+            <div class="social-buttons">
                 <form id="google-signin-form" action="" method="post">
                     <input type="hidden" name="action" value="google">
                     <input type="hidden" name="code" id="google-code" value="">
-                    <button type="submit" class="google-btn" >Sign in with Google</button>
+                    <button type="submit" class="google-btn" ><i class="fab fa-google"></i></button>
                 </form>
             </div>
         </div>

@@ -1,23 +1,22 @@
 <?php
 require_once __DIR__ . '/../dbcon/dbcon.php'; 
-require_once __DIR__ . '/resetpassword.php'; // require resetpassword
+require_once __DIR__ . '/resetpassword.php'; 
 
-// Retrieve the email and verification code from the query parameters
+// get the email and verification code in the http
 $email = isset($_GET['email']) ? $_GET['email'] : '';
-$verification_code = isset($_GET['verification_code']) ? $_GET['verification_code'] : '';
+$code = isset($_GET['verification_code']) ? $_GET['verification_code'] : '';
 
-$message = ""; // Initialize message variable
+$message = ""; // message variable
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") { 
     $newPassword = $_POST['newPassword'];
     $newConfirmPassword = $_POST['newConfirmPassword'];
 
-    // Check if the new passwords match
-    if ($newPassword !== $newConfirmPassword) {
+    if ($newPassword !== $newConfirmPassword) { //check if password match
         $message = "Passwords do not match.";
     } else {
         $passwordReset = new ResetPassword(); // call passwordreset class from resetpassword
-        $message = $passwordReset->resetPassword($email, $verification_code, $newPassword, $newConfirmPassword); // resetpassword function parameter
+        $message = $passwordReset->resetPassword($email, $code, $newPassword, $newConfirmPassword); // resetpassword function parameter
     }
 }
 ?>
@@ -112,9 +111,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <p>Your new password must be different from previous passwords</p>
     <p>Password should be at least 8 characters</p><br>
     <form action="" method="post"> 
-        <div class="input-group">
-            <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>">
-            <input type="hidden" name="verification_code" value="<?php echo htmlspecialchars($verification_code); ?>">   
+        <div class="input-group"><!-- put the emaul and veriication code hidden para  masama sa form -->
+            <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>"> 
+            <input type="hidden" name="verification_code" value="<?php echo htmlspecialchars($code); ?>">   
         </div>
         <div class="input-group">
             <i class="fas fa-lock"></i>
@@ -126,11 +125,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="password" name="newConfirmPassword"  id='newConfirmPassword' placeholder="Confirm password" required>
             <label for="newConfirmPassword">Confirm Password</label>
         </div>
-       
         <button type="submit" name="changePass">Change Password</button>
     </form>
     </div>
-    <?php if ($message): ?>
+    <?php if ($message): //if has an error or successful?> 
         <p><?php echo htmlspecialchars($message); ?></p>
     <?php endif; ?>
 </body>

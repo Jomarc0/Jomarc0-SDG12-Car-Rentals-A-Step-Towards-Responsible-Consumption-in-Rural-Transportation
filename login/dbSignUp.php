@@ -1,19 +1,16 @@
 <?php
 session_start(); // session start
-require_once __DIR__ . '/../dbcon/dbcon.php';
-require_once __DIR__ . '/../PHPMailer/src/Exception.php';
-require_once __DIR__ . '/../PHPMailer/src/PHPMailer.php';
-require_once __DIR__ . '/../PHPMailer/src/SMTP.php';
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+require_once '../Mailer/UserMailer.php'; //SendEmail path
 
 class UserRegistration {
     private $conn;
+    private $emailService; // initialize for sendEmail class
 
     public function __construct() {
         try {
             $database = new Database();
             $this->conn = $database->getConn(); 
+            $this->emailService = new SendEMail(); // this class from usermailer
         } catch (Exception $exception) {
             die("Database connection failed: " . $exception->getMessage());
         }
@@ -21,9 +18,8 @@ class UserRegistration {
 
     public function register($first_name, $last_name, $address, $gender, $dob, $email, $phoneNumber, $password, $confirmPassword) {
         $errors = [];
-    
-        // validate passwords
-        if ($password !== $confirmPassword) {
+        
+        if ($password !== $confirmPassword) {// validate passwords
             $errors[] = "Passwords do not match.";
         }
     
@@ -31,8 +27,7 @@ class UserRegistration {
             $errors[] = "Password must be at least 8 characters long.";
         }
 
-        // check age must be 18 years old and above
-        $dobDate = new DateTime($dob);
+        $dobDate = new DateTime($dob); // check age must be 18 years old and above
         $today = new DateTime();
         $age = $today->diff($dobDate)->y; // calculate age
 
@@ -40,8 +35,7 @@ class UserRegistration {
             $errors[] = "You must be at least 18 years old to register.";
         }
 
-        // validate email existence
-        $query = "SELECT * FROM user WHERE email = :email";
+        $query = "SELECT * FROM user WHERE email = :email";        // validate email existence
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':email', $email);
         $stmt->execute();
@@ -50,18 +44,17 @@ class UserRegistration {
             $errors[] = "Email already exists.";
         }
     
-        // uf there are validation errors, return them as a string
-        if (!empty($errors)) {
-            return implode(" ", $errors); // combine errors into a single string
+        
+        if (!empty($errors)) {// if there are errors, return them as a string
+            return implode(" ", $errors); 
         }
     
-        // hash the password
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);// hash the password
     
-        // generate a random verification code
-        $verification_code = rand(100000, 999999);
+        
+        $verification_code = rand(100000, 999999);// generate a random verification code
     
-        // Insert values into the database
+        // Insert values into the database i did not include the confirm password i just use that for validation
         $query = "INSERT INTO user (first_name, last_name, address, gender, dob, email, phone_number, password, verification_code) 
                 VALUES (:first_name, :last_name, :address, :gender, :dob, :email, :phone_number, :password, :verification_code)";
         $sql = $this->conn->prepare($query);
@@ -77,31 +70,30 @@ class UserRegistration {
             ':password' => $hashedPassword,
             ':verification_code' => $verification_code,
         ])) {
-            $_SESSION['verification_code'] = $verification_code;
+            $_SESSION['verification_code'] = $verification_code; //sesstion if insert successful
             $_SESSION['email'] = $email;
     
-            return $this->sendVerificationEmail($email, $first_name, $last_name, $verification_code);
+            // call the sendVerificationEmail method
+            return $this->emailService->sendVerification($email, $first_name, $last_name, $verification_code);
         } else {
             return "Registration failed: " . implode(", ", $sql->errorInfo());
         }
     }
 
     public function isUserRegistered($email) {
-        // Prepare a SQL statement to check if the user exists
-        $stmt = $this->conn->prepare("SELECT * FROM user WHERE email = :email");
+        $stmt = $this->conn->prepare("SELECT * FROM user WHERE email = :email"); //check if email is already exist
         $stmt->bindParam(':email', $email);
         $stmt->execute();
         $count = $stmt->fetchColumn();
         
-        // Return true if the user exists, false otherwise
+        // true if the user exists, false otherwise
         return $count > 0;
     }
 
-    public function registerFromGoogle($first_name, $last_name, $email) {
-        error_log("Registering user: $first_name $last_name, Email: $email");
+    public function registerFromGoogle($first_name , $last_name, $email) { //firstname, lastname, and email from gmail api
+        // error_log("Registering user: $first_name $last_name, Email: $email");  //check for error
 
-        // Check if the user already exists in the database
-        $query = "SELECT * FROM user WHERE email = :email";
+        $query = "SELECT * FROM user WHERE email = :email";// check if the user already exists in the database
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':email', $email);
         $stmt->execute();
@@ -109,14 +101,12 @@ class UserRegistration {
         if ($stmt->fetch(PDO::FETCH_ASSOC)) {
             return "User  already exists. Please log in.";
         } else {
-            // User does not exist, insert them into the database
-            $address = '';
+            $address = '';//use null because this is for the gmail api
             $gender = '';
             $dob = '';
             $phoneNumber = '';
             $hashedPassword = '';
             $verification_code = rand(100000, 999999);
-
             $query = "INSERT INTO user (first_name, last_name, address, gender, dob, email, phone_number, password, verification_code) 
                     VALUES (:first_name, :last_name, :address, :gender, :dob, :email, :phone_number, :password, :verification_code)";
             $sql = $this->conn->prepare($query);
@@ -136,45 +126,10 @@ class UserRegistration {
                 $_SESSION['verification_code'] = $verification_code;
                 $_SESSION['email'] = $email;
                 
-                return $this->sendVerificationEmail($email, $first_name, $last_name, $verification_code);
+                return $this->emailService->sendVerification($email, $first_name, $last_name, $verification_code);
             } else {
                 return "Error inserting user data: " . implode(", ", $sql->errorInfo());
             }
-        }
-    }
-
-    private function sendVerificationEmail($email, $first_name, $last_name, $verification_code) {
-        $mail = new PHPMailer(true);
-
-        try {
-            // Server settings
-            $mail->isSMTP();
-            $mail->SMTPAuth   = true;
-            $mail->Host       = 'smtp.gmail.com';
-            $mail->Username   = 'jaycarrent@gmail.com'; // Gmail
-            $mail->Password   = 'ygic eqgh ucoi bdio'; // Secret pass from my Gmail
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = 587;
-
-            // Receiver
-            $mail->setFrom('jaycarrent@gmail.com', 'Mailer');
-            $mail->addAddress($email, $first_name . ' ' . $last_name);
-
-            // Content
-            $mail->isHTML(true);
-            $mail->Subject = 'Verification Code';
-            $mail->Body    = '<h3>Verification code to access</h3>
-                            <h3>Name: ' . $first_name . ' ' . $last_name . '</h3>
-                            <h3>Email: ' . $email . '</h3>
-                            <h3>Verification Code: ' . $verification_code . '</h3>';
-
-            if ($mail->send()) {
-                return "Registration successful. Verification code sent to your email.";
-            } else {
-                return "Registration successful. Unable to send verification code. Mailer Error: " . $mail->ErrorInfo;
-            }
-        } catch (Exception $e) {
-            return "Registration successful. Unable to send verification code. Mailer Error: " . $mail->ErrorInfo;
         }
     }
 

@@ -11,14 +11,14 @@
             padding: 0;
             background-color: #121212; /* Dark background */
         }
-
+        header{
+            color:white;
+        }
         .container {
             width: 700px; 
             margin: 0 auto; 
             padding: 3rem; 
-            background-color: #1c1c1c; /* Darker background for the container */
-            border-radius: 8px; /* Rounded corners for the container */
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+
         }
 
         .container h1 {
@@ -55,8 +55,8 @@
         }
 
         .step h3 {
-            color: #f7b531; /* Highlight color for step titles
-                        margin-bottom: 1rem; 
+            color: #f7b531; /* Highlight color for step titles*/
+            margin-bottom: 1rem; 
         }
 
         .step p {

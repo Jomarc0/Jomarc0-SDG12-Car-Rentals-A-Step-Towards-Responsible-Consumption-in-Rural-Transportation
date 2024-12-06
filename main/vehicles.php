@@ -68,7 +68,7 @@ main {
     display: flex; 
     justify-content: center; 
     align-items: center; 
-    font-size: 1.5rem; 
+    font-size: 2.5rem; 
     font-weight: bold; 
     color: #ffffff; 
     background-color: rgba(24, 27, 38, 0.6); /* Dark semi-transparent background */
@@ -154,7 +154,7 @@ main {
                 <i class="fas fa-duotone fa-solid fa-gas-pump"></i> GASOLINE
               </span>
             </div>
-            <div class="price">Price: $50/day</div> <!-- Price included -->
+            <div class="price">Price: ₱ 1500/day <br>Price: ₱ 63/hour</div> <!-- Price included -->
           </div>
         </a>
 
@@ -180,7 +180,7 @@ main {
                 <i class="fas fa-gas-pump"></i> GASOLINE
               </span>
             </div>
-            <div class="price">Price: $70/day</div> <!-- Price included -->
+            <div class="price">Price: ₱ 2500/day <br>Price: ₱ 104/hour</div> <!-- Price included -->
           </div>
         </a>
 
@@ -206,7 +206,7 @@ main {
                 <i class="fas fa-gas-pump"></i> GASOLINE
               </span>
             </div>
-            <div class="price">Price: $60/day</div> <!-- Price included -->
+            <div class="price">Price: ₱ 200/day <br>Price: ₱ 83/hour</div> <!-- Price included -->
           </div>
         </a>
 
@@ -232,7 +232,7 @@ main {
                 <i class="fas fa-gas-pump"></i> GASOLINE
               </span>
             </div>
-            <div class="price">Price: $65/day</div> <!-- Price included -->
+            <div class="price">Price: ₱ 3500/day <br>Price: ₱ 146/hour</div> 
           </div>
         </a>
 
@@ -258,7 +258,7 @@ main {
                 <i class="fas fa-gas-pump"></i> GASOLINE
               </span>
             </div>
-            <div class="price">Price: $40/day</div> <!-- Price included -->
+            <div class="price">Price: ₱ 1500/day <br>Price: ₱ 63/hour</div> 
           </div>
         </a>
 
@@ -284,7 +284,7 @@ main {
                 <i class="fas fa-gas-pump"></i> GASOLINE
               </span>
             </div>
-            <div class="price">Price: $90/day</div> <!-- Price included -->
+            <div class="price">Price: ₱ 4000/day <br>Price: ₱ 167/hour</div> <!-- Price included -->
           </div>
         </a>
 
@@ -310,7 +310,33 @@ main {
                 <i class="fas fa-gas-pump"></i> GASOLINE
               </span>
             </div>
-            <div class="price">Price: $120/day</div> <!-- Price included -->
+            <div class="price">Price: ₱ 5500/day <br>Price: ₱ 229/hour</div> <!-- Price included -->
+          </div>
+        </a>
+        <a href="reservation.php" class="car-card">
+          <img class="car-image" src="../pictures/tesla.png" alt="Tesla">
+          <div class="car-info">
+            <h2 class="car-title">Tesla</h2>
+            <span>Tesla X</span>
+            <i class="fa-solid fa-circle-info info-icon"></i>
+            <div class="info-popup">
+              <img class="car-image" src="../pictures/tesla.png" alt="Tesla">
+              <p>All new Tesla cars have the capability for full self-driving.</p>
+              <p> Intended to enhance safety and make driving easier, the autopilot feature can steer, accelerate and brake, all on its own. </p>
+              <p>There's also a Smart Summon feature that's a part of the Tesla autopilot and lets you park or retrieve your car using a command button</p>
+            </div>
+            <div class="car-details">
+              <span>
+                <i class="fas fa-user"></i> 4
+              </span>
+              <span>
+                <i class="fas fa-car"></i> Auto Drive
+              </span>
+              <span>
+                <i class="fas fa-gas-pump"></i> Electric
+              </span>
+            </div>
+            <div class="price">Price: ₱ 6500/day <br>Price: ₱ 270/hour</div> <!-- Price included -->
           </div>
         </a>
       </div>

@@ -1,10 +1,9 @@
 <?php
 require_once __DIR__ . '/../dbcon/dbcon.php'; 
-require_once 'dbverifyid.php';
+require_once 'UserProfile.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve form data
-    $user_id = $_SESSION['user_id']; // Assuming user_id is stored in session
+    $user_id = $_SESSION['user_id']; // session the userid
     $country = $_POST['country'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
@@ -13,18 +12,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_number = $_POST['id_number'];
     $id_photo = $_FILES['id_photo'];
 
-    // Create an instance of the IdentityVerification class
-    $identityVerification = new IdentityVerification();
+    $verification = new UserAccount(); //call the useraccount class
 
-    // Call the verifyIdentity method to process the data
-    $result = $identityVerification->verifyIdentity($user_id, $country, $id_number, $id_photo, $first_name, $last_name, $dob, $address);
-
-    // Redirect or display the result
-    if (strpos($result, 'successful') !== false) {
-        echo "<script>alert('$result'); window.location.href='success_page.php';</script>";
-    } else {
-        echo "<script>alert('$result'); window.history.back();</script>";
-    }
+    //put in the parameter the post data
+    $result = $verification->verify($user_id, $country, $id_number, $id_photo, $first_name, $last_name, $dob, $address);
+   
+    if (strpos($result, 'successful') !== false) { // redirect to the same page of sucessful
+      echo "<script>alert('$result'); window.location.href='" . htmlspecialchars($_SERVER['PHP_SELF']) . "';</script>";
+  } else {
+      echo "<script>alert('$result'); window.history.back();</script>";
+  }
 } 
 ?>
 <!DOCTYPE html>
@@ -136,15 +133,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <div class="header">
-        <?php include('../header/header.php'); ?>  <!-- Including header -->
+        <?php include('../header/header.php'); ?>  <!-- including header -->
     </div>
-    <?php include('sidebar.php');?>  <!--including my sidebar -->
+    <?php include('../sidebar/sidebar.php');?>  <!--including my sidebar -->
   <div class="form-container">
     <h1>Identity Verification</h1>
     <h2>Personal Verification</h2>
 
     <form class="verification-form" action="" method="POST" enctype="multipart/form-data">
-      <!-- Basic Info Section -->
       <fieldset>
         <legend>Basic Info</legend>
         <div class="form-group">
@@ -170,14 +166,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <input type="text" name="address" id="address" placeholder="House No/Street/Brgy/City" required>
         </div>
       </fieldset>
-      <!-- Document Upload Section -->
+
       <fieldset>
         <legend>Upload Documents</legend>
         <div class="form-group">
           <label for="certificate-type">Please select the certificate type for submission</label>
           <select id="certificate-type" name="certificate_type" required>
             <option value="id-card" selected>Driver's License</option>
-            <!-- Add more options as needed -->
+
           </select>
         </div>
         <div class="form-group">

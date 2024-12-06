@@ -11,7 +11,9 @@
             padding: 0;
             background-color: #121212; /* Dark background for the body */
         }
-
+        header {
+            color:#e0e0e0;
+        }
         .container {
             max-width: 1000px; /* Set a maximum width for the container */
             margin: 50px auto; /* Center the container */
