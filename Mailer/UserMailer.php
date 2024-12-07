@@ -32,7 +32,6 @@ abstract class Mailer {
             $this->mail->isHTML(true);
             $this->mail->Subject = $subject;
             $this->mail->Body = $body; //the message
-
             $this->mail->send();
             $this->mail->clearAddresses(); // clear addresses for the next email
             return true; // Email sent successfully
@@ -67,13 +66,12 @@ class SendEMail extends Mailer {
     public function sendOTP($toEmail) {
         $verification_code = rand(100000, 999999); // generate a random 6-digit code
 
-        // Store OTP in the database
         if ($this->storeOTP($toEmail, $verification_code)) {
             $subject = 'Your OTP for Password Reset';
             $body = 'Your OTP is: <strong>' . htmlspecialchars($verification_code) . '</strong>';
             return $this->sendEmail($toEmail, $subject, $body) 
-                ? true 
-                : false; // failed to send
+                ? "Registration successful. Verification code sent to your email."
+                : "Unable to send verification code."; // failed to send
         }
         return false; // di nagstore otp
     }

@@ -4,74 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title> 
-    <style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #D5DFF2; /* Light background */
-}
-
-.toggle-sidebar {
-    position: absolute;
-    top: 160px;
-    left: 0;
-    padding: 10px 15px;
-    background-color: #4F5576; 
-    color: #D5DFF2; /* Light text color */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.toggle-sidebar:hover {
-    background-color: #D5DFF2;
-}
-
-.sidebar-container {
-    position: fixed;
-    left: -250px; /* Hide the sidebar by default */
-    top: 0;
-    height: 100%;
-    width: 250px;
-    background-color: #181b26; /* Dark background */
-    margin-top: 140px;
-    overflow-x: hidden;
-    transition: 0.3s;
-    z-index: 1000;
-}
-
-.sidebar {
-    padding: 20px;
-}
-
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.sidebar li {
-    margin: 15px 0;
-}
-
-.menu-item {
-    text-decoration: none;
-    color: #D5DFF2; /* Light text color */
-    padding: 10px;
-    display: block;
-    transition: background-color 0.3s;
-}
-
-.menu-item:hover {
-    background-color: #9FA7BF; /* Light gray-blue color on hover */
-}
-
-/* Add this to show the sidebar when the button is clicked */
-.show-sidebar {
-    left: 0; /* Show the sidebar */
-}
-</style>
+    <link rel="stylesheet" href="../css/sidebar.css">
 </head>
 <body>
     <button class="toggle-sidebar" id="toggleButton" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>

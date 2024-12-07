@@ -1,0 +1,97 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  .form-container {
+    max-width: 800px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  fieldset {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  legend {
+    padding: 0 10px;
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  
+  label {
+    font-size: 0.9em;
+    margin-bottom: 5px;
+  }
+  
+  input, select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+  }
+  
+  input[type="file"] {
+    display: none;
+  }
+  
+  .upload-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #ccc;
+    padding: 20px;
+    margin: 5px 0;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+  
+  .upload-box:hover {
+    border-color: #007bff;
+    background: #f0f8ff;
+  }
+  
+  .upload-group {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .upload-group .upload-box {
+    flex: 1;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  

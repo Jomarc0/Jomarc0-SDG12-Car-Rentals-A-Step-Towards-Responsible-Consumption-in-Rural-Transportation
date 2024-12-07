@@ -28,41 +28,41 @@ class Rental {
     }
 
     private function fetchRentedCars() {
-        $query = "SELECT * FROM rentedcar WHERE rent_status = 'rented'"; // Fetch all rented cars
+        $query = "SELECT * FROM rentedcar WHERE rent_status = 'rented'"; // get all rented cars
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        $this->rentedCars = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch as associative array
+        $this->rentedCars = $stmt->fetchAll(PDO::FETCH_ASSOC); // fetch as associative array
 
-        $this->updateCarStatus(); // Update car status if necessary
+        $this->updateCarStatus(); // updatestatus if necessary
     }
 
     private function updateCarStatus() {
-        $currentDateTime = new DateTime(); // Get the current time
+        $currentDateTime = new DateTime(); // get the current time
         foreach ($this->rentedCars as $car) {
             $returnDateTime = new DateTime($car['return_date_time']);
             if ($returnDateTime <= $currentDateTime) {
-                $updateQuery = "UPDATE rentedcar SET rent_status = 'completed' WHERE rent_id = :rent_id"; // Update status to completed
+                $updateQuery = "UPDATE rentedcar SET rent_status = 'completed' WHERE rent_id = :rent_id"; // update status to completed
                 $updateStmt = $this->conn->prepare($updateQuery);
-                $updateStmt->execute([':rent_id' => $car['rent_id']]); // Update the rent status
+                $updateStmt->execute([':rent_id' => $car['rent_id']]); // update the rent status
             }
         }
     }
 
     private function fetchRentalHistory() {
-        $stmt = $this->conn->prepare("SELECT * FROM rentedcar WHERE rent_status = 'completed'"); // Fetch completed rentals
+        $stmt = $this->conn->prepare("SELECT * FROM rentedcar WHERE rent_status = 'completed'"); // fetch completed rentals
         $stmt->execute();
-        $this->rentalHistory = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch as associative array
+        $this->rentalHistory = $stmt->fetchAll(PDO::FETCH_ASSOC); // fetch as associative array
     }
 
-    public function getRentedCars() { // Getter for rented cars
+    public function getRentedCars() { // getter for rented cars
         return $this->rentedCars;
     }
 
-    public function getRentalHistory() { // Getter for rental history
+    public function getRentalHistory() { // getter for rental history
         return $this->rentalHistory;
     }
 
-    public function getVehicleImage($vehicleType) { // Getter for vehicle images
+    public function getVehicleImage($vehicleType) { // getter for vehicle images
         return isset($this->vehicleImages[$vehicleType]) ? $this->vehicleImages[$vehicleType] : 'No image available';
     }
 

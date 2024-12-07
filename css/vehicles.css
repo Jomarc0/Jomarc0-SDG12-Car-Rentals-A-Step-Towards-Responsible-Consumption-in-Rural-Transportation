@@ -1,3 +1,4 @@
+/* General Styles */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -115,36 +116,3 @@ main {
 .car-card:hover .info-popup {
     display: block; 
 } 
-.car-card {
-    position: relative; /* Make the container relative for absolute positioning of the button */
-}
-.cancel-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: red;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 16px;
-}
-.cancel-button:hover {
-    background-color: darkred; /* Darker red on hover */
-}
-.delete-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: red;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 16px;
-}
-.delete-button:hover {
-    background-color: darkred; /* Darker red on hover */
-}

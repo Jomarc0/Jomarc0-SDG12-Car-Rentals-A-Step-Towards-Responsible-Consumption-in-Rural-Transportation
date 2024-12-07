@@ -1,0 +1,133 @@
+/* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    background: #343a40;
+    color: #fff;
+    padding: 20px;
+    min-height: 100vh;
+    transition: width 0.3s;
+}
+
+.sidebar h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.sidebar nav a {
+    display: block;
+    color: #adb5bd;
+    text-decoration: none;
+    padding: 10px 15px;
+    margin: 5px 0;
+    border-radius: 5px;
+    transition: background 0.3s, color 0.3s;
+}
+
+
+/* Content Styles */
+.content {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    background: #fff;
+    min-height: 100vh;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 28px;
+    color: #343a40;
+}
+
+header input {
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    width: 250px;
+}
+
+/* Stats Cards Styles */
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.card {
+    background: #007bff;
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 30%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.card h1 {
+    font-size: 36px;
+    margin: 10px 0 0;
+}
+
+/* Charts Styles */
+.charts {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.chart {
+    width: 43%;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+canvas {
+    width: 100% !important; /* Ensure canvas takes full width */
+    height: 400px !important; /* Set a fixed height for the charts */
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        min-height: auto;
+    }
+
+    .stats {
+        flex-direction: column;
+    }
+
+    .card {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .charts {
+        flex-direction: column;
+    }
+
+    .chart {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}

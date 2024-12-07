@@ -43,15 +43,12 @@ class UserRegistration {
         if ($stmt->fetch(PDO::FETCH_ASSOC)) {
             $errors[] = "Email already exists.";
         }
-    
-        
         if (!empty($errors)) {// if there are errors, return them as a string
             return implode(" ", $errors); 
         }
     
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);// hash the password
     
-        
         $verification_code = rand(100000, 999999);// generate a random verification code
     
         // Insert values into the database i did not include the confirm password i just use that for validation
@@ -92,7 +89,6 @@ class UserRegistration {
 
     public function registerFromGoogle($first_name , $last_name, $email) { //firstname, lastname, and email from gmail api
         // error_log("Registering user: $first_name $last_name, Email: $email");  //check for error
-
         $query = "SELECT * FROM user WHERE email = :email";// check if the user already exists in the database
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':email', $email);

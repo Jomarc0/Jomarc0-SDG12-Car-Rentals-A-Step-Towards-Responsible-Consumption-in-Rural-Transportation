@@ -58,7 +58,7 @@ class CarRentalSystem {
             $_SESSION['message'] = "An error occurred: " . $e->getMessage();
         }
 
-        header('Location: generateReceipt.php');
+        header('Location: receipt.php');
         exit;
     }
 
@@ -145,7 +145,6 @@ class RentalCalculator {
         }
 
         $interval = $startDate->diff($endDate);
-        
         $totalDays = $interval->days;
         $totalHours = $interval->h + ($totalDays * 24); 
         

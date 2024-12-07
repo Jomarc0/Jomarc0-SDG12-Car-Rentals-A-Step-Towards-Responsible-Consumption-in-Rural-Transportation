@@ -83,54 +83,45 @@ class IdentityVerification {
     public function verify($user_id, $country, $id_number, $id_photo, $first_name, $last_name, $dob, $address) {
         $errors = [];
 
-        // Validate input
-        if (empty($user_id) || empty($country) || empty($id_number)) {
+        if (empty($user_id) || empty($country) || empty($id_number)) { //if may laman
             $errors[] = "User  ID, country, and ID number are required.";
         }
 
-        // If there are validation errors, return them as a string
-        if (!empty($errors)) {
-            return implode(" ", $errors); // Combine errors into a single string
+        if (!empty($errors)) {//if empty
+            return implode(" ", $errors); 
         }
 
-        // Check if the user exists, if not, insert the user
+        // cehck if meron same na user, if not, insert the user
         $this->insertUserIfNotExists($user_id, $first_name, $last_name, $dob, $address);
-
-        // Fetch user details
         $userDetails = $this->getUserDetails($user_id);
         if (!$userDetails) {
             return "User  not found.";
         }
 
-        // Check for existing records in identityverification
-        $existingRecord = $this->getExistingRecord($user_id, $id_number);
+        $existingRecord = $this->getExistingRecord($user_id, $id_number); // check user existing records 
         if ($existingRecord) {
-            // Check if the ID photo is already uploaded
-            if (!empty($existingRecord['valid_id'])) {
+            if (!empty($existingRecord['valid_id'])) { //if may uloaded na
                 return "This identity is already being verified.";
-            } else {
-                // Allow the upload if the ID photo is not uploaded
+            } else {  //  upload if the ID photo is not uploaded
                 $idPhotoPath = $this->uploadFile($id_photo, "../uploads/drivers_license/");
                 if (!is_string($idPhotoPath)) { // If an error occurred, it will return an error message
                     return $idPhotoPath;
                 }
 
-                // Update the existing record with the new ID photo
+                // update the table to a new ID
                 $this->updateIdPhoto($existingRecord['id'], $idPhotoPath);
                 return "ID photo uploaded successfully for verification.";
             }
         }
 
-        // Handle ID photo upload for new records
-        $idPhotoPath = $this->uploadFile($id_photo, "../uploads/drivers_license/");
-        if (!is_string($idPhotoPath)) { // If an error occurred, it will return an error message
+        $idPhotoPath = $this->uploadFile($id_photo, "../uploads/drivers_license/"); //maguupload ng id
+        if (!is_string($idPhotoPath)) { //if error
             return $idPhotoPath;
         }
 
-        // Insert values into the identityverification table, including user details
         $query = "INSERT INTO identityverification (user_id, country, id_number, valid_id, first_name, last_name, dob, address) 
                   VALUES (:user_id, :country, :id_number, :valid_id, :first_name, :last_name, :dob, :address)";
-        $stmt = $this->conn->prepare($query);
+        $stmt = $this->conn->prepare($query); //nsert to my identityverification table
 
         if ($stmt->execute([
             ':user_id' => $user_id,
@@ -149,11 +140,10 @@ class IdentityVerification {
     }
 
     private function insertUserIfNotExists($user_id, $first_name, $last_name, $dob, $address) {
-        // Check if the user already exists
-        $existingUser  = $this->getUserDetails($user_id);
+
+        $existingUser  = $this->getUserDetails($user_id); //check if user already exist
         
-        if (!$existingUser ) {
-            // User does not exist, proceed to insert
+        if (!$existingUser ) {  //if walang laman yunf data o gumamit ng api maiinsert yunng data
             $query = "INSERT INTO user (user_id, first_name, last_name, dob, address) 
                     VALUES (:user_id, :first_name, :last_name, :dob, :address)";
             $stmt = $this->conn->prepare($query);
@@ -180,14 +170,18 @@ class IdentityVerification {
         $stmt->execute([':user_id' => $user_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC); // Return the user details or false if not found
     }
-    public function isVerified(): bool {
-        $query = "SELECT verify_status = 'verified  ' FROM identityverification WHERE user_id = :user_id";
+
+    public function isVerified() {
+        // Correct the SQL query to select the verify_status column
+        $query = "SELECT verify_status FROM identityverification WHERE user_id = :user_id";
         $stmt = $this->conn->prepare($query);
         $stmt->execute([':user_id' => $this->userId]);
+        
+        // Fetch the result
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // Check if valid_id is not empty
-        return !empty($result['valid_id']);
+        
+        // Check if the result is not empty and if verify_status is 'verified'
+        return !empty($result) && $result['verify_status'] === 'verified';
     }
 
     private function getExistingRecord($user_id, $id_number) {
@@ -197,12 +191,12 @@ class IdentityVerification {
             ':user_id' => $user_id,
             ':id_number' => $id_number
         ]);
-        return $stmt->fetch(PDO::FETCH_ASSOC); // Return the existing record or false if not found
+        return $stmt->fetch(PDO::FETCH_ASSOC); // if record exist or false if not found
     }
 
     private function updateIdPhoto($id, $idPhotoPath) {
         $query = "UPDATE identityverification SET valid_id = :valid_id WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
+        $stmt = $this->conn->prepare($query); //update the id
         $stmt->execute([
             ':valid_id' => $idPhotoPath,
             ':id' => $id
@@ -210,22 +204,19 @@ class IdentityVerification {
     }
 
     private function uploadFile($file, $uploadDir) {
-        // Check if the directory exists, if not, create it
-        if (!is_dir($uploadDir)) {
+        if (!is_dir($uploadDir)) { //if walang laman upload
             mkdir($uploadDir, 0755, true);
         }
 
-        // Validate the uploaded file
-        if ($file['error'] !== UPLOAD_ERR_OK) {
+        if ($file['error'] !== UPLOAD_ERR_OK) { //valid dito yung upload file
             return "File upload error.";
         }
 
         $fileName = basename($file['name']);
         $targetFilePath = $uploadDir . $fileName;
 
-        // Move the uploaded file to the target directory
-        if (move_uploaded_file($file['tmp_name'], $targetFilePath)) {
-            return $targetFilePath; // Return the path of the uploaded file
+        if (move_uploaded_file($file['tmp_name'], $targetFilePath)) { // move the uploaded file to the target folder
+            return $targetFilePath; //if path of the uploaded file
         } else {
             return "Failed to move uploaded file.";
         }

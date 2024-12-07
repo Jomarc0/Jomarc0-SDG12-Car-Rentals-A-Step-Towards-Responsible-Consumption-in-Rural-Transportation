@@ -1,5 +1,5 @@
 <?php
-require_once '../main/calculateprice.php';
+require_once '../main/CarSystem.php';
 
 class PaymentProcessor {
     private $conn;
@@ -51,9 +51,9 @@ class PaymentProcessor {
     }
 
     public function processPayment() {
-        $checkRentIdStmt = $this->conn->prepare("SELECT COUNT(*) FROM rentedcar WHERE rent_id = :rent_id"); // Check if the rent id exists
-        $checkRentIdStmt->execute([':rent_id' => $this->rentId]);
-        $count = $checkRentIdStmt->fetchColumn();
+        $checkRentId = $this->conn->prepare("SELECT COUNT(*) FROM rentedcar WHERE rent_id = :rent_id"); // Check if the rent id exists
+        $checkRentId->execute([':rent_id' => $this->rentId]);
+        $count = $checkRentId->fetchColumn();
     
         if ($count == 0) { // If no rent id found
             $this->error = "The specified rent ID does not exist.";
@@ -106,7 +106,6 @@ class PaymentProcessor {
                 $checkoutUrl = $responseData['data']['attributes']['checkout_url']; // Store the responseData to checkoutURL
                 
                 $paymentStatus = 'pending'; // Insert payment record into the database
-                
                 
                 $stmt = $this->conn->prepare("INSERT INTO payment (amount, payment_status, rent_id, payment_link, user_id) VALUES (:amount, :payment_status, :rent_id, :payment_link, :user_id)");
                 if ($stmt->execute([':amount' => $this->totalPrice, ':payment_status' => $paymentStatus, ':rent_id' => $this->rentId, ':payment_link' => $checkoutUrl, ':user_id' => $this->userId])) {

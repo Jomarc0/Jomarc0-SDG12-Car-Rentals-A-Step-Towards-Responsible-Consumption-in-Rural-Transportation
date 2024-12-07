@@ -12,20 +12,15 @@ class Database {
 
     private function connect() {
         try {
-            // Use a DSN (Data Source Name) to specify the database type and connection details
+            // use a DSN (Data Source Name) to specify the database type and connection details
             $dsn = "mysql:host={$this->host};dbname={$this->db_name};charset=utf8mb4";
 
-            // Create a new PDO instance
-            $this->conn = new PDO($dsn, $this->username, $this->password);
+            $this->conn = new PDO($dsn, $this->username, $this->password); //new pdo
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);//pdo exeption
 
-            // Set PDO error mode to exception
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);//fetch mode as default 
 
-            // Set the default fetch mode
-            $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-
-            // Enable prepared statements by default
-            $this->conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+            $this->conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); //prepared statement
         } catch (PDOException $e) {
             error_log("Connection failed: " . $e->getMessage());
             throw new Exception("Database connection error.");
@@ -41,7 +36,6 @@ class Database {
     }
 }
 
-// Usage example
 try {
     $db = new Database();
     $connection = $db->getConn();

@@ -150,7 +150,7 @@
         </section>
 
         <section class="story">
-            <h2>Our Story</h2>
+            <h2>About Us</h2>
             <p>
                 For years, we’ve been your trusted partner in car rentals, offering reliable, affordable, and premium vehicles for every journey. From family trips to corporate travel, our diverse fleet ensures comfort and convenience, no matter the destination.
             </p>
@@ -158,8 +158,6 @@
                 With a focus on customer satisfaction, we provide top-notch service, seamless booking, and eco-friendly options. Whether exploring the city or venturing into the countryside, we’re here to make your journey unforgettable.
             </p>
             <div class="story-images">
-                <img src="rental_fleet.jpg" alt="Rental Fleet">
-                <img src="happy_customer.jpg" alt="Happy Customer with Car Rental">
             </div>
         </section>
 

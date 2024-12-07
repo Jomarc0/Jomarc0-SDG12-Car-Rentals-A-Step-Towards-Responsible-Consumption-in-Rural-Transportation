@@ -4,33 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Car Rental Form</title>
-    <style>
-        footer {
-            background-color: #4F5576; /* Dark background for the footer */
-            color: white; /* White text color */
-            padding: 20px; /* Padding inside the footer */
-            text-align: center; /* Center align text */
-        }
-
-        .footer-links a {
-            color: white; /* Link color */
-            margin: 0 15px; /* Space between links */
-            text-decoration: none; /* Remove underline from links */
-        }
-
-        .footer-links a:hover {
-            text-decoration: underline; /* Underline on hover */
-        }
-
-        .social-media a {
-            margin: 0 10px; /* Space between social media icons */
-        }
-
-        .social-media img {
-            width: 24px; /* Icon size */
-            vertical-align: middle; /* Align icons with text */
-        }
-    </style>
+    <link rel="stylesheet" href="../css/footer.css">
 </head>
 <body>
 <footer style="background-color: #4F5576; color: white; padding: 20px; text-align: center;">
